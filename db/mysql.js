@@ -16,14 +16,14 @@ const pool = mysql.createPool({
 
 class Mysql {
   constructor() {}
-  query(sql) {
+  query(sql, params = []) {
     return new Promise((resolve, reject) => {
       pool.getConnection(function (err, connection) {
         if (err) {
           reject(err)
           throw err // not connected!
         }
-        connection.query(sql, function (error, results, fields) {
+        connection.query(sql, params, function (error, results, fields) {
           if (error) {
             reject(err)
             throw error
