@@ -3,62 +3,49 @@ const loginController = require('../controllers/loginController') // 登录控�
 
 const router = express.Router() //模块化路由
 
+const mysql = require('../db/mysql')
+const loginService = require('../service/loginService')
+
 router.post('/register', loginController.register) //注册
 
-// function login_middleware(req, res, next) {
-//   console.log("中间件1");
-//   next(); //传递给下一步
-// }
+const login_middleware = (req, res, next) => {
+  console.log('登录中间件')
+  next() //传递给下一步
+}
 
-// function login_params(req, res, next) {
-//   let { name, password } = req.query;
-//   if (!name || !password) {
-//     //发送消息，结束响应，不需要再调用next
-//     res.json({
-//       message: "参数校验失败",
-//     });
-//   } else {
-//     next();
-//   }
-// }
+// 登录参数校验账号密码中间件
+const login_params = async (req, res, next) => {
+  // 从请求体中获取用户名和密码
+  let { username, password } = req.body
+  console.log(username, password)
 
-// router.post("/login", [login_middleware, login_params], (req, res, next) => {
-//   console.log("req", req.body);
-//   res.send("登录成功");
-//   // res.json({
-//   //   code: 200,
-//   //   message: "登录成功",
-//   //   data: {
-//   //     name: req.query.name,
-//   //     password: req.query.password,
-//   //     token: "123456",
-//   //     role: "admin",
-//   //     id: 1,
-//   //     createTime: "2025-08-19",
-//   //     updateTime: "2025-08-19",
-//   //   }
-//   // })
-// });
+  // 检查用户名和密码是否为空
+  if (!username || !password) {
+    return res.status(400).json({
+      message: '账号和密码不能为空'
+    })
+  }
 
-const jwt = require('jsonwebtoken')
+  try {
+    // 查询数据库，验证账号密码
+    const user = await mysql.query(loginService.verifyUser, [username, password])
+    if (user.length === 0) {
+      return res.status(401).json({
+        message: '账号或密码不正确'
+      })
+    }
 
-router.post('/login', (req, res, next) => {
-  let { username } = req.body
+    // 验证通过，将用户信息添加到请求对象中
+    req.user = user[0]
+    next()
+  } catch (error) {
+    console.error('验证失败:', error)
+    res.status(500).json({
+      message: '服务器错误，请稍后重试'
+    })
+  }
+}
 
-  // 登录成功，签发一个token并返回给前端
-  const token = jwt.sign(
-    // payload：签发的 token 里面要包含的一些数据
-    { username },
-    // 私钥
-    'caowj',
-    // 设置过期时间
-    { expiresIn: 60 * 60 * 24 } //1 day
-  )
-
-  res.json({
-    msg: '登录成功',
-    data: { token }
-  })
-})
+router.post('/login', [login_middleware, login_params], loginController.login)
 
 module.exports = router
