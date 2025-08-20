@@ -1,5 +1,7 @@
 const mysql = require('../db/mysql')
 
+const loginService = require('../service/loginService')
+
 // 注册用户
 exports.register = async (req, res) => {
   try {
@@ -9,19 +11,13 @@ exports.register = async (req, res) => {
     }
 
     // 查询用户是否已存在
-    const checkUser = await mysql.query(`SELECT * FROM user WHERE username = ? OR email = ?`, [
-      username,
-      email
-    ])
+    const checkUser = await mysql.query(loginService.checkUser, [username, email])
     if (checkUser.length > 0) {
       return res.status(400).json({ message: '用户名或邮箱已存在' })
     }
 
     // 插入新用户
-    const result = await mysql.query(
-      `INSERT INTO user (username, password, email, age, sex, create_time) VALUES (?, ?, ?, ?, ?, now())`,
-      [username, password, email, age, sex]
-    )
+    const result = await mysql.query(loginService.addUser, [username, password, email, age, sex])
 
     res.status(201).json({
       message: '注册成功',
