@@ -1,4 +1,5 @@
-const express = require('express')
+import express from 'express'
+
 const userRouter = require('./user')
 const loginRouter = require('./login')
 
@@ -12,7 +13,7 @@ router.use('/api', userRouter) // 注入用户路由模块
 router.use('/api', loginRouter) // 注入登录路由模块
 
 // 自定义统一异常处理中间件，需要放在代码最后
-router.use((err, req, res, next) => {
+router.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
   // 自定义用户认证失败的错误返回
   console.log('err===', err)
   if (err && err.name === 'UnauthorizedError') {

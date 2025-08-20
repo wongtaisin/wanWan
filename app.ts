@@ -1,10 +1,8 @@
 const express = require('express')
+const path = require('path')
 const bodyParser = require('body-parser') // 引入body-parser模块
-var path = require('path')
 const cors = require('cors')
-
 const routes = require('./routes')
-
 const app = express()
 
 app.use(express.static(path.join(__dirname, 'public')))

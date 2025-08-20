@@ -1,9 +1,9 @@
-const mysql = require('../db/mysql')
+import mysql from '../db/mysql'
 
 const loginService = require('../service/loginService')
 
 // 注册用户
-exports.register = async (req, res) => {
+exports.register = async (req: any, res: any) => {
   try {
     const { username, password, email, age, sex } = req.body
     if (!username || !password || !email) {
@@ -11,13 +11,20 @@ exports.register = async (req, res) => {
     }
 
     // 查询用户是否已存在
-    const checkUser = await mysql.query(loginService.checkUser, [username, email])
+    const checkUser: any = await mysql.query(loginService.checkUser, [username, email] as never[])
+
     if (checkUser.length > 0) {
       return res.status(400).json({ message: '用户名或邮箱已存在' })
     }
 
     // 插入新用户
-    const result = await mysql.query(loginService.addUser, [username, password, email, age, sex])
+    const result: any = await mysql.query(loginService.addUser, [
+      username,
+      password,
+      email,
+      age,
+      sex
+    ] as never[])
 
     res.status(201).json({
       message: '注册成功',
@@ -35,7 +42,7 @@ exports.register = async (req, res) => {
 
 const jwt = require('jsonwebtoken')
 // 登录
-exports.login = async (req, res) => {
+exports.login = async (req: any, res: any) => {
   let { username } = req.body
 
   // 登录成功，签发一个token并返回给前端

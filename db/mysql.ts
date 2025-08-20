@@ -1,5 +1,5 @@
 // 使用mysql2模块代替mysql以支持新的认证协议
-const mysql = require('mysql2')
+import mysql from 'mysql2'
 
 const pool = mysql.createPool({
   connectionLimit: 10, //最大连接数，默认为10
@@ -16,7 +16,7 @@ const pool = mysql.createPool({
 
 class Mysql {
   constructor() {}
-  query(sql, params = []) {
+  query(sql: string, params = []) {
     return new Promise((resolve, reject) => {
       pool.getConnection(function (err, connection) {
         if (err) {
@@ -36,4 +36,4 @@ class Mysql {
   }
 }
 
-module.exports = new Mysql()
+export default new Mysql()

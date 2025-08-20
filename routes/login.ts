@@ -1,20 +1,18 @@
-const express = require('express') // 引入express模块
+import express from 'express' // 引入express模块
+import mysql from '../db/mysql'
 const loginController = require('../controllers/loginController') // 登录控制器
-
 const router = express.Router() //模块化路由
-
-const mysql = require('../db/mysql')
 const loginService = require('../service/loginService')
 
 router.post('/register', loginController.register) //注册
 
-const login_middleware = (req, res, next) => {
+const login_middleware = (req: any, res: any, next: any) => {
   console.log('登录中间件')
   next() //传递给下一步
 }
 
 // 登录参数校验账号密码中间件
-const login_params = async (req, res, next) => {
+const login_params = async (req: any, res: any, next: any) => {
   // 从请求体中获取用户名和密码
   let { username, password } = req.body
   console.log(username, password)
@@ -28,7 +26,8 @@ const login_params = async (req, res, next) => {
 
   try {
     // 查询数据库，验证账号密码
-    const user = await mysql.query(loginService.verifyUser, [username, password])
+    const user = (await mysql.query(loginService.verifyUser, [username, password] as any)) as any
+
     if (user.length === 0) {
       return res.status(401).json({
         message: '账号或密码不正确'
