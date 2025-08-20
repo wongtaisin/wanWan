@@ -1,10 +1,7 @@
 import express from 'express'
-
 const userRouter = require('./user')
 const loginRouter = require('./login')
-
 const jwtAuth = require('../util/user-jwt')
-
 const router = express.Router()
 
 router.use(jwtAuth) // 注入jwt认证中间件

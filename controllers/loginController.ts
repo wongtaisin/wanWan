@@ -1,5 +1,4 @@
 import mysql from '../db/mysql'
-
 const loginService = require('../service/loginService')
 
 // 注册用户

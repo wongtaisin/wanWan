@@ -26,7 +26,10 @@ const login_params = async (req: any, res: any, next: any) => {
 
   try {
     // 查询数据库，验证账号密码
-    const user = (await mysql.query(loginService.verifyUser, [username, password] as any)) as any
+    const user = (await mysql.query(loginService.verifyUser, [
+      username,
+      password
+    ] as never[])) as any
 
     if (user.length === 0) {
       return res.status(401).json({
