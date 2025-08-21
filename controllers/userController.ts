@@ -1,3 +1,13 @@
+/*
+ * @Author: wingddd wongtaisin1024@gmail.com
+ * @Date: 2025-08-21 11:41:42
+ * @LastEditors: wingddd wongtaisin1024@gmail.com
+ * @LastEditTime: 2025-08-21 16:47:47
+ * @FilePath: \express\controllers\userController.ts
+ * @Description:
+ *
+ * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
+ */
 import mysql from '../db/mysql' // 引入mysql模块
 const userService = require('../service/userService') // 引入userService模块
 

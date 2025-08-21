@@ -1,6 +1,7 @@
 import express from 'express'
 const userRouter = require('./user')
 const loginRouter = require('./login')
+const expensesRouter = require('./expenses')
 const jwtAuth = require('../util/user-jwt')
 const router = express.Router()
 
@@ -8,6 +9,7 @@ router.use(jwtAuth) // 注入jwt认证中间件
 
 router.use('/api', userRouter) // 注入用户路由模块
 router.use('/api', loginRouter) // 注入登录路由模块
+router.use('/api', expensesRouter) // 注入花销路由模块
 
 // 自定义统一异常处理中间件，需要放在代码最后
 router.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
