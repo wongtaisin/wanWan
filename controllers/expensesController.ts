@@ -13,9 +13,27 @@ const expensesService = require('../service/expensesService')
 
 // 添加花销
 exports.add = async (req: any, res: any, next: any) => {
-  let { eat, drink, play, glad, tolls, oil, parking, supermarket, online_shopping } = req.body
+  let { eat, drink, play, glad, tolls, oil, parking, supermarket, online_shopping, create_date } =
+    req.body
 
-  const params: any = [eat, drink, play, glad, tolls, oil, parking, supermarket, online_shopping]
+  const params: any = [
+    eat,
+    drink,
+    play,
+    glad,
+    tolls,
+    oil,
+    parking,
+    supermarket,
+    online_shopping,
+    create_date
+  ]
+
+  const checkDate: any = await mysql.query(expensesService.checkDate, [create_date] as never[])
+
+  if (checkDate.length > 0) {
+    return res.status(400).json({ message: '日期已存在' })
+  }
 
   let result = await mysql.query(expensesService.addExpenses, params)
   if (result) {
