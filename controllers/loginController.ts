@@ -1,26 +1,36 @@
+/*
+ * @Author: wingddd wongtaisin1024@gmail.com
+ * @Date: 2025-08-21 11:41:42
+ * @LastEditors: wingddd wongtaisin1024@gmail.com
+ * @LastEditTime: 2025-08-23 15:32:18
+ * @FilePath: \express\controllers\loginController.ts
+ * @Description:
+ *
+ * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
+ */
 import mysql from '../db/mysql'
 const loginService = require('../service/loginService')
 
 // 注册用户
 exports.register = async (req: any, res: any) => {
   try {
-    const { username, password, email, age, sex } = req.body
-    if (!username || !password || !email) {
-      return res.status(400).json({ message: '用户名、密码和邮箱都是必填项' })
+    const { username, password, phone, age, sex } = req.body
+    if (!username || !password || !phone) {
+      return res.status(400).json({ message: '用户名、密码和手机号都是必填项' })
     }
 
     // 查询用户是否已存在
-    const checkUser: any = await mysql.query(loginService.checkUser, [username, email] as never[])
+    const checkUser: any = await mysql.query(loginService.checkUser, [username, phone] as never[])
 
     if (checkUser.length > 0) {
-      return res.status(400).json({ message: '用户名或邮箱已存在' })
+      return res.status(400).json({ message: '用户名或手机号已存在' })
     }
 
     // 插入新用户
     const result: any = await mysql.query(loginService.addUser, [
       username,
       password,
-      email,
+      phone,
       age,
       sex
     ] as never[])
@@ -29,7 +39,7 @@ exports.register = async (req: any, res: any) => {
       message: '注册成功',
       userId: result.insertId,
       username,
-      email,
+      phone,
       age,
       sex
     })
