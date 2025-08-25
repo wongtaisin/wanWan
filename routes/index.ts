@@ -1,3 +1,13 @@
+/*
+ * @Author: wingddd wongtaisin1024@gmail.com
+ * @Date: 2025-08-21 11:41:42
+ * @LastEditors: wingddd wongtaisin1024@gmail.com
+ * @LastEditTime: 2025-08-25 11:35:36
+ * @FilePath: \express\routes\index.ts
+ * @Description:
+ *
+ * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
+ */
 import express from 'express'
 const userRouter = require('./user')
 const loginRouter = require('./login')
