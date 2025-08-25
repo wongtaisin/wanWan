@@ -13,7 +13,7 @@ import _middleware from '../middleware/login'
 const loginController = require('../controllers/loginController') // 登录控制器
 const router = express.Router() //模块化路由
 
-router.post('/register', loginController.register) //注册
+router.post('/register', [_middleware.register_params], loginController.register) //注册
 
 router.post('/login', [_middleware.login_params], loginController.login)
 

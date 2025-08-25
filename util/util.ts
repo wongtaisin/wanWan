@@ -113,10 +113,10 @@ export default {
    * @desc 计算数组中指定属性的数值总和
    * @param {string} property - 属性名
    * @param {any[]} arr - 数据数组
-   * @param {number} to - 小数位数,默认0
+   * @param {number} digits - 小数位数,默认0
    * @returns {string} 总和(整数字符串)
    */
-  getAllNumber: (property: string, arr: any[], to: number = 0): string => {
+  getAllNumber: (property: string, arr: any[], digits: number = 0): string => {
     const amount = arr.reduce((sum: any, item: any) => {
       const value = parseFloat(item[property])
       if (value < 0) {
@@ -125,12 +125,12 @@ export default {
         return sum + value
       }
     }, 0)
-    return amount > 0 ? Number(amount).toFixed(to) : amount < 0 ? Number(amount).toFixed(to) : '0'
+    return Number(amount).toFixed(digits) || '0'
   },
 
   /**
    * @desc 获取当前月份的日期列表
-   * @param {string} yearMonth - 年月字符串
+   * @param {string} yearMonth - 年月字符串 2025年08月
    * @returns {any[]} 日期列表
    */
   monthDates: (yearMonth: string) => {
