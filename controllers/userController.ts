@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 11:41:42
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-08-21 16:47:47
+ * @LastEditTime: 2025-08-25 16:55:51
  * @FilePath: \express\controllers\userController.ts
  * @Description:
  *
@@ -34,11 +34,13 @@ exports.deleteUser = async (req: any, res: any) => {
 }
 
 // 获取用户列表
-exports.getUser = (req: any, res: any) => {
-  mysql.query(userService.userAll).then((data: any) => {
-    let jsonData = JSON.parse(JSON.stringify(data))
-    res.json({
-      data: jsonData
-    })
+exports.getUser = async (req: any, res: any) => {
+  const data = await mysql.query(userService.userAll)
+  const jsonData = JSON.parse(JSON.stringify(data))
+
+  res.status(200).json({
+    code: 200,
+    data: jsonData,
+    message: '获取成功'
   })
 }

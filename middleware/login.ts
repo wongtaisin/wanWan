@@ -95,7 +95,7 @@ const register_params = async (req: any, res: any, next: any) => {
     ] as never[])
 
     // 验证通过，将用户信息添加到请求对象中
-    req.params = {
+    req.userInfo = {
       userId: result.insertId,
       userName: user_name,
       phone,

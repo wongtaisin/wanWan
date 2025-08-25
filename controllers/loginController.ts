@@ -13,13 +13,15 @@ import jwt from 'jsonwebtoken'
 // 注册用户
 exports.register = async (req: any, res: any) => {
   try {
-    let { userName, phone, userId } = req.params
+    let { userName, phone, userId } = req.userInfo
 
     res.status(201).json({
-      userId,
-      userName,
-      phone,
-      message: '注册成功'
+      data: {
+        userId,
+        userName,
+        phone,
+        message: '注册成功'
+      }
     })
   } catch (error) {
     console.error('注册失败:', error)
