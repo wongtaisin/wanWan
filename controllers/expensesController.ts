@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 16:38:22
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-08-25 10:42:36
+ * @LastEditTime: 2025-08-29 15:41:06
  * @FilePath: \express\controllers\expensesController.ts
  * @Description:
  *
@@ -26,14 +26,46 @@ exports.add = async (req: any, res: any, next: any) => {
     supermarket,
     online_shopping,
     phone_bill,
-    red_packet,
-    create_date
+    red_packet
   } = req.body
 
-  const checkDate: any = await mysql.query(expensesService.checkDate, [create_date] as never[])
+  const createDate = new Date().toISOString().split('T')[0] // 当天的年月日
 
+  const checkDate: any = await mysql.query(expensesService.checkDate, [createDate] as never[])
+
+  // 日期已存在，执行更新合并操作
   if (checkDate.length > 0) {
-    return res.status(400).json({ message: '日期已存在' })
+    // return res.status(400).json({ message: '日期已存在' })
+    const existingRecord = checkDate[0]
+    const fields = [
+      'eat',
+      'drink',
+      'play',
+      'glad',
+      'tolls',
+      'oil',
+      'parking',
+      'traffic',
+      'supermarket',
+      'online_shopping',
+      'phone_bill',
+      'red_packet'
+    ]
+
+    const updateParams: any = fields
+      .map(field =>
+        existingRecord[field] ? `${existingRecord[field]},${req.body[field]}` : req.body[field]
+      )
+      .concat(existingRecord.id)
+
+    let result = await mysql.query(expensesService.updateExpenses, updateParams)
+
+    if (result) {
+      return res.json({
+        msg: '数据已合并更新',
+        code: 200
+      })
+    }
   }
 
   const params: any = [
