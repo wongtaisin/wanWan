@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 16:38:22
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-08-30 14:48:09
+ * @LastEditTime: 2025-08-30 15:23:54
  * @FilePath: \express\controllers\expensesController.ts
  * @Description:
  *
@@ -14,27 +14,32 @@ const expensesService = require('../service/expensesService')
 
 // 添加花销
 exports.add = async (req: any, res: any, next: any) => {
+  const createDate = new Date().toISOString().split('T')[0]
   // 日期已存在，执行更新合并操作
   if (!!req.updateParams) {
     await mysql.query(expensesService.updateExpenses, req.updateParams)
 
     return res.json({
+      code: 200,
       data: {
         userId: req.auth.user_id,
         id: req.updateParams[req.updateParams.length - 1],
-        date: new Date().toISOString().split('T')[0]
+        date: createDate
       },
-      msg: '数据已合并更新',
-      code: 200
+      msg: '数据已合并更新'
     })
   }
 
-  let { id } = req.addParams
+  const result: any = await mysql.query(expensesService.addExpenses, req.addParams)
 
   res.json({
-    msg: '添加成功',
-    data: { id },
-    code: 200
+    code: 200,
+    data: {
+      id: result.insertId,
+      userId: req.auth.user_id,
+      date: createDate
+    },
+    msg: '添加成功'
   })
 }
 

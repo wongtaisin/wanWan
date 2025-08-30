@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-25 11:02:53
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-08-30 14:56:48
+ * @LastEditTime: 2025-08-30 15:44:57
  * @FilePath: \express\middleware\expenses.ts
  * @Description:
  *
@@ -44,7 +44,10 @@ const add = async (req: any, res: any, next: any) => {
       red_packet
     } = req.body
 
-    const params: any = [
+    let { user_id } = req.auth
+
+    const params = [
+      user_id,
       eat,
       drink,
       play,
@@ -59,24 +62,8 @@ const add = async (req: any, res: any, next: any) => {
       red_packet
     ]
 
-    const result: any = await mysql.query(expensesService.addExpenses, params)
-
     // 验证通过，将用户信息添加到请求对象中
-    req.addParams = {
-      id: result.insertId,
-      eat,
-      drink,
-      play,
-      glad,
-      tolls,
-      oil,
-      parking,
-      traffic,
-      supermarket,
-      online_shopping,
-      phone_bill,
-      red_packet
-    }
+    req.addParams = params
 
     next()
   } catch (error) {
@@ -106,8 +93,12 @@ const add = async (req: any, res: any, next: any) => {
 const update = async (req: any, res: any, next: any) => {
   try {
     const createDate = new Date().toISOString().split('T')[0] // 当天的年月日
+    const userId = req.auth.user_id
 
-    const checkDate: any = await mysql.query(expensesService.checkDate, [createDate] as never[])
+    const checkDate: any = await mysql.query(expensesService.checkDateByUserId, [
+      createDate,
+      userId
+    ] as never[])
 
     // 日期已存在，执行更新合并操作
     if (checkDate.length > 0) {
@@ -140,6 +131,9 @@ const update = async (req: any, res: any, next: any) => {
 
       // 验证通过，将更新信息添加到请求对象中
       req.updateParams = params
+      next()
+    } else {
+      // 这里继续调用next，是为了走新增的add
       next()
     }
   } catch (error) {
