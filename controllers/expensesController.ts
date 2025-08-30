@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 16:38:22
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-08-29 15:41:06
+ * @LastEditTime: 2025-08-30 14:48:09
  * @FilePath: \express\controllers\expensesController.ts
  * @Description:
  *
@@ -14,85 +14,29 @@ const expensesService = require('../service/expensesService')
 
 // 添加花销
 exports.add = async (req: any, res: any, next: any) => {
-  let {
-    eat,
-    drink,
-    play,
-    glad,
-    tolls,
-    oil,
-    parking,
-    traffic,
-    supermarket,
-    online_shopping,
-    phone_bill,
-    red_packet
-  } = req.body
-
-  const createDate = new Date().toISOString().split('T')[0] // 当天的年月日
-
-  const checkDate: any = await mysql.query(expensesService.checkDate, [createDate] as never[])
-
+  console.log(req.updateParams, res)
   // 日期已存在，执行更新合并操作
-  if (checkDate.length > 0) {
-    // return res.status(400).json({ message: '日期已存在' })
-    const existingRecord = checkDate[0]
-    const fields = [
-      'eat',
-      'drink',
-      'play',
-      'glad',
-      'tolls',
-      'oil',
-      'parking',
-      'traffic',
-      'supermarket',
-      'online_shopping',
-      'phone_bill',
-      'red_packet'
-    ]
+  if (!!req.updateParams) {
+    await mysql.query(expensesService.updateExpenses, req.updateParams)
 
-    const updateParams: any = fields
-      .map(field =>
-        existingRecord[field] ? `${existingRecord[field]},${req.body[field]}` : req.body[field]
-      )
-      .concat(existingRecord.id)
-
-    let result = await mysql.query(expensesService.updateExpenses, updateParams)
-
-    if (result) {
-      return res.json({
-        msg: '数据已合并更新',
-        code: 200
-      })
-    }
-  }
-
-  const params: any = [
-    eat,
-    drink,
-    play,
-    glad,
-    tolls,
-    oil,
-    parking,
-    traffic,
-    supermarket,
-    online_shopping,
-    phone_bill,
-    red_packet
-  ]
-
-  let result = await mysql.query(expensesService.addExpenses, params)
-  if (result) {
-    res.json({
-      msg: '添加成功',
+    return res.json({
       data: {
-        ...result
+        userId: req.auth.user_name,
+        id: req.updateParams[req.updateParams.length - 1],
+        date: new Date().toISOString().split('T')[0]
       },
+      msg: '数据已合并更新',
       code: 200
     })
   }
+
+  let { id } = req.addParams
+
+  res.json({
+    msg: '添加成功',
+    data: { id },
+    code: 200
+  })
 }
 
 // 获取花销列表

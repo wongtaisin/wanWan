@@ -1,0 +1,171 @@
+/*
+ * @Author: wingddd wongtaisin1024@gmail.com
+ * @Date: 2025-08-25 11:02:53
+ * @LastEditors: wingddd wongtaisin1024@gmail.com
+ * @LastEditTime: 2025-08-30 14:38:23
+ * @FilePath: \express\middleware\expenses.ts
+ * @Description:
+ *
+ * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
+ */
+const expensesService = require('../service/expensesService')
+import mysql from '../db/mysql'
+
+/**
+ * @desc 新增花销
+ * @param {string} eat - 吃
+ * @param {string} drink - 喝
+ * @param {string} play - 玩
+ * @param {string} glad - 乐
+ * @param {string} tolls -  tolls
+ * @param {string} oil - 油
+ * @param {string} parking - 车
+ * @param {string} traffic - 流量
+ * @param {string} supermarket - 超市
+ * @param {string} online_shopping - 网上购物
+ * @param {string} phone_bill - 电话
+ * @param {string} red_packet - 红包
+ * @returns {void}
+ */
+const add = async (req: any, res: any, next: any) => {
+  try {
+    let {
+      eat,
+      drink,
+      play,
+      glad,
+      tolls,
+      oil,
+      parking,
+      traffic,
+      supermarket,
+      online_shopping,
+      phone_bill,
+      red_packet
+    } = req.body
+
+    const params: any = [
+      eat,
+      drink,
+      play,
+      glad,
+      tolls,
+      oil,
+      parking,
+      traffic,
+      supermarket,
+      online_shopping,
+      phone_bill,
+      red_packet
+    ]
+
+    const result: any = await mysql.query(expensesService.addExpenses, params)
+
+    // 验证通过，将用户信息添加到请求对象中
+    req.addParams = {
+      id: result.insertId,
+      eat,
+      drink,
+      play,
+      glad,
+      tolls,
+      oil,
+      parking,
+      traffic,
+      supermarket,
+      online_shopping,
+      phone_bill,
+      red_packet
+    }
+
+    next()
+  } catch (error) {
+    console.error('验证失败:', error)
+    res.status(500).json({
+      message: '服务器错误，请稍后重试'
+    })
+  }
+}
+
+/**
+ * @desc 更新花销
+ * @param {string} eat - 吃
+ * @param {string} drink - 喝
+ * @param {string} play - 玩
+ * @param {string} glad - 乐
+ * @param {string} tolls -  tolls
+ * @param {string} oil - 油
+ * @param {string} parking - 车
+ * @param {string} traffic - 流量
+ * @param {string} supermarket - 超市
+ * @param {string} online_shopping - 网上购物
+ * @param {string} phone_bill - 电话
+ * @param {string} red_packet - 红包
+ * @returns {void}
+ */
+const update = async (req: any, res: any, next: any) => {
+  try {
+    const createDate = new Date().toISOString().split('T')[0] // 当天的年月日
+
+    const checkDate: any = await mysql.query(expensesService.checkDate, [createDate] as never[])
+
+    // 日期已存在，执行更新合并操作
+    if (checkDate.length > 0) {
+      // return res.status(400).json({ message: '日期已存在' })
+      const existingRecord = checkDate[0]
+      const fields = [
+        'eat',
+        'drink',
+        'play',
+        'glad',
+        'tolls',
+        'oil',
+        'parking',
+        'traffic',
+        'supermarket',
+        'online_shopping',
+        'phone_bill',
+        'red_packet'
+      ]
+
+      const params: any = fields
+        .map(field =>
+          existingRecord[field] ? `${existingRecord[field]},${req.body[field]}` : req.body[field]
+        )
+        .concat(existingRecord.id)
+
+      // 验证通过，将更新信息添加到请求对象中
+      req.updateParams = params
+      next()
+    }
+  } catch (error) {
+    console.error('验证失败:', error)
+    res.status(500).json({
+      message: '服务器错误，请稍后重试'
+    })
+  }
+}
+
+// 创建一个组合中间件来控制update和add的执行流程
+const updateThenAddIfOk = async (req: any, res: any, next: any) => {
+  try {
+    // 先执行update中间件
+    await new Promise<void>((resolve, reject) => {
+      update(req, res, resolve)
+    })
+
+    // 如果update中间件成功执行并调用了next，就执行add中间件
+    if (!req.updateParams) {
+      await new Promise<void>((resolve, reject) => {
+        add(req, res, resolve)
+      })
+    }
+
+    // 继续到控制器
+    next()
+  } catch (error) {
+    next(error)
+  }
+}
+
+export default { add, update, updateThenAddIfOk }
