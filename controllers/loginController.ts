@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 11:41:42
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-08-25 16:31:34
+ * @LastEditTime: 2025-08-30 15:13:56
  * @FilePath: \express\controllers\loginController.ts
  * @Description:
  *
@@ -31,12 +31,12 @@ exports.register = async (req: any, res: any) => {
 
 // 登录
 exports.login = async (req: any, res: any) => {
-  let { user_name } = req.body
+  let { user_id, user_name, phone } = req.user
 
   // 登录成功，签发一个token并返回给前端
   const token = jwt.sign(
     // payload：签发的 token 里面要包含的一些数据
-    { user_name },
+    { user_id, user_name, phone },
     // 私钥
     'caowj',
     // 设置过期时间
