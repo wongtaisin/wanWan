@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-25 11:02:53
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-08-30 14:38:23
+ * @LastEditTime: 2025-08-30 14:56:48
  * @FilePath: \express\middleware\expenses.ts
  * @Description:
  *
@@ -130,7 +130,11 @@ const update = async (req: any, res: any, next: any) => {
 
       const params: any = fields
         .map(field =>
-          existingRecord[field] ? `${existingRecord[field]},${req.body[field]}` : req.body[field]
+          existingRecord[field]
+            ? req.body[field]
+              ? `${existingRecord[field]},${req.body[field]}`
+              : existingRecord[field]
+            : req.body[field]
         )
         .concat(existingRecord.id)
 

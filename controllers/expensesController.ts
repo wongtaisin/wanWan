@@ -14,14 +14,13 @@ const expensesService = require('../service/expensesService')
 
 // 添加花销
 exports.add = async (req: any, res: any, next: any) => {
-  console.log(req.updateParams, res)
   // 日期已存在，执行更新合并操作
   if (!!req.updateParams) {
     await mysql.query(expensesService.updateExpenses, req.updateParams)
 
     return res.json({
       data: {
-        userId: req.auth.user_name,
+        userId: req.auth.user_id,
         id: req.updateParams[req.updateParams.length - 1],
         date: new Date().toISOString().split('T')[0]
       },
