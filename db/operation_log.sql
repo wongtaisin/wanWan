@@ -11,46 +11,11 @@
  Target Server Version : 90400 (9.4.0)
  File Encoding         : 65001
 
- Date: 03/09/2025 17:27:51
+ Date: 03/09/2025 17:28:02
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
-
--- ----------------------------
--- Table structure for expenses
--- ----------------------------
-DROP TABLE IF EXISTS `expenses`;
-CREATE TABLE `expenses`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `user_id` int NULL DEFAULT NULL COMMENT '创建人id',
-  `eat` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '吃',
-  `drink` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '喝',
-  `play` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '玩',
-  `glad` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '乐',
-  `tolls` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '过路费',
-  `oil` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '车油',
-  `parking` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '停车',
-  `traffic` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '交通',
-  `supermarket` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '超市',
-  `online_shopping` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '网购',
-  `phone_bill` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '话费',
-  `red_packet` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '红包',
-  `create_date` datetime NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 31 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '花销明细' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of expenses
--- ----------------------------
-INSERT INTO `expenses` VALUES (1, 1, '1', '2', '3', '4', '5', '6', '7', NULL, '8', '9', NULL, NULL, '2025-08-01 16:14:52');
-INSERT INTO `expenses` VALUES (5, 1, '1,1,32,8,7', '998,99', NULL, NULL, '78', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-08-29 15:26:26');
-INSERT INTO `expenses` VALUES (7, 1, '8,9,42', '998,98', '300,330', NULL, '78,69', '208', NULL, NULL, NULL, NULL, NULL, NULL, '2025-08-30 09:39:45');
-INSERT INTO `expenses` VALUES (26, 22, '89', '6', '300,400', NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, '2025-08-30 15:45:16');
-INSERT INTO `expenses` VALUES (27, 5, '', '', '800', NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, '2025-08-30 15:48:29');
-INSERT INTO `expenses` VALUES (28, 1, '2,15', '3.5', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, '2025-09-01 11:05:15');
-INSERT INTO `expenses` VALUES (29, 1, '15,15', '3', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, '2025-09-02 13:57:44');
-INSERT INTO `expenses` VALUES (30, 1, '15', '', '', NULL, '', '', NULL, NULL, NULL, NULL, '28.94', NULL, '2025-09-03 15:10:22');
 
 -- ----------------------------
 -- Table structure for operation_log
@@ -88,34 +53,5 @@ INSERT INTO `operation_log` VALUES (9, NULL, NULL, 'CREATE', 'expenses', 'POST /
 INSERT INTO `operation_log` VALUES (10, NULL, NULL, 'QUERY', 'operation_log', 'GET /operation-logs - QUERY', '/api/operation-logs', 'GET', '{\"query\":{},\"params\":{}}', '{\"code\":200,\"msg\":\"获取操作日志列表成功\",\"data\":{\"total\":3,\"list\":[{\"id\":9,\"user_id\":null,\"user_name\":null,\"operation_type\":\"CREATE\",\"module\":\"expenses\",\"description\":\"POST /expenses/add - CREATE\",\"request_url\":\"/api/expenses/add\",\"request_method\":\"POST\",\"request_params\":\"{\\\"query\\\":{},\\\"body\\\":{\\\"eat\\\":\\\"15\\\",\\\"drink\\\":\\\"\\\",\\\"tolls\\\":\\\"\\\",\\\"oil\\\":\\\"\\\",\\\"play\\\":\\\"\\\",\\\"phone_bill\\\":\\\"28.94\\\"},\\\"params\\\":{}}\",\"response_data\":\"{\\\"code\\\":200,\\\"data\\\":{\\\"id\\\":30,\\\"userId\\\":1,\\\"date\\\":\\\"2025-09-03\\\"},\\\"msg\\\":\\\"添加成功\\\"}\",\"ip_address\":\"::ffff:127.0.0.1\",\"user_agent\":\"PostmanRuntime-ApipostRuntime/1.1.0\",\"status_code\":200,\"execution_time\":60,\"create_time\":\"2025-09-03T07:10:22.000Z\"},{\"id\":8,\"user_id\":1,\"user_name\":\"大帅\",\"operation_type\":\"CREATE\",\"module\":\"login\",\"description\":\"POST /login - CREATE\",\"request_url\":\"/api/login\",\"request_method\":\"POST\",\"request_params\":\"{\\\"query\\\":{},\\\"body\\\":{\\\"user_name\\\":\\\"大帅\\\",\\\"password\\\":\\\"123456\\\"},\\\"params\\\":{}}\",\"response_data\":\"{\\\"msg\\\":\\\"登录成功\\\",\\\"data\\\":{\\\"token\\\":\\\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VyX25hbWUiOiLlpKfluIUiLCJwaG9uZSI6IjEzNDExMTExMTExIiwiaWF0IjoxNzU2ODgzNDAwLCJleHAiOjE3NTY5Njk4MDB9.OGyQBhGnwdOArXs4gOeEKzXkVwimkrzfrvmVx8Uw6JM\\\"}}\",\"ip_address\":\"::ffff:127.0.0.1\",\"user_agent\":\"PostmanRuntime-ApipostRuntime/1.1.0\",\"status_code\":200,\"execution_time\":9,\"create_time\":\"2025-09-03T07:10:00.000Z\"},{\"id\":7,\"user_id\":null,\"user_name\":null,\"operation_type\":\"CREATE\",\"module\":\"expenses\",\"description\":\"POST /api/expenses/add - CREATE\",\"request_url\":\"/api/expenses/add\",\"request_method\":\"POST\",\"request_params\":\"{\\\"query\\\":{},\\\"body\\\":{\\\"eat\\\":\\\"15\\\",\\\"drink\\\":\\\"\\\",\\\"tolls\\\":\\\"\\\",\\\"oil\\\":\\\"\\\",\\\"play\\\":\\\"\\\",\\\"phone_bill\\\":\\\"28.94\\\"},\\\"params\\\":{}}\",\"response_data\":\"{\\\"code\\\":401,\\\"msg\\\":\\\"token失效，请重新登录\\\",\\\"data\\\":null}\",\"ip_address\":\"::ffff:127.0.0.1\",\"user_agent\":\"PostmanRuntime-ApipostRuntime/1.1.0\",\"status_code\":401,\"execution_time\":11,\"create_time\":\"2025-09-03T07:09:55.000Z\"}],\"page\":1,\"pageSize\":10}}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 3, '2025-09-03 15:11:30');
 INSERT INTO `operation_log` VALUES (11, NULL, NULL, 'QUERY', 'operation_log', 'GET /operation-logs - QUERY', '/api/operation-logs', 'GET', '{\"query\":{},\"params\":{}}', '{\"code\":200,\"msg\":\"获取操作日志列表成功\",\"data\":{\"total\":4,\"list\":[{\"id\":10,\"user_id\":null,\"user_name\":null,\"operation_type\":\"QUERY\",\"module\":\"operation_log\",\"description\":\"GET /operation-logs - QUERY\",\"request_url\":\"/api/operation-logs\",\"request_method\":\"GET\",\"request_params\":\"{\\\"query\\\":{},\\\"params\\\":{}}\",\"response_data\":\"{\\\"code\\\":200,\\\"msg\\\":\\\"获取操作日志列表成功\\\",\\\"data\\\":{\\\"total\\\":3,\\\"list\\\":[{\\\"id\\\":9,\\\"user_id\\\":null,\\\"user_name\\\":null,\\\"operation_type\\\":\\\"CREATE\\\",\\\"module\\\":\\\"expenses\\\",\\\"description\\\":\\\"POST /expenses/add - CREATE\\\",\\\"request_url\\\":\\\"/api/expenses/add\\\",\\\"request_method\\\":\\\"POST\\\",\\\"request_params\\\":\\\"{\\\\\\\"query\\\\\\\":{},\\\\\\\"body\\\\\\\":{\\\\\\\"eat\\\\\\\":\\\\\\\"15\\\\\\\",\\\\\\\"drink\\\\\\\":\\\\\\\"\\\\\\\",\\\\\\\"tolls\\\\\\\":\\\\\\\"\\\\\\\",\\\\\\\"oil\\\\\\\":\\\\\\\"\\\\\\\",\\\\\\\"play\\\\\\\":\\\\\\\"\\\\\\\",\\\\\\\"phone_bill\\\\\\\":\\\\\\\"28.94\\\\\\\"},\\\\\\\"params\\\\\\\":{}}\\\",\\\"response_data\\\":\\\"{\\\\\\\"code\\\\\\\":200,\\\\\\\"data\\\\\\\":{\\\\\\\"id\\\\\\\":30,\\\\\\\"userId\\\\\\\":1,\\\\\\\"date\\\\\\\":\\\\\\\"2025-09-03\\\\\\\"},\\\\\\\"msg\\\\\\\":\\\\\\\"添加成功\\\\\\\"}\\\",\\\"ip_address\\\":\\\"::ffff:127.0.0.1\\\",\\\"user_agent\\\":\\\"PostmanRuntime-ApipostRuntime/1.1.0\\\",\\\"status_code\\\":200,\\\"execution_time\\\":60,\\\"create_time\\\":\\\"2025-09-03T07:10:22.000Z\\\"},{\\\"id\\\":8,\\\"user_id\\\":1,\\\"user_name\\\":\\\"大帅\\\",\\\"operation_type\\\":\\\"CREATE\\\",\\\"module\\\":\\\"login\\\",\\\"description\\\":\\\"POST /login - CREATE\\\",\\\"request_url\\\":\\\"/api/login\\\",\\\"request_method\\\":\\\"POST\\\",\\\"request_params\\\":\\\"{\\\\\\\"query\\\\\\\":{},\\\\\\\"body\\\\\\\":{\\\\\\\"user_name\\\\\\\":\\\\\\\"大帅\\\\\\\",\\\\\\\"password\\\\\\\":\\\\\\\"123456\\\\\\\"},\\\\\\\"params\\\\\\\":{}}\\\",\\\"response_data\\\":\\\"{\\\\\\\"msg\\\\\\\":\\\\\\\"登录成功\\\\\\\",\\\\\\\"data\\\\\\\":{\\\\\\\"token\\\\\\\":\\\\\\\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VyX25hbWUiOiLlpKfluIUiLCJwaG9uZSI6IjEzNDExMTExMTExIiwiaWF0IjoxNzU2ODgzNDAwLCJleHAiOjE3NTY5Njk4MDB9.OGyQBhGnwdOArXs4gOeEKzXkVwimkrzfrvmVx8Uw6JM\\\\\\\"}}\\\",\\\"ip_address\\\":\\\"::ffff:127.0.0.1\\\",\\\"user_agent\\\":\\\"PostmanRuntime-ApipostRuntime/1.1.0\\\",\\\"status_code\\\":200,\\\"execution_time\\\":9,\\\"create_time\\\":\\\"2025-09-03T07:10:00.000Z\\\"},{\\\"id\\\":7,\\\"user_id\\\":null,\\\"user_name\\\":null,\\\"operation_type\\\":\\\"CREATE\\\",\\\"module\\\":\\\"expenses\\\",\\\"description\\\":\\\"POST /api/expenses/add - CREATE\\\",\\\"request_url\\\":\\\"/api/expenses/add\\\",\\\"request_method\\\":\\\"POST\\\",\\\"request_params\\\":\\\"{\\\\\\\"query\\\\\\\":{},\\\\\\\"body\\\\\\\":{\\\\\\\"eat\\\\\\\":\\\\\\\"15\\\\\\\",\\\\\\\"drink\\\\\\\":\\\\\\\"\\\\\\\",\\\\\\\"tolls\\\\\\\":\\\\\\\"\\\\\\\",\\\\\\\"oil\\\\\\\":\\\\\\\"\\\\\\\",\\\\\\\"play\\\\\\\":\\\\\\\"\\\\\\\",\\\\\\\"phone_bill\\\\\\\":\\\\\\\"28.94\\\\\\\"},\\\\\\\"params\\\\\\\":{}}\\\",\\\"response_data\\\":\\\"{\\\\\\\"code\\\\\\\":401,\\\\\\\"msg\\\\\\\":\\\\\\\"token失效，请重新登录\\\\\\\",\\\\\\\"data\\\\\\\":null}\\\",\\\"ip_address\\\":\\\"::ffff:127.0.0.1\\\",\\\"user_agent\\\":\\\"PostmanRuntime-ApipostRuntime/1.1.0\\\",\\\"status_code\\\":401,\\\"execution_time\\\":11,\\\"create_time\\\":\\\"2025-09-03T07:09:55.000Z\\\"}],\\\"page\\\":1,\\\"pageSize\\\":10}}\",\"ip_address\":\"::ffff:127.0.0.1\",\"user_agent\":\"PostmanRuntime-ApipostRuntime/1.1.0\",\"status_code\":200,\"execution_time\":3,\"create_time\":\"2025-09-03T07:11:30.000Z\"},{\"id\":9,\"user_id\":null,\"user_name\":null,\"operation_type\":\"CREATE\",\"module\":\"expenses\",\"description\":\"POST /expenses/add - CREATE\",\"request_url\":\"/api/expenses/add\",\"request_method\":\"POST\",\"request_params\":\"{\\\"query\\\":{},\\\"body\\\":{\\\"eat\\\":\\\"15\\\",\\\"drink\\\":\\\"\\\",\\\"tolls\\\":\\\"\\\",\\\"oil\\\":\\\"\\\",\\\"play\\\":\\\"\\\",\\\"phone_bill\\\":\\\"28.94\\\"},\\\"params\\\":{}}\",\"response_data\":\"{\\\"code\\\":200,\\\"data\\\":{\\\"id\\\":30,\\\"userId\\\":1,\\\"date\\\":\\\"2025-09-03\\\"},\\\"msg\\\":\\\"添加成功\\\"}\",\"ip_address\":\"::ffff:127.0.0.1\",\"user_agent\":\"PostmanRuntime-ApipostRuntime/1.1.0\",\"status_code\":200,\"execution_time\":60,\"create_time\":\"2025-09-03T07:10:22.000Z\"},{\"id\":8,\"user_id\":1,\"user_name\":\"大帅\",\"operation_type\":\"CREATE\",\"module\":\"login\",\"description\":\"POST /login - CREATE\",\"request_url\":\"/api/login\",\"request_method\":\"POST\",\"request_params\":\"{\\\"query\\\":{},\\\"body\\\":{\\\"user_name\\\":\\\"大帅\\\",\\\"password\\\":\\\"123456\\\"},\\\"params\\\":{}}\",\"response_data\":\"{\\\"msg\\\":\\\"登录成功\\\",\\\"data\\\":{\\\"token\\\":\\\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VyX25hbWUiOiLlpKfluIUiLCJwaG9uZSI6IjEzNDExMTExMTExIiwiaWF0IjoxNzU2ODgzNDAwLCJleHAiOjE3NTY5Njk4MDB9.OGyQBhGnwdOArXs4gOeEKzXkVwimkrzfrvmVx8Uw6JM\\\"}}\",\"ip_address\":\"::ffff:127.0.0.1\",\"user_agent\":\"PostmanRuntime-ApipostRuntime/1.1.0\",\"status_code\":200,\"execution_time\":9,\"create_time\":\"2025-09-03T07:10:00.000Z\"},{\"id\":7,\"user_id\":null,\"user_name\":null,\"operation_type\":\"CREATE\",\"module\":\"expenses\",\"description\":\"POST /api/expenses/add - CREATE\",\"request_url\":\"/api/expenses/add\",\"request_method\":\"POST\",\"request_params\":\"{\\\"query\\\":{},\\\"body\\\":{\\\"eat\\\":\\\"15\\\",\\\"drink\\\":\\\"\\\",\\\"tolls\\\":\\\"\\\",\\\"oil\\\":\\\"\\\",\\\"play\\\":\\\"\\\",\\\"phone_bill\\\":\\\"28.94\\\"},\\\"params\\\":{}}\",\"response_data\":\"{\\\"code\\\":401,\\\"msg\\\":\\\"token失效，请重新登录\\\",\\\"data\\\":null}\",\"ip_address\":\"::ffff:127.0.0.1\",\"user_agent\":\"PostmanRuntime-ApipostRuntime/1.1.0\",\"status_code\":401,\"execution_time\":11,\"create_time\":\"2025-09-03T07:09:55.000Z\"}],\"page\":1,\"pageSize\":10}}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 3, '2025-09-03 15:12:33');
 INSERT INTO `operation_log` VALUES (12, 1, '大帅', 'CREATE', 'expenses', 'POST /expenses/list - CREATE', '/api/expenses/list', 'POST', '{\"query\":{},\"body\":{\"userId\":1},\"params\":{}}', '{\"code\":200,\"data\":[{\"id\":1,\"user_id\":1,\"eat\":\"1\",\"drink\":\"2\",\"play\":\"3\",\"glad\":\"4\",\"tolls\":\"5\",\"oil\":\"6\",\"parking\":\"7\",\"traffic\":null,\"supermarket\":\"8\",\"online_shopping\":\"9\",\"phone_bill\":null,\"red_packet\":null,\"create_date\":\"2025-08-01\"},{\"id\":5,\"user_id\":1,\"eat\":\"1,1,32,8,7\",\"drink\":\"998,99\",\"play\":null,\"glad\":null,\"tolls\":\"78\",\"oil\":null,\"parking\":null,\"traffic\":null,\"supermarket\":null,\"online_shopping\":null,\"phone_bill\":null,\"red_packet\":null,\"create_date\":\"2025-08-29\"},{\"id\":7,\"user_id\":1,\"eat\":\"8,9,42\",\"drink\":\"998,98\",\"play\":\"300,330\",\"glad\":null,\"tolls\":\"78,69\",\"oil\":\"208\",\"parking\":null,\"traffic\":null,\"supermarket\":null,\"online_shopping\":null,\"phone_bill\":null,\"red_packet\":null,\"create_date\":\"2025-08-30\"},{\"id\":26,\"user_id\":22,\"eat\":\"89\",\"drink\":\"6\",\"play\":\"300,400\",\"glad\":null,\"tolls\":\"\",\"oil\":\"\",\"parking\":null,\"traffic\":null,\"supermarket\":null,\"online_shopping\":null,\"phone_bill\":null,\"red_packet\":null,\"create_date\":\"2025-08-30\"},{\"id\":27,\"user_id\":5,\"eat\":\"\",\"drink\":\"\",\"play\":\"800\",\"glad\":null,\"tolls\":\"\",\"oil\":\"\",\"parking\":null,\"traffic\":null,\"supermarket\":null,\"online_shopping\":null,\"phone_bill\":null,\"red_packet\":null,\"create_date\":\"2025-08-30\"},{\"id\":28,\"user_id\":1,\"eat\":\"2,15\",\"drink\":\"3.5\",\"play\":\"\",\"glad\":null,\"tolls\":\"\",\"oil\":\"\",\"parking\":null,\"traffic\":null,\"supermarket\":null,\"online_shopping\":null,\"phone_bill\":null,\"red_packet\":null,\"create_date\":\"2025-09-01\"},{\"id\":29,\"user_id\":1,\"eat\":\"15,15\",\"drink\":\"3\",\"play\":\"\",\"glad\":null,\"tolls\":\"\",\"oil\":\"\",\"parking\":null,\"traffic\":null,\"supermarket\":null,\"online_shopping\":null,\"phone_bill\":null,\"red_packet\":null,\"create_date\":\"2025-09-02\"},{\"id\":30,\"user_id\":1,\"eat\":\"15\",\"drink\":\"\",\"play\":\"\",\"glad\":null,\"tolls\":\"\",\"oil\":\"\",\"parking\":null,\"traffic\":null,\"supermarket\":null,\"online_shopping\":null,\"phone_bill\":\"28.94\",\"red_packet\":null,\"create_date\":\"2025-09-03\"}],\"msg\":\"获取花销列表成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 40, '2025-09-03 17:24:45');
-
--- ----------------------------
--- Table structure for user
--- ----------------------------
-DROP TABLE IF EXISTS `user`;
-CREATE TABLE `user`  (
-  `user_id` int NOT NULL AUTO_INCREMENT,
-  `user_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `age` int NULL DEFAULT NULL,
-  `sex` int NULL DEFAULT NULL,
-  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `create_time` datetime NULL DEFAULT NULL COMMENT '注册时间',
-  PRIMARY KEY (`user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 29 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of user
--- ----------------------------
-INSERT INTO `user` VALUES (1, '大帅', 33, 1, '123456', '13411111111', '2025-08-19 15:44:09');
-INSERT INTO `user` VALUES (3, '张三', 20, 2, '123456', '13433333333', '2025-08-19 16:49:24');
-INSERT INTO `user` VALUES (4, '李四', 18, 1, '123456', '13444444444', '2025-08-19 16:53:36');
-INSERT INTO `user` VALUES (5, '王五', 49, 2, '123456', '13455555555', '2025-08-19 17:28:36');
-INSERT INTO `user` VALUES (6, '陈六', 16, 1, '123456', '13466666666', '2025-08-20 16:40:01');
-INSERT INTO `user` VALUES (7, '李七', 20, 1, '123456', '13477777777', '2025-08-25 15:37:41');
-INSERT INTO `user` VALUES (14, '王八', 38, 2, '123456', '13488888888', '2025-08-25 15:48:04');
-INSERT INTO `user` VALUES (22, '龙九', 99, 1, '123456', '13499999999', '2025-08-25 16:16:35');
-INSERT INTO `user` VALUES (27, '叔十', 56, 1, '123456', '13410101010', '2025-08-25 16:47:06');
-INSERT INTO `user` VALUES (28, '十一', 33, 1, '123456', '13411011011', '2025-08-30 14:50:18');
 
 SET FOREIGN_KEY_CHECKS = 1;

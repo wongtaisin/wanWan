@@ -2,45 +2,83 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 11:41:42
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-08-25 16:55:51
+ * @LastEditTime: 2025-09-02 13:54:24
  * @FilePath: \express\controllers\userController.ts
  * @Description:
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
 import mysql from '../db/mysql' // 引入mysql模块
+import { recordDeleteLog, recordQueryLog } from '../util/operationLogUtil' // 引入操作日志工具
 const userService = require('../service/userService') // 引入userService模块
 
 // 删除用户
 exports.deleteUser = async (req: any, res: any) => {
   const { id }: { id: number } = req.params
 
-  // 检查用户是否存在
-  const user = (await mysql.query(userService.getUserById, [id] as any)) as any[]
+  try {
+    // 检查用户是否存在
+    const user = (await mysql.query(userService.getUserById, [id] as any)) as any[]
 
-  if (user.length === 0) {
-    return res.status(404).json({
-      message: '用户不存在',
+    if (user.length === 0) {
+      return res.status(404).json({
+        message: '用户不存在',
+        id
+      })
+    }
+
+    // 执行删除操作
+    await mysql.query(userService.deleteUser, [id] as any)
+
+    // 记录删除操作日志
+    if (req.user) {
+      await recordDeleteLog(
+        req.user.user_id,
+        req.user.user_name,
+        'user',
+        `删除用户: ${user[0].user_name || '未知用户'}`,
+        { userId: id }
+      )
+    }
+
+    res.status(200).json({
+      message: '删除成功',
       id
     })
+  } catch (error: any) {
+    console.error('删除用户失败:', error)
+    res.status(500).json({
+      message: '删除用户失败',
+      error: error.message
+    })
   }
-
-  // 执行删除操作
-  await mysql.query(userService.deleteUser, [id] as any)
-  res.status(200).json({
-    message: '删除成功',
-    id
-  })
 }
 
 // 获取用户列表
 exports.getUser = async (req: any, res: any) => {
-  const data = await mysql.query(userService.userAll)
-  const jsonData = JSON.parse(JSON.stringify(data))
+  try {
+    const data = await mysql.query(userService.userAll)
+    const jsonData = JSON.parse(JSON.stringify(data))
 
-  res.status(200).json({
-    code: 200,
-    data: jsonData,
-    message: '获取成功'
-  })
+    // 记录查询操作日志
+    if (req.user) {
+      await recordQueryLog(req.user.user_id, req.user.user_name, 'user', '获取用户列表', {
+        page: req.query.page,
+        pageSize: req.query.pageSize
+      })
+    }
+
+    res.status(200).json({
+      code: 200,
+      data: jsonData,
+      message: '获取成功'
+    })
+  } catch (error: any) {
+    console.error('获取用户列表失败:', error)
+    res.status(500).json({
+      code: 500,
+      message: '获取用户列表失败',
+      error: error.message
+    })
+  }
 }
