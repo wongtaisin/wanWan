@@ -1,15 +1,15 @@
+import mysql from '../db/mysql'
 /*
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-25 11:02:53
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-08-25 16:40:59
+ * @LastEditTime: 2025-09-09 16:17:08
  * @FilePath: \express\middleware\login.ts
  * @Description:
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
 const loginService = require('../service/loginService')
-import mysql from '../db/mysql'
 
 /**
  * @desc 登录参数校验账号密码
@@ -42,6 +42,9 @@ const login_params = async (req: any, res: any, next: any) => {
         message: '账号或密码不正确'
       })
     }
+
+    // 根据用户ID更新登录时间
+    await mysql.query(loginService.updateUser, [user[0].user_id] as never[])
 
     // 验证通过，将用户信息添加到请求对象中
     req.user = user[0]
