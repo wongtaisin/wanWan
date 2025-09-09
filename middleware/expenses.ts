@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-25 11:02:53
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-08-30 15:44:57
+ * @LastEditTime: 2025-09-09 17:04:45
  * @FilePath: \express\middleware\expenses.ts
  * @Description:
  *
@@ -25,6 +25,7 @@ import mysql from '../db/mysql'
  * @param {string} online_shopping - 网上购物
  * @param {string} phone_bill - 电话
  * @param {string} red_packet - 红包
+ * @param {string} create_date - 时间
  * @returns {void}
  */
 const add = async (req: any, res: any, next: any) => {
@@ -41,7 +42,8 @@ const add = async (req: any, res: any, next: any) => {
       supermarket,
       online_shopping,
       phone_bill,
-      red_packet
+      red_packet,
+      create_date
     } = req.body
 
     let { user_id } = req.auth
@@ -59,7 +61,8 @@ const add = async (req: any, res: any, next: any) => {
       supermarket,
       online_shopping,
       phone_bill,
-      red_packet
+      red_packet,
+      create_date
     ]
 
     // 验证通过，将用户信息添加到请求对象中
@@ -88,11 +91,13 @@ const add = async (req: any, res: any, next: any) => {
  * @param {string} online_shopping - 网上购物
  * @param {string} phone_bill - 电话
  * @param {string} red_packet - 红包
+ * @param {string} create_date - 时间
  * @returns {void}
  */
 const update = async (req: any, res: any, next: any) => {
   try {
-    const createDate = new Date().toISOString().split('T')[0] // 当天的年月日
+    let { create_date } = req.body
+    const createDate = create_date || new Date().toISOString().split('T')[0] // 当天的年月日
     const userId = req.auth.user_id
 
     const checkDate: any = await mysql.query(expensesService.checkDateByUserId, [

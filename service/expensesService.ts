@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 16:38:48
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-08-30 15:33:17
+ * @LastEditTime: 2025-09-09 17:12:14
  * @FilePath: \express\service\expensesService.ts
  * @Description:
  *
@@ -16,7 +16,7 @@ export const expensesAll = `SELECT * FROM expenses;`
 export const expensesById = `SELECT * FROM expenses WHERE id = ?;`
 
 // 添加
-export const addExpenses = `INSERT INTO expenses (user_id, eat, drink, play, glad, tolls, oil, parking, traffic, supermarket, online_shopping, phone_bill, red_packet, create_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now())`
+export const addExpenses = `INSERT INTO expenses (user_id, eat, drink, play, glad, tolls, oil, parking, traffic, supermarket, online_shopping, phone_bill, red_packet, create_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, COALESCE(NULLIF(?, ''), now()))`
 
 // 根据 id 更新
 export const updateExpenses = `UPDATE expenses SET eat = ?, drink = ?, play = ?, glad = ?, tolls = ?, oil = ?, parking = ?, traffic = ?, supermarket = ?, online_shopping = ?, phone_bill = ?, red_packet = ? WHERE id = ?`

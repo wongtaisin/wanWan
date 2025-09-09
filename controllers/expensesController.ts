@@ -14,7 +14,8 @@ const expensesService = require('../service/expensesService')
 
 // 添加花销
 exports.add = async (req: any, res: any, next: any) => {
-  const createDate = new Date().toISOString().split('T')[0]
+  let { create_date } = req.body
+  const createDate = create_date || new Date().toISOString().split('T')[0]
   // 日期已存在，执行更新合并操作
   if (!!req.updateParams) {
     await mysql.query(expensesService.updateExpenses, req.updateParams)
