@@ -3,7 +3,7 @@ import mysql from '../db/mysql'
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-25 11:02:53
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-09 16:17:08
+ * @LastEditTime: 2025-09-11 10:48:13
  * @FilePath: \express\middleware\login.ts
  * @Description:
  *
@@ -43,8 +43,8 @@ const login_params = async (req: any, res: any, next: any) => {
       })
     }
 
-    // 根据用户ID更新登录时间
-    await mysql.query(loginService.updateUser, [user[0].user_id] as never[])
+    // 根据用户ID更新登录时间，并且获取 login_ip
+    await mysql.query(loginService.updateLoginTimeAndGetIp, [req.ip, user[0].user_id] as never[])
 
     // 验证通过，将用户信息添加到请求对象中
     req.user = user[0]

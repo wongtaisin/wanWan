@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 11:41:42
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-08-30 15:13:56
+ * @LastEditTime: 2025-09-11 11:04:19
  * @FilePath: \express\controllers\loginController.ts
  * @Description:
  *
@@ -38,7 +38,7 @@ exports.login = async (req: any, res: any) => {
     // payload：签发的 token 里面要包含的一些数据
     { user_id, user_name, phone },
     // 私钥
-    'caowj',
+    'wongtaisin',
     // 设置过期时间
     { expiresIn: 60 * 60 * 24 } //1 day
   )
