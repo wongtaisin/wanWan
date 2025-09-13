@@ -4,12 +4,13 @@
     <view class="text-area">
       <text class="title">{{ title }}</text>
     </view>
+    <van-button>{{ title }}</van-button>
   </view>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
-const title = ref('Hello')
+const title = ref('Hello world')
 </script>
 
 <style>

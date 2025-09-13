@@ -8,14 +8,15 @@
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
+import Vant from 'vant'
+import 'vant/lib/index.css'
 import { createSSRApp } from 'vue'
 import App from './App.vue'
-// import router from './router'
 import pinia from './store'
 
 export function createApp() {
   const app = createSSRApp(App)
-  app.use(pinia)
+  app.use(pinia).use(Vant)
 
   return { app }
 }
