@@ -4,13 +4,43 @@
     <view class="text-area">
       <text class="title">{{ title }}</text>
     </view>
-    <van-button>{{ title }}</van-button>
+    <view class="btn-group">
+      <van-button type="primary" @click="goToDetail">跳转到详情页</van-button>
+      <van-button type="default" @click="goToDetailByRouter">通过路由跳转到详情页</van-button>
+    </view>
   </view>
 </template>
 
 <script setup lang="ts">
+import { useRouter } from '@/router/useRouter'
 import { ref } from 'vue'
+
 const title = ref('Hello world')
+
+const router = useRouter()
+
+const goToDetail = () => {
+  uni.navigateTo({
+    url: '/pages/detail/index'
+  })
+}
+
+const goToDetailByRouter = () => {
+  try {
+    // 检查路由是否可用
+    if (router && typeof router.push === 'function') {
+      router.push({ name: 'detail' })
+    } else {
+      throw new Error('路由不可用')
+    }
+  } catch (error) {
+    console.error('路由跳转失败:', error)
+    // 降级到原生导航
+    uni.navigateTo({
+      url: '/pages/detail/index'
+    })
+  }
+}
 </script>
 
 <style>
@@ -38,5 +68,13 @@ const title = ref('Hello world')
 .title {
   font-size: 36rpx;
   color: #8f8f94;
+}
+
+.btn-group {
+  margin-top: 50rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+  width: 80%;
 }
 </style>
