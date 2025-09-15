@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 16:38:22
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-15 11:42:21
+ * @LastEditTime: 2025-09-15 17:27:50
  * @FilePath: \admin\controllers\expensesController.ts
  * @Description:
  *
@@ -46,7 +46,7 @@ exports.add = async (req: any, res: any, next: any) => {
 
 // 获取花销列表
 exports.list = async (req: any, res: any) => {
-  let { userId, startTime, endTime } = req.body
+  let { userId, startTime, endTime, total } = req.body
 
   const params = [userId, startTime, endTime] as never[]
 
@@ -56,9 +56,44 @@ exports.list = async (req: any, res: any) => {
       expensesService.expensesById(userId, startTime, endTime),
       params
     )
+
     data.forEach((item: any) => {
       item.create_date = _util.formatDate(item.create_date, 'yyyy-MM-dd')
     })
+
+    // 需要计算合计的时候
+    if (Number(total) === 1 && userId) {
+      const filteredData = data.filter((item: any) => item.user_id === userId)
+
+      const result = {} as any
+
+      filteredData.forEach((item: any) => {
+        Object.entries(item).forEach(([key, value]) => {
+          if (['id', 'user_id', 'create_date'].includes(key)) return // 跳过不需要的字段
+          if (value && value !== '') {
+            String(value)
+              .split(',')
+              .forEach(v => {
+                const num = Number(v)
+                if (!isNaN(num)) {
+                  result[key] = (result[key] || 0) + num
+                }
+              })
+          }
+        })
+      })
+
+      return res.json({
+        code: 200,
+        data: {
+          ...result,
+          startTime,
+          endTime
+        },
+        msg: '获取花销列表成功'
+      })
+    }
+
     res.json({
       code: 200,
       data: data,
