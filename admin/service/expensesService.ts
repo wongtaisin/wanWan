@@ -2,8 +2,8 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 16:38:48
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-09 17:12:14
- * @FilePath: \express\service\expensesService.ts
+ * @LastEditTime: 2025-09-15 10:52:52
+ * @FilePath: \admin\service\expensesService.ts
  * @Description:
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
@@ -30,3 +30,9 @@ export const deleteExpensesAll = `DELETE FROM expenses;`
 export const checkDate = `SELECT * FROM expenses WHERE DATE(create_date) = ?` // DATE(create_date) 是将 create_date 转换为日期格式，然后再进行比较
 
 export const checkDateByUserId = `SELECT * FROM expenses WHERE DATE(create_date) = ? AND user_id = ?` // DATE(create_date) 是将 create_date 转换为日期格式，然后再进行比较，同时对比 user_id 是否相同
+
+// 查询指定字段的值，支持用户ID和可选的日期范围（不限制日期，可传可不传）
+export const getFieldValuesByUserIdAndDateRange = (fieldName: string) =>
+  `SELECT ${fieldName} FROM expenses WHERE ${fieldName} IS NOT NULL AND user_id = ?` +
+  ` AND ( ( ? IS NULL OR DATE(create_date) >= ? ) )` +
+  ` AND ( ( ? IS NULL OR DATE(create_date) <= ? ) )`

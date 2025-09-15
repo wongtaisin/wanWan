@@ -2,8 +2,8 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 16:38:22
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-08-30 15:23:54
- * @FilePath: \express\controllers\expensesController.ts
+ * @LastEditTime: 2025-09-15 10:54:10
+ * @FilePath: \admin\controllers\expensesController.ts
  * @Description:
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
@@ -65,4 +65,33 @@ exports.list = async (req: any, res: any) => {
       code: 500
     })
   }
+}
+
+exports.checkFieldTotal = async (req: any, res: any) => {
+  let { name, startTime, endTime } = req.body
+
+  const params = [req.auth.user_id, startTime, startTime, endTime, endTime] as never[]
+
+  const data: any = await mysql.query(
+    expensesService.getFieldValuesByUserIdAndDateRange(name),
+    params
+  )
+
+  const result = [] as any
+
+  data.forEach((item: any) => {
+    result.push(...item[name].split(','))
+  })
+
+  const sum = result
+    .filter((item: any) => item.trim() !== '') // 移除空字符串
+    .map(Number) // 转为数字类型
+    .reduce((total: number, num: number) => total + num, 0) // 累加
+    .toFixed(2)
+
+  res.json({
+    code: 200,
+    data: sum,
+    msg: '查询成功'
+  })
 }
