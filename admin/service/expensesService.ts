@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 16:38:48
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-15 10:52:52
+ * @LastEditTime: 2025-09-15 11:43:33
  * @FilePath: \admin\service\expensesService.ts
  * @Description:
  *
@@ -10,10 +10,15 @@
  */
 
 // 查询所有
-export const expensesAll = `SELECT * FROM expenses;`
+export const expensesAll = `SELECT * FROM expenses`
 
-// 根据 id 查询
-export const expensesById = `SELECT * FROM expenses WHERE id = ?;`
+// 根据 userId，时间，查询，都可传可不传
+export const expensesById = (userId?: number, startDate?: string, endDate?: string) => {
+  const id = userId ? `user_id = ?` : `1=1`
+  const date = startDate && endDate ? `AND DATE(create_date) >= ? AND DATE(create_date) <= ?` : ''
+
+  return `SELECT * FROM expenses WHERE ${id} ${date}`
+}
 
 // 添加
 export const addExpenses = `INSERT INTO expenses (user_id, eat, drink, play, glad, tolls, oil, parking, traffic, supermarket, online_shopping, phone_bill, red_packet, create_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, COALESCE(NULLIF(?, ''), now()))`
@@ -22,9 +27,9 @@ export const addExpenses = `INSERT INTO expenses (user_id, eat, drink, play, gla
 export const updateExpenses = `UPDATE expenses SET eat = ?, drink = ?, play = ?, glad = ?, tolls = ?, oil = ?, parking = ?, traffic = ?, supermarket = ?, online_shopping = ?, phone_bill = ?, red_packet = ? WHERE id = ?`
 
 // 根据 id 删除
-export const deleteExpenses = `DELETE FROM expenses WHERE id = ?;`
+export const deleteExpenses = `DELETE FROM expenses WHERE id = ?`
 
-export const deleteExpensesAll = `DELETE FROM expenses;`
+export const deleteExpensesAll = `DELETE FROM expenses`
 
 // 检查日期是否存在
 export const checkDate = `SELECT * FROM expenses WHERE DATE(create_date) = ?` // DATE(create_date) 是将 create_date 转换为日期格式，然后再进行比较

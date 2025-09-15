@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 16:38:22
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-15 10:54:10
+ * @LastEditTime: 2025-09-15 11:42:21
  * @FilePath: \admin\controllers\expensesController.ts
  * @Description:
  *
@@ -46,9 +46,16 @@ exports.add = async (req: any, res: any, next: any) => {
 
 // 获取花销列表
 exports.list = async (req: any, res: any) => {
+  let { userId, startTime, endTime } = req.body
+
+  const params = [userId, startTime, endTime] as never[]
+
   try {
     // 执行查询获取花销列表
-    const data: any = await mysql.query(expensesService.expensesAll)
+    const data: any = await mysql.query(
+      expensesService.expensesById(userId, startTime, endTime),
+      params
+    )
     data.forEach((item: any) => {
       item.create_date = _util.formatDate(item.create_date, 'yyyy-MM-dd')
     })
