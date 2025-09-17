@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 16:38:22
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-15 17:27:50
+ * @LastEditTime: 2025-09-17 08:50:33
  * @FilePath: \admin\controllers\expensesController.ts
  * @Description:
  *
@@ -52,10 +52,7 @@ exports.list = async (req: any, res: any) => {
 
   try {
     // 执行查询获取花销列表
-    const data: any = await mysql.query(
-      expensesService.expensesById(userId, startTime, endTime),
-      params
-    )
+    const data: any = await mysql.query(expensesService.expensesById(userId), params)
 
     data.forEach((item: any) => {
       item.create_date = _util.formatDate(item.create_date, 'yyyy-MM-dd')
@@ -112,7 +109,7 @@ exports.list = async (req: any, res: any) => {
 exports.checkFieldTotal = async (req: any, res: any) => {
   let { name, startTime, endTime } = req.body
 
-  const params = [req.auth.user_id, startTime, startTime, endTime, endTime] as never[]
+  const params = [req.auth.user_id, startTime, endTime] as never[]
 
   const data: any = await mysql.query(
     expensesService.getFieldValuesByUserIdAndDateRange(name),
