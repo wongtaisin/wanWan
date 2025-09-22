@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 16:38:48
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-22 15:17:07
+ * @LastEditTime: 2025-09-22 17:01:44
  * @FilePath: \admin\service\expensesService.ts
  * @Description:
  *
@@ -32,10 +32,10 @@ export const expensesById = (userId?: number) => {
 }
 
 // 添加
-export const addExpenses = `INSERT INTO expenses (user_id, eat, drink, play, glad, tolls, oil, parking, traffic, supermarket, online_shopping, phone_bill, red_packet, create_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, COALESCE(NULLIF(?, ''), now()))`
+export const addExpenses = `INSERT INTO expenses (user_id, eat, drink, play, glad, tolls, oil, parking, traffic, supermarket, online_shopping, phone_bill, red_packet, vip, create_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, COALESCE(NULLIF(?, ''), now()))`
 
 // 根据 id 更新
-export const updateExpenses = `UPDATE expenses SET eat = ?, drink = ?, play = ?, glad = ?, tolls = ?, oil = ?, parking = ?, traffic = ?, supermarket = ?, online_shopping = ?, phone_bill = ?, red_packet = ? WHERE id = ?`
+export const updateExpenses = `UPDATE expenses SET eat = ?, drink = ?, play = ?, glad = ?, tolls = ?, oil = ?, parking = ?, traffic = ?, supermarket = ?, online_shopping = ?, phone_bill = ?, red_packet = ?, vip = ? WHERE id = ?`
 
 // 根据 id 删除
 export const deleteExpenses = `DELETE FROM expenses WHERE id = ?`
@@ -100,6 +100,7 @@ export const batchDeleteExpensesByUserIdAndFields = (
     online_shopping?: string
     traffic?: string
     red_packet?: string
+    vip?: string
     create_date: string
   }>
 ) => {
@@ -115,7 +116,8 @@ export const batchDeleteExpensesByUserIdAndFields = (
     'supermarket',
     'online_shopping',
     'traffic',
-    'red_packet'
+    'red_packet',
+    'vip'
   ]
 
   const sql: string[] = [] // 存储所有 SQL 语句
