@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 16:38:22
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-22 15:39:20
+ * @LastEditTime: 2025-09-22 16:12:07
  * @FilePath: \admin\controllers\expensesController.ts
  * @Description:
  *
@@ -10,6 +10,7 @@
  */
 import mysql from '../db/mysql'
 import _util from '../util/util'
+import _expenses from '../util/expenses'
 const expensesService = require('../service/expensesService')
 
 // 添加花销
@@ -51,50 +52,62 @@ exports.list = async (req: any, res: any) => {
   const params = [userId, startTime, endTime] as never[]
 
   try {
-    // 执行查询获取花销列表
-    const data: any = await mysql.query(expensesService.expensesById(userId), params)
-
-    data.forEach((item: any) => {
-      item.create_date = _util.formatDate(item.create_date, 'yyyy-MM-dd')
-    })
-
-    // 需要计算合计的时候
-    if (Number(total) === 1 && userId) {
-      const filteredData = data.filter((item: any) => item.user_id === userId)
-
-      const result = {} as any
-
-      filteredData.forEach((item: any) => {
-        Object.entries(item).forEach(([key, value]) => {
-          if (['id', 'user_id', 'create_date'].includes(key)) return // 跳过不需要的字段
-          if (value && value !== '') {
-            String(value)
-              .split(',')
-              .forEach(v => {
-                const num = Number(v)
-                if (!isNaN(num)) {
-                  result[key] = (result[key] || 0) + num
-                }
-              })
-          }
-        })
-      })
-
-      return res.json({
-        code: 200,
-        data: {
-          ...result,
-          startTime,
-          endTime
-        },
-        msg: '获取花销列表成功'
-      })
-    }
+    const data: any = await _expenses.list(userId, params)
 
     res.json({
       code: 200,
       data: data,
       msg: '获取花销列表成功'
+    })
+  } catch (error) {
+    // 捕获并处理查询过程中的错误
+    console.error('获取花销列表失败:', error)
+    res.status(500).json({
+      msg: '获取花销列表失败',
+      code: 500
+    })
+  }
+}
+
+// 获取合计花销
+exports.total = async (req: any, res: any) => {
+  let { userId, startTime, endTime } = req.query // get 请求参数
+
+  let user_id = Number(userId) // 转为数字类型
+
+  const params = [user_id, startTime, endTime] as never[]
+
+  try {
+    const data: any = await _expenses.list(user_id, params)
+
+    const filteredData = data.filter((item: any) => item.user_id === user_id)
+
+    const result = {} as any
+
+    filteredData.forEach((item: any) => {
+      Object.entries(item).forEach(([key, value]) => {
+        if (['id', 'user_id', 'create_date'].includes(key)) return // 跳过不需要的字段
+        if (value && value !== '') {
+          String(value)
+            .split(',')
+            .forEach(v => {
+              const num = Number(v)
+              if (!isNaN(num)) {
+                result[key] = (result[key] || 0) + num
+              }
+            })
+        }
+      })
+    })
+
+    res.json({
+      code: 200,
+      data: {
+        ...result,
+        startTime,
+        endTime
+      },
+      msg: '获取花销合计成功'
     })
   } catch (error) {
     // 捕获并处理查询过程中的错误
