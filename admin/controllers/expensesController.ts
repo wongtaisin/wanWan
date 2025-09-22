@@ -9,7 +9,6 @@
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
 import mysql from '../db/mysql'
-import _util from '../util/util'
 import _expenses from '../util/expenses'
 const expensesService = require('../service/expensesService')
 
@@ -100,10 +99,15 @@ exports.total = async (req: any, res: any) => {
       })
     })
 
+    const total = Object.entries(result).reduce((acc, [key, value]) => {
+      return acc + Number(value)
+    }, 0)
+
     res.json({
       code: 200,
       data: {
         ...result,
+        total,
         startTime,
         endTime
       },
