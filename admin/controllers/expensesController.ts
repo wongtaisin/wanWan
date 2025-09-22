@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 16:38:22
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-17 08:50:33
+ * @LastEditTime: 2025-09-22 15:39:20
  * @FilePath: \admin\controllers\expensesController.ts
  * @Description:
  *
@@ -133,4 +133,38 @@ exports.checkFieldTotal = async (req: any, res: any) => {
     data: sum,
     msg: '查询成功'
   })
+}
+
+exports.delete = async (req: any, res: any) => {
+  let { records } = req.body
+
+  try {
+    // 获取要执行的 SQL 查询数组
+    const data = expensesService.batchDeleteExpensesByUserIdAndFields(records)
+
+    // 使用 Promise.all 确保所有 SQL 查询都执行完成
+    const results = await Promise.all(
+      data.sql.map((item: any, i: number) => mysql.query(item, data.params[i]))
+    )
+
+    // 计算总共影响的行数
+    const affectedRows = results.reduce((total: number, result: any) => {
+      return total + (result.affectedRows || 0)
+    }, 0)
+
+    res.json({
+      code: 200,
+      data: {
+        affectedRows: affectedRows,
+        queries: data.sql.length
+      },
+      msg: '批量删除成功'
+    })
+  } catch (error) {
+    console.error('批量删除失败:', error)
+    res.status(500).json({
+      code: 500,
+      msg: '批量删除失败'
+    })
+  }
 }
