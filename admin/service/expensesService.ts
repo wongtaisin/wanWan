@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 16:38:48
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-23 14:25:57
+ * @LastEditTime: 2025-09-23 15:50:24
  * @FilePath: \admin\service\expensesService.ts
  * @Description:
  *
@@ -36,6 +36,17 @@ export const addExpenses = `INSERT INTO expenses (user_id, eat, drink, play, gla
 
 // 根据 id 更新
 export const updateExpenses = `UPDATE expenses SET eat = ?, drink = ?, play = ?, glad = ?, tolls = ?, oil = ?, parking = ?, traffic = ?, supermarket = ?, online_shopping = ?, phone_bill = ?, red_packet = ?, vip = ? WHERE id = ?`
+
+/**
+ * @desc 更改指定字段的值，支持用户ID
+ * @param {string} fieldName 字段名
+ * @param {string} value 要更改的值
+ * @param {number} userId 用户ID
+ * @example [value, userId]
+ * @demo ['2,15', 1]
+ */
+export const updateExpensesFieldName = (fieldName: string) =>
+  `UPDATE expenses SET ${fieldName} = ? WHERE id = ?`
 
 // 根据 id 删除
 export const deleteExpenses = `DELETE FROM expenses WHERE id = ?`
@@ -72,13 +83,17 @@ export const checkDateByUserId = `SELECT * FROM expenses WHERE DATE(create_date)
  * @param {number} userId 用户ID
  * @param {string} startDate 开始日期
  * @param {string} endDate 结束日期
- * @example [fieldName, userId, startDate, endDate]
- * @demo [eat, 1, '2025-09-01', '2025-09-02']
+ * @example [userId, startDate, endDate]
+ * @demo [1, '2025-09-01', '2025-09-02']
  *
  * @explain DATE() // DATE(create_date) 是将 create_date 转换为日期格式
  * @explain BETWEEN // 用于查询在指定范围内的记录
  * @example IFNULL(?, DATE(create_date)) // 如果 startDate 为空，则使用当前日期
- * @sql SELECT eat FROM expenses WHERE eat IS NOT NULL AND user_id = ? AND DATE(create_date) BETWEEN IFNULL(?, DATE(create_date)) AND IFNULL(?, DATE(create_date))
+ * @sql SELECT eat
+        FROM expenses
+        WHERE eat IS NOT NULL
+          AND user_id = ?
+          AND DATE(create_date) BETWEEN IFNULL(?, DATE(create_date)) AND IFNULL(?, DATE(create_date))
  */
 export const getFieldValues = (fieldName: string) =>
   `SELECT ${fieldName} FROM expenses WHERE ${fieldName} IS NOT NULL AND user_id = ? AND DATE(create_date) BETWEEN IFNULL(?, DATE(create_date)) AND IFNULL(?, DATE(create_date))`

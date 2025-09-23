@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 16:38:22
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-23 14:18:02
+ * @LastEditTime: 2025-09-23 14:31:54
  * @FilePath: \admin\controllers\expensesController.ts
  * @Description:
  *
@@ -138,8 +138,9 @@ exports.checkFieldTotal = async (req: any, res: any) => {
     result.push(...item[name].split(','))
   })
 
-  const sum = result
-    .filter((item: any) => item.trim() !== '') // 移除空字符串
+  const arr = result.filter((item: any) => item.trim() !== '') // 移除空字符串
+
+  const sum = arr
     .map(Number) // 转为数字类型
     .reduce((total: number, num: number) => total + num, 0) // 累加
     .toFixed(2)

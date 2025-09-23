@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-25 11:02:53
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-22 17:12:12
+ * @LastEditTime: 2025-09-23 16:05:04
  * @FilePath: \admin\middleware\expenses.ts
  * @Description:
  *
@@ -130,14 +130,15 @@ const update = async (req: any, res: any, next: any) => {
       ]
 
       const params: any = fields
-        .map(field =>
-          existingRecord[field]
-            ? req.body[field]
-              ? `${existingRecord[field]},${req.body[field]}`
-              : existingRecord[field]
-            : req.body[field]
+        .map(
+          field =>
+            existingRecord[field] // 数据库里已有值
+              ? req.body[field] // 如果本次请求有值
+                ? `${existingRecord[field]},${req.body[field]}` // 追加
+                : existingRecord[field] // 取旧值
+              : req.body[field] // 没有旧值，直接取请求值
         )
-        .concat(existingRecord.id)
+        .concat(existingRecord.id) // 最后拼接 ID
 
       // 验证通过，将更新信息添加到请求对象中
       req.updateParams = params
