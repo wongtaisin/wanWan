@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-09-23 09:55:43
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-23 11:18:31
+ * @LastEditTime: 2025-09-23 14:16:45
  * @FilePath: \admin\controllers\expensesDetailController.ts
  * @Description:
  *
@@ -10,6 +10,7 @@
  */
 import mysql from '../db/mysql'
 const expensesDetailService = require('../service/expensesDetailService')
+const expensesService = require('../service/expensesService')
 
 // 添加花销
 exports.add = async (req: any, res: any, next: any) => {
@@ -39,7 +40,12 @@ exports.add = async (req: any, res: any, next: any) => {
 
   res.json({
     code: 200,
-    data: { ...result },
+    data: {
+      id: result.insertId,
+      userId: req.auth.user_id,
+      date: create_date
+    },
+
     msg: '添加成功'
   })
 }

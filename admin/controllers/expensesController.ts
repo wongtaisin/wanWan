@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 16:38:22
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-22 16:12:07
+ * @LastEditTime: 2025-09-23 14:18:02
  * @FilePath: \admin\controllers\expensesController.ts
  * @Description:
  *
@@ -18,6 +18,7 @@ exports.add = async (req: any, res: any, next: any) => {
   const createDate = create_date || new Date().toISOString().split('T')[0]
   // 日期已存在，执行更新合并操作
   if (!!req.updateParams) {
+    console.log('req.updateParams', req.updateParams)
     await mysql.query(expensesService.updateExpenses, req.updateParams)
 
     return res.json({
@@ -31,6 +32,7 @@ exports.add = async (req: any, res: any, next: any) => {
     })
   }
 
+  console.log('req.addParams', req.addParams)
   const result: any = await mysql.query(expensesService.addExpenses, req.addParams)
 
   res.json({
@@ -128,10 +130,7 @@ exports.checkFieldTotal = async (req: any, res: any) => {
 
   const params = [req.auth.user_id, startTime, endTime] as never[]
 
-  const data: any = await mysql.query(
-    expensesService.getFieldValuesByUserIdAndDateRange(name),
-    params
-  )
+  const data: any = await mysql.query(expensesService.getFieldValues(name), params)
 
   const result = [] as any
 
@@ -157,7 +156,7 @@ exports.delete = async (req: any, res: any) => {
 
   try {
     // 获取要执行的 SQL 查询数组
-    const data = expensesService.batchDeleteExpensesByUserIdAndFields(records)
+    const data = expensesService.batchDeleteExpenses(records)
 
     // 使用 Promise.all 确保所有 SQL 查询都执行完成
     const results = await Promise.all(
