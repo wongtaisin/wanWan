@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 16:38:22
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-23 14:31:54
+ * @LastEditTime: 2025-09-23 17:17:04
  * @FilePath: \admin\controllers\expensesController.ts
  * @Description:
  *
@@ -55,9 +55,14 @@ exports.list = async (req: any, res: any) => {
   try {
     const data: any = await _expenses.list(userId, params)
 
+    // 按创建日期排序
+    const sorted = data.sort((a: any, b: any) => {
+      return new Date(b.create_date).getTime() - new Date(a.create_date).getTime()
+    })
+
     res.json({
       code: 200,
-      data: data,
+      data: sorted,
       msg: '获取花销列表成功'
     })
   } catch (error) {
@@ -147,7 +152,11 @@ exports.checkFieldTotal = async (req: any, res: any) => {
 
   res.json({
     code: 200,
-    data: sum,
+    data: {
+      keys: name,
+      values: arr.join(','),
+      total: sum
+    },
     msg: '查询成功'
   })
 }
