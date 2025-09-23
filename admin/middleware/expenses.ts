@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-25 11:02:53
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-22 17:04:44
+ * @LastEditTime: 2025-09-22 17:12:12
  * @FilePath: \admin\middleware\expenses.ts
  * @Description:
  *
@@ -17,7 +17,7 @@ import mysql from '../db/mysql'
  * @param {string} drink - 喝
  * @param {string} play - 玩
  * @param {string} glad - 乐
- * @param {string} tolls -  tolls
+ * @param {string} tolls - 过路费
  * @param {string} oil - 油
  * @param {string} parking - 车
  * @param {string} traffic - 流量
@@ -86,7 +86,7 @@ const add = async (req: any, res: any, next: any) => {
  * @param {string} drink - 喝
  * @param {string} play - 玩
  * @param {string} glad - 乐
- * @param {string} tolls -  tolls
+ * @param {string} tolls - 过路费
  * @param {string} oil - 油
  * @param {string} parking - 车
  * @param {string} traffic - 流量

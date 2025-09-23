@@ -1,10 +1,20 @@
+/*
+ * @Author: wingddd wongtaisin1024@gmail.com
+ * @Date: 2025-09-22 16:30:33
+ * @LastEditors: wingddd wongtaisin1024@gmail.com
+ * @LastEditTime: 2025-09-23 08:32:31
+ * @FilePath: \admin\util\expenses.ts
+ * @Description:
+ *
+ * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
+ */
 import mysql from '../db/mysql'
 import _util from '../util/util'
 const expensesService = require('../service/expensesService')
 
 // 执行查询获取花销列表
 const list = (userId: number, params: never[]): Promise<unknown> => {
-  return new Promise(async (resolve, reject): Promise<void> => {
+  return new Promise<void>(async (resolve, reject): Promise<void> => {
     try {
       const data: any = await mysql.query(expensesService.expensesById(userId), params)
 
