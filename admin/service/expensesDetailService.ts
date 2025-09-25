@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-09-23 09:47:03
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-25 11:22:05
+ * @LastEditTime: 2025-09-25 15:46:31
  * @FilePath: \admin\service\expensesDetailService.ts
  * @Description:
  *
@@ -39,7 +39,7 @@ export const add = `INSERT INTO expenses_detail (user_id, user_name, expenses_na
  * @explain COALESCE(NULLIF(?, ''), now()) 当 update_date 为空时，使用当前时间
  * @explain COALESCE(?, expenses_name) 当 expenses_name 为空时，使用数据库里的值
  */
-export const updateExpensesDetail = `UPDATE expenses_detail SET expenses_name = COALESCE(?, expenses_name), money = COALESCE(?, money), remark = COALESCE(?, remark), update_date = COALESCE(?, NOW()) WHERE id = ?`
+export const updateExpensesDetail = `UPDATE expenses_detail SET expenses_name = ?, money = COALESCE(?, money), remark = COALESCE(?, remark), update_date = COALESCE(?, NOW()) WHERE id = ?`
 
 // 根据 id 删除
 export const deleteExpensesDetailId = `DELETE FROM expenses_detail WHERE id = ?`

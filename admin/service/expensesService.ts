@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 16:38:48
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-25 09:37:05
+ * @LastEditTime: 2025-09-25 14:11:46
  * @FilePath: \admin\service\expensesService.ts
  * @Description:
  *
@@ -98,7 +98,7 @@ export const checkDateByUserId = `SELECT * FROM expenses WHERE DATE(create_date)
           AND DATE(create_date) BETWEEN IFNULL(?, DATE(create_date)) AND IFNULL(?, DATE(create_date))
  */
 export const getFieldValues = (fieldName: string) =>
-  `SELECT ${fieldName} FROM expenses WHERE ${fieldName} IS NOT NULL AND user_id = ? AND DATE(create_date) BETWEEN IFNULL(?, DATE(create_date)) AND IFNULL(?, DATE(create_date))`
+  `SELECT id, ${fieldName}, DATE_FORMAT(create_date, '%Y-%m-%d') AS create_date FROM expenses WHERE ${fieldName} IS NOT NULL AND user_id = ? AND DATE(create_date) BETWEEN IFNULL(?, DATE(create_date)) AND IFNULL(?, DATE(create_date))`
 
 // 生成批量 UPDATE SQL 和参数数组（删除字段里部分值）,每一个值都会循环执行一次 SQL 语句
 export const batchDeleteExpenses = (
