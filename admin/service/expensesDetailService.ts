@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-09-23 09:47:03
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-23 15:49:18
+ * @LastEditTime: 2025-09-25 10:11:56
  * @FilePath: \admin\service\expensesDetailService.ts
  * @Description:
  *
@@ -23,7 +23,7 @@ export const all = `SELECT * FROM expenses_detail`
  *
  * @explain COALESCE(NULLIF(?, ''), now()) 当 create_date 为空时，使用当前时间
  */
-export const add = `INSERT INTO expenses_detail (user_id, user_name, expenses_name, money, create_date) VALUES (?, ?, ?, ?, COALESCE(NULLIF(?, ''), now()))`
+export const add = `INSERT INTO expenses_detail (user_id, user_name, expenses_name, money, remark, create_date) VALUES (?, ?, ?, ?, ?, COALESCE(NULLIF(?, ''), now()))`
 
 // 根据 id 更新
 export const updateExpensesDetail = `UPDATE expenses_detail SET expenses_name = ?, money = ?, WHERE id = ?`

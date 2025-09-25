@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-09-23 09:55:43
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-25 10:00:55
+ * @LastEditTime: 2025-09-25 10:12:55
  * @FilePath: \admin\controllers\expensesDetailController.ts
  * @Description:
  *
@@ -15,7 +15,7 @@ const expensesService = require('../service/expensesService')
 
 // 添加花销
 exports.add = async (req: any, res: any, next: any) => {
-  let { expenses_name, money, create_date } = req.body
+  let { expenses_name, money, remark, create_date } = req.body
 
   let { user_id, user_name } = req.auth
 
@@ -67,7 +67,7 @@ exports.add = async (req: any, res: any, next: any) => {
     ] as never[])
   }
 
-  const params = [user_id, user_name, expenses_name, money, create_date] as never[]
+  const params = [user_id, user_name, expenses_name, money, remark, create_date] as never[]
   const result: any = await mysql.query(expensesDetailService.add, params)
 
   res.json({
