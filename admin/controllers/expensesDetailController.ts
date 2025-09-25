@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-09-23 09:55:43
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-25 10:12:55
+ * @LastEditTime: 2025-09-25 11:00:14
  * @FilePath: \admin\controllers\expensesDetailController.ts
  * @Description:
  *
@@ -79,5 +79,24 @@ exports.add = async (req: any, res: any, next: any) => {
       createDate
     },
     msg: '添加成功'
+  })
+}
+
+exports.upDate = async (req: any, res: any, next: any) => {
+  let { id, expenses_name, money, remark, update_date } = req.body
+
+  const params = [expenses_name, money, remark, update_date, id] as never[]
+  const result: any = await mysql.query(expensesDetailService.updateExpensesDetail, params)
+
+  res.json({
+    code: 200,
+    data: {
+      id,
+      userId: req.auth.user_id,
+      [expenses_name]: money,
+      remark,
+      update_date
+    },
+    msg: '更新成功'
   })
 }
