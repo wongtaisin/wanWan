@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-09-23 09:47:03
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-25 15:46:31
+ * @LastEditTime: 2025-09-25 16:30:48
  * @FilePath: \admin\service\expensesDetailService.ts
  * @Description:
  *
@@ -56,3 +56,56 @@ export const deleteExpensesDetailAll = `DELETE FROM expenses_detail`
  * @demo [1, 2025-09-01 10:10:10, 'eat']
  */
 export const checkDateByUserIdAndName = `SELECT * FROM expenses_detail WHERE user_id = ? AND create_date = ? AND expenses_name = ?`
+
+/**
+ * @desc 构建查询花销详情的 SQL 语句
+ * @param {number} userId 用户id
+ * @param {string} expensesName 花销名称
+ * @param {string} startDate 开始日期
+ * @param {string} endDate 结束日期
+ * @returns {object} { sql: string, params: any[] }
+ * @example { sql: 'SELECT * FROM expenses_detail WHERE 1=1 AND user_id = ? AND expenses_name = ? AND DATE(create_date) BETWEEN ? AND ?', params: [1, 'eat', '2025-09-01', '2025-09-02'] }
+ *
+ * @explain DATE() // DATE(create_date) 是将 create_date 转换为日期格式
+ * @explain BETWEEN // 用于查询在指定范围内的记录
+ */
+export const buildQueryExpensesDetail = ({
+  userId,
+  expensesName,
+  startDate,
+  endDate
+}: {
+  userId?: number | null
+  expensesName?: string | null
+  startDate?: string | null
+  endDate?: string | null
+}) => {
+  let sql = `SELECT * FROM expenses_detail WHERE 1=1`
+  const params: any[] = []
+
+  // userId
+  if (userId) {
+    sql += ` AND user_id = ?`
+    params.push(userId)
+  }
+
+  // expenses_name
+  if (expensesName) {
+    sql += ` AND expenses_name = ?`
+    params.push(expensesName)
+  }
+
+  // 日期范围
+  if (startDate && endDate) {
+    sql += ` AND DATE(create_date) BETWEEN ? AND ?`
+    params.push(startDate, endDate)
+  } else if (startDate) {
+    sql += ` AND DATE(create_date) >= ?`
+    params.push(startDate)
+  } else if (endDate) {
+    sql += ` AND DATE(create_date) <= ?`
+    params.push(endDate)
+  }
+
+  return { sql, params }
+}
