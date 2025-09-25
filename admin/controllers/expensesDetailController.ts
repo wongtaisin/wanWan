@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-09-23 09:55:43
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-23 16:30:11
+ * @LastEditTime: 2025-09-25 10:00:55
  * @FilePath: \admin\controllers\expensesDetailController.ts
  * @Description:
  *
@@ -33,13 +33,10 @@ exports.add = async (req: any, res: any, next: any) => {
   if (checkResult.length > 0) {
     return res.json({
       code: 400,
-      data: { ...checkResult[0] },
+      data: checkResult[0],
       msg: `该字段时间段已存在`
     })
   }
-
-  const params = [user_id, user_name, expenses_name, money, create_date] as never[]
-  const result: any = await mysql.query(expensesDetailService.add, params)
 
   // 查询当前日期的字段值
   const checkDate: any = await mysql.query(expensesService.checkDateByUserId, [
@@ -49,12 +46,29 @@ exports.add = async (req: any, res: any, next: any) => {
 
   const existingRecord = checkDate[0]
 
-  const values = `${existingRecord[expenses_name]},${money}` // 添加数据
-  // 更新 expenses 表的字段值
-  await mysql.query(expensesService.updateExpensesFieldName(expenses_name), [
-    values,
-    existingRecord.id
-  ] as never[])
+  const values = !existingRecord
+    ? money
+    : existingRecord[expenses_name] // 数据库里已有值
+    ? `${existingRecord[expenses_name]},${money}`
+    : money // 添加数据
+
+  if (!existingRecord) {
+    // 新增 expenses 表的字段值
+    await mysql.query(expensesService.addExpensesFieldName(expenses_name), [
+      user_id,
+      values,
+      createDate
+    ] as never[])
+  } else {
+    // 更新 expenses 表的字段值
+    await mysql.query(expensesService.updateExpensesFieldName(expenses_name), [
+      values,
+      existingRecord?.id
+    ] as never[])
+  }
+
+  const params = [user_id, user_name, expenses_name, money, create_date] as never[]
+  const result: any = await mysql.query(expensesDetailService.add, params)
 
   res.json({
     code: 200,

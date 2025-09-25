@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 16:38:48
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-23 15:50:24
+ * @LastEditTime: 2025-09-25 09:37:05
  * @FilePath: \admin\service\expensesService.ts
  * @Description:
  *
@@ -45,11 +45,13 @@ export const updateExpenses = `UPDATE expenses SET eat = ?, drink = ?, play = ?,
  * @example [value, userId]
  * @demo ['2,15', 1]
  */
-export const updateExpensesFieldName = (fieldName: string) =>
-  `UPDATE expenses SET ${fieldName} = ? WHERE id = ?`
+export const updateExpensesFieldName = (fieldName: string) => {
+  return `UPDATE expenses SET ${fieldName} = ? WHERE id = ?`
+}
 
-// 根据 id 删除
-export const deleteExpenses = `DELETE FROM expenses WHERE id = ?`
+export const addExpensesFieldName = (fieldName: string) => {
+  return `INSERT INTO expenses (user_id, ${fieldName}, create_date) VALUES (?, ?, COALESCE(NULLIF(?, ''), now()))`
+}
 
 // 删除所有
 export const deleteExpensesAll = `DELETE FROM expenses`

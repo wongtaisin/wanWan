@@ -29,4 +29,28 @@ const list = (userId: number, params: never[]): Promise<unknown> => {
   })
 }
 
-export default { list }
+// 判断是否存在的字段
+const judgeName = (fieldName: string) => {
+  const allowedFields = [
+    'eat',
+    'drink',
+    'play',
+    'glad',
+    'tolls',
+    'oil',
+    'parking',
+    'traffic',
+    'supermarket',
+    'online_shopping',
+    'phone_bill',
+    'red_packet',
+    'vip'
+  ]
+  if (!allowedFields.includes(fieldName)) {
+    throw new Error('字段名称无效')
+  }
+
+  return true
+}
+
+export default { list, judgeName }
