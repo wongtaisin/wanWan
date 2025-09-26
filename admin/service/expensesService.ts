@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 16:38:48
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-25 14:11:46
+ * @LastEditTime: 2025-09-26 10:48:47
  * @FilePath: \admin\service\expensesService.ts
  * @Description:
  *
@@ -47,6 +47,13 @@ export const updateExpenses = `UPDATE expenses SET eat = ?, drink = ?, play = ?,
  */
 export const updateExpensesFieldName = (fieldName: string) => {
   return `UPDATE expenses SET ${fieldName} = ? WHERE id = ?`
+}
+
+export const updateExpensesDate = (fieldName: string) => {
+  return `UPDATE expenses
+          SET ${fieldName} = ?
+          WHERE user_id = ?
+            AND DATE(create_date) = DATE(?)`
 }
 
 export const addExpensesFieldName = (fieldName: string) => {

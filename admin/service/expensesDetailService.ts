@@ -2,14 +2,14 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-09-23 09:47:03
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-25 16:30:48
+ * @LastEditTime: 2025-09-26 15:36:40
  * @FilePath: \admin\service\expensesDetailService.ts
  * @Description:
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
 // 查询所有
-export const all = `SELECT * FROM expenses_detail`
+export const getIdExpensesDetail = `SELECT * FROM expenses_detail WHERE 1=1 AND id = ?`
 
 /**
  * @desc 添加
@@ -39,7 +39,7 @@ export const add = `INSERT INTO expenses_detail (user_id, user_name, expenses_na
  * @explain COALESCE(NULLIF(?, ''), now()) 当 update_date 为空时，使用当前时间
  * @explain COALESCE(?, expenses_name) 当 expenses_name 为空时，使用数据库里的值
  */
-export const updateExpensesDetail = `UPDATE expenses_detail SET expenses_name = ?, money = COALESCE(?, money), remark = COALESCE(?, remark), update_date = COALESCE(?, NOW()) WHERE id = ?`
+export const updateExpensesDetail = `UPDATE expenses_detail SET expenses_name = ?, money = COALESCE(?, money), remark = COALESCE(?, remark), update_date = NOW() WHERE id = ?`
 
 // 根据 id 删除
 export const deleteExpensesDetailId = `DELETE FROM expenses_detail WHERE id = ?`
@@ -50,12 +50,27 @@ export const deleteExpensesDetailAll = `DELETE FROM expenses_detail`
 /**
  * @desc 检查指定日期是否存在
  * @param {number} user_id 用户id
- * @param {string} create_date
+ * @param {string} create_date 花销日期
  * @param {string} expenses_name 花销名称
  * @example [id, create_date, expenses_name]
  * @demo [1, 2025-09-01 10:10:10, 'eat']
+ *
+ * @explain DATE(create_date) = DATE(?)
+    ? = '2025-09-23'，能匹配 2025-09-23 00:00:00 ~ 2025-09-23 23:59:59；
+    ? = '2025-09-23 12:30:00'，也能匹配到当天的数据
  */
-export const checkDateByUserIdAndName = `SELECT * FROM expenses_detail WHERE user_id = ? AND create_date = ? AND expenses_name = ?`
+export const checkTimeByFieldNameExpensesDetail = (type: string = 'YYMMDD hh:mm:ss') => {
+  let date = ''
+  switch (type) {
+    case 'YYMMDD hh:mm:ss':
+      date = `AND create_date = ?`
+      break
+    default:
+      date = `AND DATE(create_date) = DATE(?)`
+      break
+  }
+  return `SELECT * FROM expenses_detail WHERE user_id = ? ${date} AND expenses_name = ?`
+}
 
 /**
  * @desc 构建查询花销详情的 SQL 语句

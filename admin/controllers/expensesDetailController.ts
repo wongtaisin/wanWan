@@ -2,13 +2,14 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-09-23 09:55:43
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-25 16:17:29
+ * @LastEditTime: 2025-09-26 15:49:30
  * @FilePath: \admin\controllers\expensesDetailController.ts
  * @Description:
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
 import mysql from '../db/mysql'
+import { valuesResult } from '../util/expensesDetail'
 import _util from '../util/util'
 const expensesDetailService = require('../service/expensesDetailService')
 const expensesService = require('../service/expensesService')
@@ -44,11 +45,10 @@ exports.add = async (req: any, res: any, next: any) => {
     : create_date
 
   // 检查该字段时间段是否已存在
-  const checkResult: any = await mysql.query(expensesDetailService.checkDateByUserIdAndName, [
-    user_id,
-    createDate,
-    expenses_name
-  ] as never[])
+  const checkResult: any = await mysql.query(
+    expensesDetailService.checkTimeByFieldNameExpensesDetail(),
+    [user_id, createDate, expenses_name] as never[]
+  )
 
   if (checkResult.length > 0) {
     return res.json({
@@ -108,32 +108,41 @@ exports.add = async (req: any, res: any, next: any) => {
  * @param {string} expenses_name // 名称 必填
  * @param {string} money // 金额
  * @param {string} remark // 备注
- * @param {string} update_date // 更新时间
- * @param {number} expenses_number // 序号 必填
  */
 exports.upDate = async (req: any, res: any, next: any) => {
-  let { id, expenses_name, money, remark, update_date, expenses_number } = req.body
+  let { id, expenses_name, money, remark } = req.body
 
-  const expensesResult: any = await mysql.query(expensesService.getFieldValues(expenses_name), [
-    req.auth.user_id,
-    _util.formatDate(Date.now(), 'yyyy-MM-dd'),
-    _util.formatDate(Date.now(), 'yyyy-MM-dd')
-  ] as never[])
+  // 先获取id的 info
+  const getInfo: any = await mysql.query(expensesDetailService.getIdExpensesDetail, [id] as never[])
 
-  const data = expensesResult[0][expenses_name].split(',').map((item: any, i: number) => {
-    if (i === expenses_number) return (item = money)
-    return item
-  })
+  const createDate = _util.formatDate(getInfo[0].create_date, 'yyyy-MM-dd hh:mm:ss')
+
+  const createName = getInfo[0].expenses_name
+
+  // 更新 expensesDetail 表的字段值，需要先更新 expensesDetail 表的字段值，再更新 expenses 表的字段值
+  const params = [expenses_name, money, remark, id] as never[]
+  const result = await mysql.query(expensesDetailService.updateExpensesDetail, params)
+
+  // 更改 expenses_name 的值，需要把 expenses[createName] 的值一并改变
+  if (createName !== expenses_name && !!expenses_name) {
+    // 先删除旧的字段值
+    const abc = await valuesResult(req.auth.user_id, createDate, createName)
+    await mysql.query(expensesService.updateExpensesDate(createName), [
+      abc,
+      req.auth.user_id,
+      createDate
+    ] as never[])
+  }
+
+  // 获取 expenses_name 新的字段值
+  const data = await valuesResult(req.auth.user_id, createDate, expenses_name, money)
 
   // 更新 expenses 表的字段值
-  await mysql.query(expensesService.updateExpensesFieldName(expenses_name), [
-    data.join(','),
-    expensesResult[0].id
+  await mysql.query(expensesService.updateExpensesDate(expenses_name), [
+    data,
+    req.auth.user_id,
+    createDate
   ] as never[])
-
-  // 更新 expensesDetail 表的字段值
-  const params = [expenses_name, money, remark, update_date, id] as never[]
-  await mysql.query(expensesDetailService.updateExpensesDetail, params)
 
   res.json({
     code: 200,
@@ -142,7 +151,7 @@ exports.upDate = async (req: any, res: any, next: any) => {
       userId: req.auth.user_id,
       [expenses_name]: money,
       remark,
-      update_date
+      updateDate: _util.formatDate(Date.now(), 'yyyy-MM-dd hh:mm:ss')
     },
     msg: '更新成功'
   })
