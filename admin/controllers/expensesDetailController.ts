@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-09-23 09:55:43
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-26 15:49:30
+ * @LastEditTime: 2025-09-27 10:19:18
  * @FilePath: \admin\controllers\expensesDetailController.ts
  * @Description:
  *
@@ -76,6 +76,7 @@ exports.add = async (req: any, res: any, next: any) => {
     // 新增 expenses 表的字段值
     await mysql.query(expensesService.addExpensesFieldName(expenses_name), [
       user_id,
+      user_name,
       values,
       createDate
     ] as never[])

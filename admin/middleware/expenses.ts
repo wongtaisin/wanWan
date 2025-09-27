@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-25 11:02:53
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-23 16:05:04
+ * @LastEditTime: 2025-09-27 10:24:21
  * @FilePath: \admin\middleware\expenses.ts
  * @Description:
  *
@@ -48,10 +48,11 @@ const add = async (req: any, res: any, next: any) => {
       create_date
     } = req.body
 
-    let { user_id } = req.auth
+    let { user_id, user_name } = req.auth
 
     const params = [
       user_id,
+      user_name,
       eat,
       drink,
       play,
