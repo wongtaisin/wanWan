@@ -11,7 +11,7 @@
  Target Server Version : 90400 (9.4.0)
  File Encoding         : 65001
 
- Date: 28/09/2025 16:03:16
+ Date: 29/09/2025 15:26:00
 */
 
 SET NAMES utf8mb4;
@@ -40,7 +40,7 @@ CREATE TABLE `expenses`  (
   `vip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '会员',
   `create_date` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 60 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '花销明细' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 61 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '花销明细' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of expenses
@@ -75,7 +75,8 @@ INSERT INTO `expenses` VALUES (52, 1, '大帅', '2,15,23', '3', NULL, NULL, NULL
 INSERT INTO `expenses` VALUES (53, 1, '大帅', NULL, NULL, NULL, NULL, NULL, '342.13', '25', NULL, NULL, NULL, NULL, NULL, NULL, '2025-09-24 21:42:42');
 INSERT INTO `expenses` VALUES (55, 1, '大帅', '2,15,15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '40', '2025-09-26 07:24:39');
 INSERT INTO `expenses` VALUES (58, 1, '大帅', '2,15,65', '3', NULL, NULL, NULL, NULL, NULL, NULL, '23.76', NULL, NULL, NULL, NULL, '2025-09-27 07:27:09');
-INSERT INTO `expenses` VALUES (59, 1, '大帅', '2,15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-09-28 07:20:41');
+INSERT INTO `expenses` VALUES (59, 1, '大帅', '2,15,15', '3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-09-28 07:20:41');
+INSERT INTO `expenses` VALUES (60, 1, '大帅', '15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-09-29 12:10:47');
 
 -- ----------------------------
 -- Table structure for expenses_detail
@@ -92,7 +93,7 @@ CREATE TABLE `expenses_detail`  (
   `create_date` datetime NULL DEFAULT NULL,
   `update_date` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 43 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '花销详情，精确到时分秒' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 47 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '花销详情，精确到时分秒' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of expenses_detail
@@ -118,6 +119,9 @@ INSERT INTO `expenses_detail` VALUES (39, 1, '大帅', 'eat', '65', NULL, '陈�
 INSERT INTO `expenses_detail` VALUES (40, 1, '大帅', 'supermarket', '23.76', NULL, '新天虹商城，牛肉+青菜，牛肉打6折都比外面贵，青菜价格贵一倍', '2025-09-27 20:14:24', '2025-09-28 08:44:20');
 INSERT INTO `expenses_detail` VALUES (41, 1, '大帅', 'eat', '2', NULL, '楼下包子店，一个莲蓉，一个豆沙', '2025-09-28 07:20:41', NULL);
 INSERT INTO `expenses_detail` VALUES (42, 1, '大帅', 'eat', '15', NULL, '公司饭堂，卤大肠+莲藕炒肉', '2025-09-28 12:11:23', NULL);
+INSERT INTO `expenses_detail` VALUES (43, 1, '大帅', 'eat', '15', NULL, '潮州创新牛杂店', '2025-09-28 18:47:16', NULL);
+INSERT INTO `expenses_detail` VALUES (44, 1, '大帅', 'drink', '3', NULL, '百事可乐无糖', '2025-09-28 19:05:30', NULL);
+INSERT INTO `expenses_detail` VALUES (46, 1, '大帅', 'eat', '15', NULL, '公司饭堂，卤肥肠+莲藕炒肉', '2025-09-29 12:10:47', NULL);
 
 -- ----------------------------
 -- Table structure for operation_log
@@ -144,7 +148,7 @@ CREATE TABLE `operation_log`  (
   INDEX `idx_operation_type`(`operation_type` ASC) USING BTREE,
   INDEX `idx_module`(`module` ASC) USING BTREE,
   INDEX `idx_create_time`(`create_time` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 935 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '操作日志表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 966 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '操作日志表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of operation_log
@@ -1077,6 +1081,37 @@ INSERT INTO `operation_log` VALUES (931, NULL, NULL, 'CREATE', 'expenses', 'POST
 INSERT INTO `operation_log` VALUES (932, NULL, NULL, 'CREATE', 'login', 'POST /login - CREATE', '/api/login', 'POST', '{\"query\":{},\"body\":{\"user_name\":\"大帅\",\"password\":\"123456\"},\"params\":{}}', '{\"msg\":\"登录成功\",\"data\":{\"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VyX25hbWUiOiLlpKfluIUiLCJwaG9uZSI6IjEzNDExMTExMTExIiwiaWF0IjoxNzU5MDQ2MzIyLCJleHAiOjE3NTkxMzI3MjJ9.JwecNzjSm-82d0fTJzqHCc0vE6QkW1zO5Z-cO066RTY\"}}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 87, '2025-09-28 15:58:42');
 INSERT INTO `operation_log` VALUES (933, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/add - CREATE', '/api/expensesDetail/add', 'POST', '{\"query\":{},\"body\":{\"expenses_name\":\"eat\",\"money\":\"15\",\"remark\":\"卤大肠+莲藕炒肉\",\"create_date\":\"2025-09-28 12:11:23\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":42,\"userId\":1,\"eat\":\"15\",\"createDate\":\"2025-09-28 12:11:23\"},\"msg\":\"添加成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 83, '2025-09-28 15:58:57');
 INSERT INTO `operation_log` VALUES (934, 1, '大帅', 'QUERY', 'expenses', 'GET /expenses/total - QUERY', '/api/expenses/total?userId=1&startTime=2025-09-01&endTime=2025-09-30', 'GET', '{\"query\":{\"userId\":\"1\",\"startTime\":\"2025-09-01\",\"endTime\":\"2025-09-30\"},\"params\":{}}', '{\"code\":200,\"data\":{\"eat\":778.95,\"drink\":29,\"phone_bill\":78.94,\"supermarket\":356.65,\"vip\":739,\"online_shopping\":359.21,\"parking\":40,\"oil\":575.76,\"total\":2957.51,\"startTime\":\"2025-09-01\",\"endTime\":\"2025-09-30\"},\"msg\":\"获取花销合计成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 7, '2025-09-28 16:00:59');
+INSERT INTO `operation_log` VALUES (935, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/add - CREATE', '/api/expensesDetail/add', 'POST', '{\"query\":{},\"body\":{\"expenses_name\":\"eat\",\"money\":\"15\",\"remark\":\"潮州创新牛杂店\",\"create_date\":\"2025-09-28 18:47:16\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":43,\"userId\":1,\"eat\":\"15\",\"createDate\":\"2025-09-28 18:47:16\"},\"msg\":\"添加成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 439, '2025-09-29 11:17:36');
+INSERT INTO `operation_log` VALUES (936, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/add - CREATE', '/api/expensesDetail/add', 'POST', '{\"query\":{},\"body\":{\"expenses_name\":\"drink\",\"money\":\"3\",\"remark\":\"百事可乐\",\"create_date\":\"2025-09-28 19:05:30\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":44,\"userId\":1,\"drink\":\"3\",\"createDate\":\"2025-09-28 19:05:30\"},\"msg\":\"添加成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 88, '2025-09-29 11:19:36');
+INSERT INTO `operation_log` VALUES (937, 1, '大帅', 'QUERY', 'expenses', 'GET /expenses/total - QUERY', '/api/expenses/total?userId=1&startTime=2025-09-01&endTime=2025-09-30', 'GET', '{\"query\":{\"userId\":\"1\",\"startTime\":\"2025-09-01\",\"endTime\":\"2025-09-30\"},\"params\":{}}', '{\"code\":200,\"data\":{\"eat\":793.95,\"drink\":32,\"phone_bill\":78.94,\"supermarket\":356.65,\"vip\":739,\"online_shopping\":359.21,\"parking\":40,\"oil\":575.76,\"total\":2975.51,\"startTime\":\"2025-09-01\",\"endTime\":\"2025-09-30\"},\"msg\":\"获取花销合计成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 4, '2025-09-29 11:19:54');
+INSERT INTO `operation_log` VALUES (938, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/add - CREATE', '/api/expensesDetail/add', 'POST', '{\"query\":{},\"body\":{\"expenses_name\":\"eat\",\"money\":\"15\",\"remark\":\"公司饭堂，卤肥肠+莲藕炒肉\",\"create_date\":\"2025-09-28 12:10:47\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":45,\"userId\":1,\"eat\":\"15\",\"createDate\":\"2025-09-28 12:10:47\"},\"msg\":\"添加成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 430, '2025-09-29 13:47:45');
+INSERT INTO `operation_log` VALUES (939, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/add - CREATE', '/api/expensesDetail/add', 'POST', '{\"query\":{},\"body\":{\"expenses_name\":\"eat\",\"money\":\"15\",\"remark\":\"公司饭堂，卤肥肠+莲藕炒肉\",\"create_date\":\"2025-09-29 12:10:47\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":46,\"userId\":1,\"eat\":\"15\",\"createDate\":\"2025-09-29 12:10:47\"},\"msg\":\"添加成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 235, '2025-09-29 13:47:57');
+INSERT INTO `operation_log` VALUES (940, 1, '大帅', 'DELETE', 'expenses', 'DELETE /api/expensesDetail/del/666 - DELETE', '/api/expensesDetail/del/666', 'DELETE', '{\"query\":{},\"params\":{}}', '{\"code\":500,\"msg\":\"Cannot destructure property \'id\' of \'req.jquery\' as it is undefined.\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 500, 11, '2025-09-29 13:53:45');
+INSERT INTO `operation_log` VALUES (941, 1, '大帅', 'DELETE', 'expenses', 'DELETE /api/expensesDetail/del/666 - DELETE', '/api/expensesDetail/del/666', 'DELETE', '{\"query\":{},\"params\":{}}', '{\"code\":500,\"msg\":\"Cannot destructure property \'id\' of \'req.jquery\' as it is undefined.\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 500, 3, '2025-09-29 13:54:24');
+INSERT INTO `operation_log` VALUES (942, 1, '大帅', 'DELETE', 'expenses', 'DELETE /api/expensesDetail/del/666 - DELETE', '/api/expensesDetail/del/666', 'DELETE', '{\"query\":{},\"params\":{}}', '{\"code\":500,\"msg\":\"Cannot destructure property \'create_date\' of \'getInfo[0]\' as it is undefined.\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 500, 48, '2025-09-29 14:05:26');
+INSERT INTO `operation_log` VALUES (943, 1, '大帅', 'DELETE', 'expenses', 'DELETE /expensesDetail/del/666 - DELETE', '/api/expensesDetail/del/666', 'DELETE', '{\"query\":{},\"params\":{\"id\":\"666\"}}', '{\"code\":400,\"msg\":\"没有数据\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 54, '2025-09-29 14:06:55');
+INSERT INTO `operation_log` VALUES (944, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/edit - CREATE', '/api/expensesDetail/edit', 'POST', '{\"query\":{},\"body\":{\"id\":45,\"expenses_name\":\"eat\",\"money\":\"150\",\"remark\":\"需要的删除\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":45,\"userId\":1,\"eat\":\"150\",\"remark\":\"需要的删除\",\"updateDate\":\"2025-09-29 14:27:08\"},\"msg\":\"更新成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 280, '2025-09-29 14:27:08');
+INSERT INTO `operation_log` VALUES (945, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/edit - CREATE', '/api/expensesDetail/edit', 'POST', '{\"query\":{},\"body\":{\"id\":45,\"expenses_name\":\"eat\",\"money\":\"666\",\"remark\":\"需要的删除\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":45,\"userId\":1,\"eat\":\"666\",\"remark\":\"需要的删除\",\"updateDate\":\"2025-09-29 14:27:22\"},\"msg\":\"更新成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 218, '2025-09-29 14:27:22');
+INSERT INTO `operation_log` VALUES (946, 1, '大帅', 'DELETE', 'expenses', 'DELETE /expensesDetail/del/45 - DELETE', '/api/expensesDetail/del/45', 'DELETE', '{\"query\":{},\"params\":{\"id\":\"45\"}}', '{\"code\":200,\"msg\":\"删除成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 269, '2025-09-29 14:27:36');
+INSERT INTO `operation_log` VALUES (947, 1, '大帅', 'DELETE', 'expenses', 'DELETE /expensesDetail/del/45 - DELETE', '/api/expensesDetail/del/45', 'DELETE', '{\"query\":{},\"params\":{\"id\":\"45\"}}', '{\"code\":400,\"msg\":\"没有数据\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 35, '2025-09-29 14:39:18');
+INSERT INTO `operation_log` VALUES (948, 1, '大帅', 'DELETE', 'expenses', 'DELETE /expensesDetail/del/45 - DELETE', '/api/expensesDetail/del/45', 'DELETE', '{\"query\":{},\"params\":{\"id\":\"45\"}}', '{\"code\":200,\"msg\":\"删除成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 39, '2025-09-29 14:43:26');
+INSERT INTO `operation_log` VALUES (949, 1, '大帅', 'DELETE', 'expenses', 'DELETE /expensesDetail/del/45 - DELETE', '/api/expensesDetail/del/45', 'DELETE', '{\"query\":{},\"params\":{\"id\":\"45\"}}', '{\"code\":200,\"msg\":\"删除成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 39, '2025-09-29 14:44:28');
+INSERT INTO `operation_log` VALUES (950, 1, '大帅', 'DELETE', 'expenses', 'DELETE /expensesDetail/del/45 - DELETE', '/api/expensesDetail/del/45', 'DELETE', '{\"query\":{},\"params\":{\"id\":\"45\"}}', '{\"code\":200,\"msg\":\"删除成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 40, '2025-09-29 14:45:16');
+INSERT INTO `operation_log` VALUES (951, 1, '大帅', 'DELETE', 'expenses', 'DELETE /expensesDetail/del/45 - DELETE', '/api/expensesDetail/del/45', 'DELETE', '{\"query\":{},\"params\":{\"id\":\"45\"}}', '{\"code\":200,\"msg\":\"删除成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 45, '2025-09-29 14:47:52');
+INSERT INTO `operation_log` VALUES (952, 1, '大帅', 'DELETE', 'expenses', 'DELETE /expensesDetail/del/45 - DELETE', '/api/expensesDetail/del/45', 'DELETE', '{\"query\":{},\"params\":{\"id\":\"45\"}}', '{\"code\":200,\"msg\":\"删除成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 38, '2025-09-29 14:48:18');
+INSERT INTO `operation_log` VALUES (953, 1, '大帅', 'DELETE', 'expenses', 'DELETE /expensesDetail/del/45 - DELETE', '/api/expensesDetail/del/45', 'DELETE', '{\"query\":{},\"params\":{\"id\":\"45\"}}', '{\"code\":200,\"msg\":\"删除成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 39, '2025-09-29 14:48:55');
+INSERT INTO `operation_log` VALUES (954, 1, '大帅', 'DELETE', 'expenses', 'DELETE /expensesDetail/del/45 - DELETE', '/api/expensesDetail/del/45', 'DELETE', '{\"query\":{},\"params\":{\"id\":\"45\"}}', '{\"code\":200,\"msg\":\"删除成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 38, '2025-09-29 14:58:38');
+INSERT INTO `operation_log` VALUES (955, 1, '大帅', 'DELETE', 'expenses', 'DELETE /expensesDetail/del/45 - DELETE', '/api/expensesDetail/del/45', 'DELETE', '{\"query\":{},\"params\":{\"id\":\"45\"}}', '{\"code\":200,\"msg\":\"删除成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 40, '2025-09-29 15:02:09');
+INSERT INTO `operation_log` VALUES (956, 1, '大帅', 'DELETE', 'expenses', 'DELETE /expensesDetail/del/45 - DELETE', '/api/expensesDetail/del/45', 'DELETE', '{\"query\":{},\"params\":{\"id\":\"45\"}}', '{\"code\":200,\"msg\":\"删除成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 41, '2025-09-29 15:03:20');
+INSERT INTO `operation_log` VALUES (957, 1, '大帅', 'DELETE', 'expenses', 'DELETE /expensesDetail/del/45 - DELETE', '/api/expensesDetail/del/45', 'DELETE', '{\"query\":{},\"params\":{\"id\":\"45\"}}', '{\"code\":200,\"msg\":\"删除成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 44, '2025-09-29 15:03:40');
+INSERT INTO `operation_log` VALUES (958, 1, '大帅', 'DELETE', 'expenses', 'DELETE /expensesDetail/del/45 - DELETE', '/api/expensesDetail/del/45', 'DELETE', '{\"query\":{},\"params\":{\"id\":\"45\"}}', '{\"code\":200,\"msg\":\"删除成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 37, '2025-09-29 15:04:26');
+INSERT INTO `operation_log` VALUES (959, 1, '大帅', 'DELETE', 'expenses', 'DELETE /expensesDetail/del/45 - DELETE', '/api/expensesDetail/del/45', 'DELETE', '{\"query\":{},\"params\":{\"id\":\"45\"}}', '{\"code\":200,\"msg\":\"删除成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 41, '2025-09-29 15:04:57');
+INSERT INTO `operation_log` VALUES (960, 1, '大帅', 'DELETE', 'expenses', 'DELETE /expensesDetail/del/45 - DELETE', '/api/expensesDetail/del/45', 'DELETE', '{\"query\":{},\"params\":{\"id\":\"45\"}}', '{\"code\":200,\"msg\":\"删除成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 39, '2025-09-29 15:08:34');
+INSERT INTO `operation_log` VALUES (961, 1, '大帅', 'DELETE', 'expenses', 'DELETE /expensesDetail/del/45 - DELETE', '/api/expensesDetail/del/45', 'DELETE', '{\"query\":{},\"params\":{\"id\":\"45\"}}', '{\"code\":200,\"msg\":\"删除成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 39, '2025-09-29 15:08:52');
+INSERT INTO `operation_log` VALUES (962, 1, '大帅', 'DELETE', 'expenses', 'DELETE /expensesDetail/del/45 - DELETE', '/api/expensesDetail/del/45', 'DELETE', '{\"query\":{},\"params\":{\"id\":\"45\"}}', '{\"code\":200,\"msg\":\"删除成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 41, '2025-09-29 15:10:01');
+INSERT INTO `operation_log` VALUES (963, 1, '大帅', 'DELETE', 'expenses', 'DELETE /expensesDetail/del/45 - DELETE', '/api/expensesDetail/del/45', 'DELETE', '{\"query\":{},\"params\":{\"id\":\"45\"}}', '{\"code\":200,\"msg\":\"删除成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 36, '2025-09-29 15:19:19');
+INSERT INTO `operation_log` VALUES (964, 1, '大帅', 'DELETE', 'expenses', 'DELETE /expensesDetail/del/45 - DELETE', '/api/expensesDetail/del/45', 'DELETE', '{\"query\":{},\"params\":{\"id\":\"45\"}}', '{\"code\":200,\"msg\":\"删除成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 44, '2025-09-29 15:19:45');
+INSERT INTO `operation_log` VALUES (965, 1, '大帅', 'DELETE', 'expenses', 'DELETE /expensesDetail/del/45 - DELETE', '/api/expensesDetail/del/45', 'DELETE', '{\"query\":{},\"params\":{\"id\":\"45\"}}', '{\"code\":200,\"msg\":\"删除成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 39, '2025-09-29 15:20:08');
 
 -- ----------------------------
 -- Table structure for user
