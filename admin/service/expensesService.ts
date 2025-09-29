@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 16:38:48
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-27 10:20:19
+ * @LastEditTime: 2025-09-29 15:21:01
  * @FilePath: \admin\service\expensesService.ts
  * @Description:
  *
@@ -194,3 +194,6 @@ export const batchDeleteExpenses = (
 
   return { sql, params }
 }
+
+// 删除id
+export const deleteExpensesByUserIdAndDate = `DELETE FROM expenses WHERE user_id = ? AND DATE(create_date) = DATE(?)`

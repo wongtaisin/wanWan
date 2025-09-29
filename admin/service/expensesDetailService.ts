@@ -124,3 +124,5 @@ export const buildQueryExpensesDetail = ({
 
   return { sql, params }
 }
+
+exports.deleteExpensesDetail = `DELETE FROM expenses_detail WHERE id = ?;`

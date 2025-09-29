@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-09-23 09:55:43
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-27 10:19:18
+ * @LastEditTime: 2025-09-29 15:20:43
  * @FilePath: \admin\controllers\expensesDetailController.ts
  * @Description:
  *
@@ -155,5 +155,65 @@ exports.upDate = async (req: any, res: any, next: any) => {
       updateDate: _util.formatDate(Date.now(), 'yyyy-MM-dd hh:mm:ss')
     },
     msg: '更新成功'
+  })
+}
+
+exports.delete = async (req: any, res: any, next: any) => {
+  const { id }: { id: number } = req.params
+
+  const { user_id } = req.auth
+
+  const getInfo: any = await mysql.query(expensesDetailService.getIdExpensesDetail, [id] as never[])
+
+  if (getInfo.length < 1) {
+    return res.json({
+      code: 400,
+      msg: '没有数据'
+    })
+  }
+
+  const { create_date, expenses_name } = getInfo[0]
+
+  // 先删除 deleteExpenses 的 id 数据
+  await mysql.query(expensesDetailService.deleteExpensesDetail, [id] as never[])
+
+  const result = await valuesResult(user_id, create_date, expenses_name)
+
+  await mysql.query(expensesService.updateExpensesDate(expenses_name), [
+    result,
+    user_id,
+    create_date
+  ] as never[])
+
+  // 查询 expenses 当前日期的值
+  const checkResult: any = await mysql.query(expensesService.checkDate, [
+    _util.formatDate(create_date, 'yyyy-MM-dd')
+  ] as never[])
+
+  console.log(checkResult)
+
+  const excludeKeys = ['id', 'user_id', 'user_name', 'create_date'] // 不查询的字段
+  const othersFalsyCheck = checkResult
+    .map((item: any) => {
+      const keys = Object.keys(item).filter((k: string) => !excludeKeys.includes(k))
+      const allOthersFalsy = keys.every(
+        (k: string) => item[k] === null || item[k] === undefined || item[k] === ''
+      )
+      return allOthersFalsy
+    })
+    .join()
+
+  console.log(othersFalsyCheck, `2222`)
+
+  if (othersFalsyCheck) {
+    await mysql.query(expensesService.deleteExpensesByUserIdAndDate, [
+      user_id,
+      _util.formatDate(create_date, 'yyyy-MM-dd')
+    ] as never[])
+  }
+
+  res.json({
+    code: 200,
+    msg: '删除成功'
   })
 }
