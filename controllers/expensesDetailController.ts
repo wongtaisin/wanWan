@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-09-23 09:55:43
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-30 14:18:20
+ * @LastEditTime: 2025-09-30 16:09:26
  * @FilePath: \wanWan\controllers\expensesDetailController.ts
  * @Description:
  *
@@ -190,8 +190,6 @@ exports.delete = async (req: any, res: any, next: any) => {
     _util.formatDate(create_date, 'yyyy-MM-dd')
   ] as never[])
 
-  console.log(checkResult)
-
   const excludeKeys = ['id', 'user_id', 'user_name', 'create_date'] // 不查询的字段
   const othersFalsyCheck = checkResult.map((item: any) => {
     const keys = Object.keys(item).filter((k: string) => !excludeKeys.includes(k))
@@ -202,10 +200,8 @@ exports.delete = async (req: any, res: any, next: any) => {
   })
   const isBoolean = othersFalsyCheck.some((value: boolean) => value === true)
 
-  console.log(isBoolean, `2222`)
-
+  // 查询 expenses 是否有其他值，有则不删除，isBoolean = true 没其他值，进入删除
   if (isBoolean) {
-    console.log(isBoolean, `3333`)
     await mysql.query(expensesService.deleteExpensesByUserIdAndDate, [
       user_id,
       _util.formatDate(create_date, 'yyyy-MM-dd')
@@ -215,5 +211,121 @@ exports.delete = async (req: any, res: any, next: any) => {
   res.json({
     code: 200,
     msg: '删除成功'
+  })
+}
+
+/**
+ * @description: 修复数据，将 expensesDetail 表中与 expenses 表不一致的数据修复
+ *
+ * 1. 先查询 expensesDetail 表中与 expenses 表不一致的数据
+ * 2. 返回不一样的数据，根据 user_id 和 create_date 分组，合并数据
+ * [{
+    user_id,
+    user_name,
+    eat,
+    drink,
+    play,
+    glad,
+    tolls,
+    oil,
+    parking,
+    traffic,
+    supermarket,
+    online_shopping,
+    phone_bill,
+    red_packet,
+    vip,
+    create_date,
+ * }]
+ * 3. 合并数据后，根据 user_id 和 create_date 更新 expenses 表
+ */
+exports.repairExpensesData = async (req: any, res: any, next: any) => {
+  const contrastList: any = await mysql.query(expensesDetailService.contrastDate)
+
+  if (contrastList.length < 1) {
+    return res.json({
+      code: 200,
+      msg: 'expenses 数据库完整'
+    })
+  }
+
+  // console.log(`1111`, contrastList)
+
+  const fields = [
+    'user_id',
+    'user_name',
+    'eat',
+    'drink',
+    'play',
+    'glad',
+    'tolls',
+    'oil',
+    'parking',
+    'traffic',
+    'supermarket',
+    'online_shopping',
+    'phone_bill',
+    'red_packet',
+    'vip',
+    'create_date'
+  ]
+
+  // 按 user_id 和 DATE(create_date) 分组并合并数据
+  const mergedDataMap = contrastList.reduce((acc: Map<string, any>, item: any) => {
+    // 使用 user_id 和 DATE(create_date) 组合作为唯一键，区分相同 user_id 但不同日期的记录
+    const uniqueKey = `${item.user_id}_${_util.formatDate(item.create_date, 'yyyy-MM-dd')}`
+
+    // 如果这个唯一键还没有记录，创建一个新记录
+    if (!acc.has(uniqueKey)) {
+      acc.set(uniqueKey, {
+        user_id: item.user_id,
+        user_name: item.user_name,
+        create_date: item.create_date
+      })
+    }
+
+    // 获取当前用户在当前日期的记录
+    const userRecord = acc.get(uniqueKey)
+
+    // 将 expenses_name 作为参数，money 作为对应的值
+    if (item.expenses_name && fields.includes(item.expenses_name)) {
+      // 如果该字段已经有值，则追加新值，否则创建新值
+      userRecord[item.expenses_name] = userRecord[item.expenses_name]
+        ? `${userRecord[item.expenses_name]},${item.money}`
+        : item.money
+    }
+
+    return acc
+  }, new Map())
+
+  // 将Map转换为数组
+  const mergedData = Array.from(mergedDataMap.values())
+
+  // console.log(`22222`, mergedData)
+
+  // 确保所有字段都存在，没有的设为null
+  const params = mergedData.map((item: any) => {
+    fields.forEach(field => {
+      if (!item[field]) {
+        item[field] = null
+      }
+    })
+    // 只返回fields中定义的字段的值，形成一个值数组
+    return fields.map(field => item[field])
+  })
+
+  // console.log(`3333`, params)
+
+  // 批量插入数据
+  await Promise.all(
+    params.map(async (item: any) => {
+      return mysql.query(expensesService.addExpenses, item as never[])
+    })
+  )
+
+  res.json({
+    code: 200,
+    data: mergedData,
+    msg: '对比成功'
   })
 }

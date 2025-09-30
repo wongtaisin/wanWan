@@ -2,8 +2,8 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-09-23 09:47:03
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-26 15:36:40
- * @FilePath: \admin\service\expensesDetailService.ts
+ * @LastEditTime: 2025-09-30 10:25:55
+ * @FilePath: \wanWan\service\expensesDetailService.ts
  * @Description:
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
@@ -126,3 +126,15 @@ export const buildQueryExpensesDetail = ({
 }
 
 exports.deleteExpensesDetail = `DELETE FROM expenses_detail WHERE id = ?;`
+
+exports.contrastDate = `SELECT ed.*
+FROM expenses_detail ed
+LEFT JOIN (
+  SELECT DISTINCT user_id, DATE(create_date) AS d
+  FROM expenses
+) e
+  ON ed.user_id = e.user_id
+ AND DATE(ed.create_date) = e.d
+WHERE e.d IS NULL
+ORDER BY ed.user_id, ed.create_date;
+`

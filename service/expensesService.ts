@@ -2,8 +2,8 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 16:38:48
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-29 15:21:01
- * @FilePath: \admin\service\expensesService.ts
+ * @LastEditTime: 2025-09-30 10:45:42
+ * @FilePath: \wanWan\service\expensesService.ts
  * @Description:
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
@@ -196,4 +196,4 @@ export const batchDeleteExpenses = (
 }
 
 // 删除id
-export const deleteExpensesByUserIdAndDate = `DELETE FROM expenses WHERE user_id = ? AND DATE(create_date) = DATE(?)`
+export const deleteExpensesByUserIdAndDate = `DELETE FROM expenses WHERE user_id = ? AND DATE(create_date) = ?`

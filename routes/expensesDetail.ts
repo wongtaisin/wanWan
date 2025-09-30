@@ -22,4 +22,6 @@ router.post('/expensesDetail/edit', controller.upDate)
 
 router.delete('/expensesDetail/del/:id', controller.delete)
 
+router.get('/expensesDetail/repairData', controller.repairExpensesData)
+
 module.exports = router
