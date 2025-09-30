@@ -2,8 +2,8 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-09-23 09:55:43
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-29 15:20:43
- * @FilePath: \admin\controllers\expensesDetailController.ts
+ * @LastEditTime: 2025-09-30 14:18:20
+ * @FilePath: \wanWan\controllers\expensesDetailController.ts
  * @Description:
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
@@ -193,19 +193,19 @@ exports.delete = async (req: any, res: any, next: any) => {
   console.log(checkResult)
 
   const excludeKeys = ['id', 'user_id', 'user_name', 'create_date'] // 不查询的字段
-  const othersFalsyCheck = checkResult
-    .map((item: any) => {
-      const keys = Object.keys(item).filter((k: string) => !excludeKeys.includes(k))
-      const allOthersFalsy = keys.every(
-        (k: string) => item[k] === null || item[k] === undefined || item[k] === ''
-      )
-      return allOthersFalsy
-    })
-    .join()
+  const othersFalsyCheck = checkResult.map((item: any) => {
+    const keys = Object.keys(item).filter((k: string) => !excludeKeys.includes(k))
+    const allOthersFalsy = keys.every(
+      (k: string) => item[k] === null || item[k] === undefined || item[k] === ''
+    )
+    return allOthersFalsy
+  })
+  const isBoolean = othersFalsyCheck.some((value: boolean) => value === true)
 
-  console.log(othersFalsyCheck, `2222`)
+  console.log(isBoolean, `2222`)
 
-  if (othersFalsyCheck) {
+  if (isBoolean) {
+    console.log(isBoolean, `3333`)
     await mysql.query(expensesService.deleteExpensesByUserIdAndDate, [
       user_id,
       _util.formatDate(create_date, 'yyyy-MM-dd')

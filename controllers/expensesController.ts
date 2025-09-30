@@ -2,8 +2,8 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 16:38:22
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-23 17:17:04
- * @FilePath: \admin\controllers\expensesController.ts
+ * @LastEditTime: 2025-09-30 10:04:05
+ * @FilePath: \wanWan\controllers\expensesController.ts
  * @Description:
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
@@ -48,7 +48,7 @@ exports.add = async (req: any, res: any, next: any) => {
 
 // 获取花销列表
 exports.list = async (req: any, res: any) => {
-  let { userId, startTime, endTime, total } = req.body
+  let { userId, startTime, endTime } = req.body
 
   const params = [userId, startTime, endTime] as never[]
 
