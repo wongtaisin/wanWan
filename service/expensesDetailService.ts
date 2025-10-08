@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-09-23 09:47:03
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-30 10:25:55
+ * @LastEditTime: 2025-10-08 14:37:28
  * @FilePath: \wanWan\service\expensesDetailService.ts
  * @Description:
  *
@@ -19,7 +19,7 @@ export const getIdExpensesDetail = `SELECT * FROM expenses_detail WHERE 1=1 AND 
  * @param {number} money 花销金额
  * @param {string} create_date 花销日期
  * @example [user_id, user_name, expenses_name, money, create_date]
- * @demo [1, 'wongtaisin', 'eat', 15, '2025-09-01 10:10:10']
+ * @demo [1, '大帅', 'eat', 15, '2025-09-01 10:10:10']
  *
  * @explain COALESCE(NULLIF(?, ''), now()) 当 create_date 为空时，使用当前时间
  */
@@ -125,8 +125,25 @@ export const buildQueryExpensesDetail = ({
   return { sql, params }
 }
 
+/**
+ * @desc 根据 id 删除花销详情
+ * @param {number} id 花销详情id
+ * @example [id]
+ * @demo [1]
+ */
 exports.deleteExpensesDetail = `DELETE FROM expenses_detail WHERE id = ?;`
 
+/**
+ * @desc 查询 expenses_detail 表中与 expenses 表不一致的数据
+ * @returns {object} { sql: string, params: any[] }
+ * @example { sql: 'SELECT ed.* FROM expenses_detail ed LEFT JOIN (SELECT DISTINCT user_id, DATE(create_date) AS d FROM expenses) e ON ed.user_id = e.user_id AND DATE(ed.create_date) = e.d WHERE e.d IS NULL ORDER BY ed.user_id, ed.create_date;', params: [] }
+ *
+ * @explain LEFT JOIN // 左连接，返回左表中的所有记录，右表中匹配的记录如果不存在，也会返回 NULL
+ * @explain DISTINCT // 用于返回唯一不同的值
+ * @explain DATE() // DATE(create_date) 是将 create_date 转换为日期格式
+ * @explain IS NULL // 用于查询字段值为 NULL 的记录
+ * @explain ORDER BY // 用于对结果集进行排序
+ */
 exports.contrastDate = `SELECT ed.*
 FROM expenses_detail ed
 LEFT JOIN (

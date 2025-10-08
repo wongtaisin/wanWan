@@ -202,7 +202,7 @@ const handleTree = (data: any[], id?: string, parentId?: string, children?: stri
  * @desc 获取指定天数前的日期字符串
  * @param {number} days - 天数,默认0
  * @returns {string} 格式化后的日期字符串 2025-08-14
- * @example
+ * @example 假设今天是 2025-08-14
  * @demo selectedDate(0) => '2025-08-14'
  * @demo selectedDate(1) => '2025-08-13'
  * @demo selectedDate(30) => '2025-07-15'

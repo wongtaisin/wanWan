@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-09-23 09:55:43
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-30 16:09:26
+ * @LastEditTime: 2025-10-08 14:31:21
  * @FilePath: \wanWan\controllers\expensesDetailController.ts
  * @Description:
  *
@@ -104,7 +104,7 @@ exports.add = async (req: any, res: any, next: any) => {
 }
 
 /**
- * @description: 更新花销
+ * @desc 更新花销
  * @param {number} id // 必填
  * @param {string} expenses_name // 名称 必填
  * @param {string} money // 金额
@@ -158,6 +158,10 @@ exports.upDate = async (req: any, res: any, next: any) => {
   })
 }
 
+/**
+ * @desc 删除花销
+ * @param {number} id // 必填
+ */
 exports.delete = async (req: any, res: any, next: any) => {
   const { id }: { id: number } = req.params
 
@@ -215,7 +219,7 @@ exports.delete = async (req: any, res: any, next: any) => {
 }
 
 /**
- * @description: 修复数据，将 expensesDetail 表中与 expenses 表不一致的数据修复
+ * @desc 修复数据，将 expensesDetail 表中与 expenses 表不一致的数据修复
  *
  * 1. 先查询 expensesDetail 表中与 expenses 表不一致的数据
  * 2. 返回不一样的数据，根据 user_id 和 create_date 分组，合并数据
