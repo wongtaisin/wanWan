@@ -11,7 +11,7 @@
  Target Server Version : 90400 (9.4.0)
  File Encoding         : 65001
 
- Date: 08/10/2025 14:28:59
+ Date: 11/10/2025 16:13:24
 */
 
 SET NAMES utf8mb4;
@@ -38,52 +38,56 @@ CREATE TABLE `expenses`  (
   `phone_bill` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '话费',
   `red_packet` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '红包',
   `vip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '会员',
+  `other` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '其它',
   `create_date` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 95 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '花销明细' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 98 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '花销明细' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of expenses
 -- ----------------------------
-INSERT INTO `expenses` VALUES (5, 1, '大帅', '32,8,1,7', '998,99', NULL, NULL, '69', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-08-29 15:26:26');
-INSERT INTO `expenses` VALUES (7, 3, '张三', '8,6,42,9', NULL, '300,330', NULL, '208', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-08-30 09:39:45');
-INSERT INTO `expenses` VALUES (26, 22, '龙九', '89', '6', '300,400', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-08-31 15:45:16');
-INSERT INTO `expenses` VALUES (28, 1, '大帅', '2,15', '3.5', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-09-01 11:05:15');
-INSERT INTO `expenses` VALUES (29, 1, '大帅', '15,15', '3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-09-02 13:57:44');
-INSERT INTO `expenses` VALUES (30, 1, '大帅', '15,10', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '28.94', NULL, NULL, '2025-09-03 15:10:22');
-INSERT INTO `expenses` VALUES (31, 1, '大帅', '2,20', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '4.5', NULL, NULL, NULL, NULL, '2025-09-04 09:33:43');
-INSERT INTO `expenses` VALUES (32, 1, '大帅', '2,15', '1.5', NULL, NULL, NULL, NULL, NULL, NULL, '10', NULL, NULL, NULL, NULL, '2025-09-05 08:13:22');
-INSERT INTO `expenses` VALUES (33, 1, '大帅', '2,15.98', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-09-06 08:24:34');
-INSERT INTO `expenses` VALUES (34, 1, '大帅', '2,15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-09-09 08:58:16');
-INSERT INTO `expenses` VALUES (35, 1, '大帅', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '21.71', NULL, NULL, NULL, NULL, '2025-09-07 20:21:59');
-INSERT INTO `expenses` VALUES (36, 1, '大帅', '12', '3', NULL, NULL, NULL, NULL, NULL, NULL, '20,4', NULL, NULL, NULL, NULL, '2025-09-08 12:09:28');
-INSERT INTO `expenses` VALUES (37, 1, '大帅', '2,15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '6.1,1.7', NULL, NULL, NULL, NULL, '2025-09-11 10:56:46');
-INSERT INTO `expenses` VALUES (38, 1, '大帅', '17,27.68,12.9,17', '2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-09-10 09:37:23');
-INSERT INTO `expenses` VALUES (39, 1, '大帅', '2,15', '3.5', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-09-12 08:19:11');
-INSERT INTO `expenses` VALUES (40, 1, '大帅', '15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '699', '2025-09-13 14:16:47');
-INSERT INTO `expenses` VALUES (41, 1, '大帅', '2,15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '7', '112', NULL, NULL, NULL, '2025-09-15 08:55:28');
-INSERT INTO `expenses` VALUES (42, 1, '大帅', '33.39', NULL, NULL, NULL, NULL, NULL, '15', NULL, '7.5,35.8,7.5,32.68,124.40,1.8', '3.41,65.8', '50', NULL, NULL, '2025-09-14 03:04:54');
-INSERT INTO `expenses` VALUES (43, 1, '大帅', '2,15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '79', NULL, NULL, NULL, '2025-09-16 10:57:22');
-INSERT INTO `expenses` VALUES (44, 1, '大帅', '2,15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-09-17 09:08:03');
-INSERT INTO `expenses` VALUES (45, 1, '大帅', '2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '99', NULL, NULL, NULL, '2025-09-18 11:05:42');
-INSERT INTO `expenses` VALUES (46, 1, '大帅', '2,20,20', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-09-19 00:00:00');
-INSERT INTO `expenses` VALUES (47, 1, '大帅', '2,15,15', '3.5', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-09-22 08:23:51');
-INSERT INTO `expenses` VALUES (48, 1, '大帅', '125', '3', NULL, NULL, NULL, '197.98', NULL, NULL, '39.2', NULL, NULL, NULL, NULL, '2025-09-21 00:00:00');
-INSERT INTO `expenses` VALUES (49, 1, '大帅', '2,12,10', NULL, NULL, NULL, NULL, '35.65', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-09-20 00:20:17');
-INSERT INTO `expenses` VALUES (50, 1, '大帅', '2,15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '9', NULL, NULL, NULL, NULL, '2025-09-23 07:27:43');
-INSERT INTO `expenses` VALUES (52, 1, '大帅', '2,15,23', '3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-09-25 07:17:37');
-INSERT INTO `expenses` VALUES (53, 1, '大帅', NULL, NULL, NULL, NULL, NULL, '342.13', '25', NULL, NULL, NULL, NULL, NULL, NULL, '2025-09-24 21:42:42');
-INSERT INTO `expenses` VALUES (55, 1, '大帅', '2,15,15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '40', '2025-09-26 07:24:39');
-INSERT INTO `expenses` VALUES (58, 1, '大帅', '2,15,65', '3', NULL, NULL, NULL, NULL, NULL, NULL, '23.76', NULL, NULL, NULL, NULL, '2025-09-27 07:27:09');
-INSERT INTO `expenses` VALUES (86, 1, '大帅', '2,15,15', '3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-09-28 07:20:41');
-INSERT INTO `expenses` VALUES (87, 1, '大帅', '15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-09-29 12:10:47');
-INSERT INTO `expenses` VALUES (88, 1, '大帅', '2,9,600', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-09-30 07:26:30');
-INSERT INTO `expenses` VALUES (89, 1, '大帅', '10', '4,12.3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-10-01 17:15:56');
-INSERT INTO `expenses` VALUES (90, 1, '大帅', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '28.94', NULL, NULL, '2025-10-03 15:25:43');
-INSERT INTO `expenses` VALUES (91, 1, '大帅', '18,16.86', '15.08', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-10-04 22:13:25');
-INSERT INTO `expenses` VALUES (92, 1, '大帅', '15,16.14', '4.1', NULL, NULL, NULL, NULL, NULL, NULL, '8.5', NULL, NULL, NULL, NULL, '2025-10-05 18:18:33');
-INSERT INTO `expenses` VALUES (93, 1, '大帅', '11.98,8.8', '18.8', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-10-07 00:52:22');
-INSERT INTO `expenses` VALUES (94, 1, '大帅', NULL, '2.8', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-10-08 12:25:37');
+INSERT INTO `expenses` VALUES (5, 1, '大帅', '32,8,1,7', '998,99', NULL, NULL, '69', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-08-29 15:26:26');
+INSERT INTO `expenses` VALUES (7, 3, '张三', '8,6,42,9', NULL, '300,330', NULL, '208', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-08-30 09:39:45');
+INSERT INTO `expenses` VALUES (26, 22, '龙九', '89', '6', '300,400', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-08-31 15:45:16');
+INSERT INTO `expenses` VALUES (28, 1, '大帅', '2,15', '3.5', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-09-01 11:05:15');
+INSERT INTO `expenses` VALUES (29, 1, '大帅', '15,15', '3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-09-02 13:57:44');
+INSERT INTO `expenses` VALUES (30, 1, '大帅', '15,10', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '28.94', NULL, NULL, NULL, '2025-09-03 15:10:22');
+INSERT INTO `expenses` VALUES (31, 1, '大帅', '2,20', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '4.5', NULL, NULL, NULL, NULL, NULL, '2025-09-04 09:33:43');
+INSERT INTO `expenses` VALUES (32, 1, '大帅', '2,15', '1.5', NULL, NULL, NULL, NULL, NULL, NULL, '10', NULL, NULL, NULL, NULL, NULL, '2025-09-05 08:13:22');
+INSERT INTO `expenses` VALUES (33, 1, '大帅', '2,15.98', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-09-06 08:24:34');
+INSERT INTO `expenses` VALUES (34, 1, '大帅', '2,15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-09-09 08:58:16');
+INSERT INTO `expenses` VALUES (35, 1, '大帅', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '21.71', NULL, NULL, NULL, NULL, NULL, '2025-09-07 20:21:59');
+INSERT INTO `expenses` VALUES (36, 1, '大帅', '12', '3', NULL, NULL, NULL, NULL, NULL, NULL, '20,4', NULL, NULL, NULL, NULL, NULL, '2025-09-08 12:09:28');
+INSERT INTO `expenses` VALUES (37, 1, '大帅', '2,15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '6.1,1.7', NULL, NULL, NULL, NULL, NULL, '2025-09-11 10:56:46');
+INSERT INTO `expenses` VALUES (38, 1, '大帅', '17,27.68,12.9,17', '2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-09-10 09:37:23');
+INSERT INTO `expenses` VALUES (39, 1, '大帅', '2,15', '3.5', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-09-12 08:19:11');
+INSERT INTO `expenses` VALUES (40, 1, '大帅', '15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '699', NULL, '2025-09-13 14:16:47');
+INSERT INTO `expenses` VALUES (41, 1, '大帅', '2,15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '7', '112', NULL, NULL, NULL, NULL, '2025-09-15 08:55:28');
+INSERT INTO `expenses` VALUES (42, 1, '大帅', '33.39', NULL, NULL, NULL, NULL, NULL, '15', NULL, '7.5,35.8,7.5,32.68,124.40,1.8', '3.41,65.8', '50', NULL, NULL, NULL, '2025-09-14 03:04:54');
+INSERT INTO `expenses` VALUES (43, 1, '大帅', '2,15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '79', NULL, NULL, NULL, NULL, '2025-09-16 10:57:22');
+INSERT INTO `expenses` VALUES (44, 1, '大帅', '2,15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-09-17 09:08:03');
+INSERT INTO `expenses` VALUES (45, 1, '大帅', '2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '99', NULL, NULL, NULL, NULL, '2025-09-18 11:05:42');
+INSERT INTO `expenses` VALUES (46, 1, '大帅', '2,20,20', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-09-19 00:00:00');
+INSERT INTO `expenses` VALUES (47, 1, '大帅', '2,15,15', '3.5', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-09-22 08:23:51');
+INSERT INTO `expenses` VALUES (48, 1, '大帅', '125', '3', NULL, NULL, NULL, '197.98', NULL, NULL, '39.2', NULL, NULL, NULL, NULL, NULL, '2025-09-21 00:00:00');
+INSERT INTO `expenses` VALUES (49, 1, '大帅', '2,12,10', NULL, NULL, NULL, NULL, '35.65', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-09-20 00:20:17');
+INSERT INTO `expenses` VALUES (50, 1, '大帅', '2,15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '9', NULL, NULL, NULL, NULL, NULL, '2025-09-23 07:27:43');
+INSERT INTO `expenses` VALUES (52, 1, '大帅', '2,15,23', '3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-09-25 07:17:37');
+INSERT INTO `expenses` VALUES (53, 1, '大帅', NULL, NULL, NULL, NULL, NULL, '342.13', '25', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-09-24 21:42:42');
+INSERT INTO `expenses` VALUES (55, 1, '大帅', '2,15,15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '40', NULL, '2025-09-26 07:24:39');
+INSERT INTO `expenses` VALUES (58, 1, '大帅', '2,15,65', '3', NULL, NULL, NULL, NULL, NULL, NULL, '23.76', NULL, NULL, NULL, NULL, NULL, '2025-09-27 07:27:09');
+INSERT INTO `expenses` VALUES (86, 1, '大帅', '2,15,15', '3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-09-28 07:20:41');
+INSERT INTO `expenses` VALUES (87, 1, '大帅', '15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-09-29 12:10:47');
+INSERT INTO `expenses` VALUES (88, 1, '大帅', '2,9,600', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-09-30 07:26:30');
+INSERT INTO `expenses` VALUES (89, 1, '大帅', '10', '4,12.3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-10-01 17:15:56');
+INSERT INTO `expenses` VALUES (90, 1, '大帅', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '28.94', NULL, NULL, NULL, '2025-10-03 15:25:43');
+INSERT INTO `expenses` VALUES (91, 1, '大帅', '18,16.86', '15.08', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-10-04 22:13:25');
+INSERT INTO `expenses` VALUES (92, 1, '大帅', '15,16.14', '4.1', NULL, NULL, NULL, NULL, NULL, NULL, '8.5', NULL, NULL, NULL, NULL, NULL, '2025-10-05 18:18:33');
+INSERT INTO `expenses` VALUES (93, 1, '大帅', '11.98,8.8', '18.8', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-10-07 00:52:22');
+INSERT INTO `expenses` VALUES (94, 1, '大帅', NULL, '2.8', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '8.2', NULL, NULL, NULL, '206.45', '2025-10-08 12:25:37');
+INSERT INTO `expenses` VALUES (95, 1, '大帅', '25,14.94', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '5.32', NULL, NULL, NULL, '2025-10-09 00:54:09');
+INSERT INTO `expenses` VALUES (96, 1, '大帅', '1,17.94', '4', NULL, NULL, NULL, NULL, '5', NULL, NULL, NULL, NULL, NULL, NULL, '200,10,390,206.4', '2025-10-10 10:00:36');
+INSERT INTO `expenses` VALUES (97, 1, '大帅', '2,15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-10-11 07:20:58');
 
 -- ----------------------------
 -- Table structure for expenses_detail
@@ -100,7 +104,7 @@ CREATE TABLE `expenses_detail`  (
   `create_date` datetime NULL DEFAULT NULL,
   `update_date` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 78 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '花销详情，精确到时分秒' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 93 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '花销详情，精确到时分秒' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of expenses_detail
@@ -147,6 +151,21 @@ INSERT INTO `expenses_detail` VALUES (74, 1, '大帅', 'eat', '11.98', NULL, '�
 INSERT INTO `expenses_detail` VALUES (75, 1, '大帅', 'eat', '8.8', NULL, '711，关东煮', '2025-10-07 14:38:45', NULL);
 INSERT INTO `expenses_detail` VALUES (76, 1, '大帅', 'drink', '18.8', NULL, '蜜雪冰城，草莓圣代，杨枝甘露（难喝）', '2025-10-07 14:59:23', NULL);
 INSERT INTO `expenses_detail` VALUES (77, 1, '大帅', 'drink', '2.8', NULL, '惠意心商行，1.5L的农夫山泉', '2025-10-08 12:25:37', NULL);
+INSERT INTO `expenses_detail` VALUES (78, 1, '大帅', 'other', '206.45', NULL, '第三人民医院，验血', '2025-10-08 18:47:30', NULL);
+INSERT INTO `expenses_detail` VALUES (79, 1, '大帅', 'online_shopping', '8.2', NULL, '淘宝闪购，宝矿力水特3瓶，医生让喝', '2025-10-08 20:36:03', NULL);
+INSERT INTO `expenses_detail` VALUES (80, 1, '大帅', 'phone_bill', '5.32', NULL, '移动', '2025-10-09 00:54:09', NULL);
+INSERT INTO `expenses_detail` VALUES (81, 1, '大帅', 'eat', '25', NULL, '华珠炖品，猪肉汤+肉肠分，牛肉丸', '2025-10-09 01:17:06', NULL);
+INSERT INTO `expenses_detail` VALUES (82, 1, '大帅', 'eat', '14.94', NULL, '大辉潮汕面店', '2025-10-09 18:51:09', NULL);
+INSERT INTO `expenses_detail` VALUES (83, 1, '大帅', 'eat', '1', NULL, '一个菜包', '2025-10-10 10:00:36', NULL);
+INSERT INTO `expenses_detail` VALUES (84, 1, '大帅', 'other', '200', NULL, '违停罚款', '2025-10-10 11:42:58', NULL);
+INSERT INTO `expenses_detail` VALUES (85, 1, '大帅', 'drink', '4', NULL, '脉动', '2025-10-10 13:34:35', NULL);
+INSERT INTO `expenses_detail` VALUES (86, 1, '大帅', 'other', '10', NULL, '水口车管所，车改色，换本费', '2025-10-10 15:36:15', NULL);
+INSERT INTO `expenses_detail` VALUES (87, 1, '大帅', 'other', '390', NULL, '惠安检测，车年检，远光灯亮度不足，需更换，不要再去这', '2025-10-10 15:51:36', NULL);
+INSERT INTO `expenses_detail` VALUES (88, 1, '大帅', 'other', '206.4', NULL, '第三人民医院，验血，现金支付', '2025-10-10 18:36:28', NULL);
+INSERT INTO `expenses_detail` VALUES (89, 1, '大帅', 'parking', '5', NULL, '第三人民医院停车，3小时', '2025-10-10 20:39:52', NULL);
+INSERT INTO `expenses_detail` VALUES (90, 1, '大帅', 'eat', '17.94', NULL, '淘宝闪购，嘉丽园港式牛腩牛什分面店', '2025-10-10 22:36:27', NULL);
+INSERT INTO `expenses_detail` VALUES (91, 1, '大帅', 'eat', '2', NULL, '2个菜包', '2025-10-11 07:20:58', NULL);
+INSERT INTO `expenses_detail` VALUES (92, 1, '大帅', 'eat', '15', NULL, '外卖，青瓜炒肉', '2025-10-11 10:43:22', '2025-10-11 16:11:00');
 
 -- ----------------------------
 -- Table structure for operation_log
@@ -173,7 +192,7 @@ CREATE TABLE `operation_log`  (
   INDEX `idx_operation_type`(`operation_type` ASC) USING BTREE,
   INDEX `idx_module`(`module` ASC) USING BTREE,
   INDEX `idx_create_time`(`create_time` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1083 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '操作日志表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1108 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '操作日志表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of operation_log
@@ -1254,6 +1273,31 @@ INSERT INTO `operation_log` VALUES (1079, 1, '大帅', 'QUERY', 'expenses', 'GET
 INSERT INTO `operation_log` VALUES (1080, NULL, NULL, 'QUERY', 'expenses', 'GET /api/expenses/total - QUERY', '/api/expenses/total?userId=1&startTime=2025-09-01&endTime=2025-09-30', 'GET', '{\"query\":{\"userId\":\"1\",\"startTime\":\"2025-09-01\",\"endTime\":\"2025-09-30\"},\"params\":{}}', '{\"code\":401,\"msg\":\"token失效，请重新登录\",\"data\":null}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 401, 7, '2025-10-08 14:27:43');
 INSERT INTO `operation_log` VALUES (1081, 1, '大帅', 'QUERY', 'expenses', 'GET /expenses/total - QUERY', '/api/expenses/total?userId=1&startTime=2025-09-01&endTime=2025-09-30', 'GET', '{\"query\":{\"userId\":\"1\",\"startTime\":\"2025-09-01\",\"endTime\":\"2025-09-30\"},\"params\":{}}', '{\"code\":200,\"data\":{\"eat\":1419.95,\"drink\":32,\"phone_bill\":78.94,\"supermarket\":356.65,\"vip\":739,\"online_shopping\":359.21,\"parking\":40,\"oil\":575.76,\"total\":3601.51,\"startTime\":\"2025-09-01\",\"endTime\":\"2025-09-30\"},\"msg\":\"获取花销合计成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 5, '2025-10-08 14:27:55');
 INSERT INTO `operation_log` VALUES (1082, 1, '大帅', 'QUERY', 'expenses', 'GET /expenses/total - QUERY', '/api/expenses/total?userId=1&startTime=2025-10-01&endTime=2025-10-31', 'GET', '{\"query\":{\"userId\":\"1\",\"startTime\":\"2025-10-01\",\"endTime\":\"2025-10-31\"},\"params\":{}}', '{\"code\":200,\"data\":{\"eat\":96.78,\"drink\":57.08,\"phone_bill\":28.94,\"supermarket\":8.5,\"total\":191.3,\"startTime\":\"2025-10-01\",\"endTime\":\"2025-10-31\"},\"msg\":\"获取花销合计成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 2, '2025-10-08 14:28:17');
+INSERT INTO `operation_log` VALUES (1083, 1, '大帅', 'QUERY', 'expenses', 'GET /expenses/total - QUERY', '/api/expenses/total?userId=1&startTime=2025-09-01&endTime=2025-09-30', 'GET', '{\"query\":{\"userId\":\"1\",\"startTime\":\"2025-09-01\",\"endTime\":\"2025-09-30\"},\"params\":{}}', '{\"code\":200,\"data\":{\"eat\":1419.95,\"drink\":32,\"phone_bill\":78.94,\"supermarket\":356.65,\"vip\":739,\"online_shopping\":359.21,\"parking\":40,\"oil\":575.76,\"total\":3601.51,\"startTime\":\"2025-09-01\",\"endTime\":\"2025-09-30\"},\"msg\":\"获取花销合计成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 3, '2025-10-08 14:45:06');
+INSERT INTO `operation_log` VALUES (1084, 1, '大帅', 'QUERY', 'expenses', 'GET /expenses/total - QUERY', '/api/expenses/total?userId=1&startTime=2025-10-01&endTime=2025-10-31', 'GET', '{\"query\":{\"userId\":\"1\",\"startTime\":\"2025-10-01\",\"endTime\":\"2025-10-31\"},\"params\":{}}', '{\"code\":200,\"data\":{\"eat\":96.78,\"drink\":57.08,\"phone_bill\":28.94,\"supermarket\":8.5,\"total\":191.3,\"startTime\":\"2025-10-01\",\"endTime\":\"2025-10-31\"},\"msg\":\"获取花销合计成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 2, '2025-10-08 14:45:54');
+INSERT INTO `operation_log` VALUES (1085, NULL, NULL, 'CREATE', 'login', 'POST /login - CREATE', '/api/login', 'POST', '{\"query\":{},\"body\":{\"user_name\":\"大帅\",\"password\":\"123456\"},\"params\":{}}', '{\"msg\":\"登录成功\",\"data\":{\"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VyX25hbWUiOiLlpKfluIUiLCJwaG9uZSI6IjEzNDExMTExMTExIiwiaWF0IjoxNzYwMTQyMzI4LCJleHAiOjE3NjAyMjg3Mjh9.ta6buBYgeWFmzII4y70QDACrkVT6q_evH2V6FkLy5NE\"}}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 329, '2025-10-11 08:25:28');
+INSERT INTO `operation_log` VALUES (1086, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/add - CREATE', '/api/expensesDetail/add', 'POST', '{\"query\":{},\"body\":{\"expenses_name\":\"other\",\"money\":\"206.45\",\"remark\":\"第三人民医院，验血\",\"create_date\":\"2025-10-08 18:47:30\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":78,\"userId\":1,\"other\":\"206.45\",\"createDate\":\"2025-10-08 18:47:30\"},\"msg\":\"添加成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 142, '2025-10-11 08:32:43');
+INSERT INTO `operation_log` VALUES (1087, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/add - CREATE', '/api/expensesDetail/add', 'POST', '{\"query\":{},\"body\":{\"expenses_name\":\"online_shopping\",\"money\":\"8.2\",\"remark\":\"淘宝闪购，宝矿力水特3瓶，医生让喝\",\"create_date\":\"2025-10-08 20:36:03\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":79,\"userId\":1,\"online_shopping\":\"8.2\",\"createDate\":\"2025-10-08 20:36:03\"},\"msg\":\"添加成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 154, '2025-10-11 08:36:48');
+INSERT INTO `operation_log` VALUES (1088, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/add - CREATE', '/api/expensesDetail/add', 'POST', '{\"query\":{},\"body\":{\"expenses_name\":\"phone_bill\",\"money\":\"5.32\",\"remark\":\"移动\",\"create_date\":\"2025-10-09 00:54:09\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":80,\"userId\":1,\"phone_bill\":\"5.32\",\"createDate\":\"2025-10-09 00:54:09\"},\"msg\":\"添加成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 163, '2025-10-11 08:37:59');
+INSERT INTO `operation_log` VALUES (1089, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/add - CREATE', '/api/expensesDetail/add', 'POST', '{\"query\":{},\"body\":{\"expenses_name\":\"eat\",\"money\":\"25\",\"remark\":\"华珠炖品，猪肉汤+肉肠分，牛肉丸\",\"create_date\":\"2025-10-09 01:17:06\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":81,\"userId\":1,\"eat\":\"25\",\"createDate\":\"2025-10-09 01:17:06\"},\"msg\":\"添加成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 88, '2025-10-11 08:38:58');
+INSERT INTO `operation_log` VALUES (1090, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/add - CREATE', '/api/expensesDetail/add', 'POST', '{\"query\":{},\"body\":{\"expenses_name\":\"eat\",\"money\":\"14.94\",\"remark\":\"大辉潮汕面店\",\"create_date\":\"2025-10-09 18:51:09\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":82,\"userId\":1,\"eat\":\"14.94\",\"createDate\":\"2025-10-09 18:51:09\"},\"msg\":\"添加成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 85, '2025-10-11 08:39:52');
+INSERT INTO `operation_log` VALUES (1091, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/add - CREATE', '/api/expensesDetail/add', 'POST', '{\"query\":{},\"body\":{\"expenses_name\":\"eat\",\"money\":\"1\",\"remark\":\"一个菜包\",\"create_date\":\"2025-10-10 10:00:36\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":83,\"userId\":1,\"eat\":\"1\",\"createDate\":\"2025-10-10 10:00:36\"},\"msg\":\"添加成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 176, '2025-10-11 08:40:34');
+INSERT INTO `operation_log` VALUES (1092, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/add - CREATE', '/api/expensesDetail/add', 'POST', '{\"query\":{},\"body\":{\"expenses_name\":\"other\",\"money\":\"200\",\"remark\":\"违停罚款\",\"create_date\":\"2025-10-10 11:42:58\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":84,\"userId\":1,\"other\":\"200\",\"createDate\":\"2025-10-10 11:42:58\"},\"msg\":\"添加成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 103, '2025-10-11 08:41:43');
+INSERT INTO `operation_log` VALUES (1093, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/add - CREATE', '/api/expensesDetail/add', 'POST', '{\"query\":{},\"body\":{\"expenses_name\":\"drink\",\"money\":\"4\",\"remark\":\"脉动\",\"create_date\":\"2025-10-10 13:34:35\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":85,\"userId\":1,\"drink\":\"4\",\"createDate\":\"2025-10-10 13:34:35\"},\"msg\":\"添加成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 76, '2025-10-11 08:42:11');
+INSERT INTO `operation_log` VALUES (1094, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/add - CREATE', '/api/expensesDetail/add', 'POST', '{\"query\":{},\"body\":{\"expenses_name\":\"other\",\"money\":\"10\",\"remark\":\"车，改色，换本费\",\"create_date\":\"2025-10-10 15:36:15\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":86,\"userId\":1,\"other\":\"10\",\"createDate\":\"2025-10-10 15:36:15\"},\"msg\":\"添加成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 84, '2025-10-11 08:43:03');
+INSERT INTO `operation_log` VALUES (1095, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/add - CREATE', '/api/expensesDetail/add', 'POST', '{\"query\":{},\"body\":{\"expenses_name\":\"other\",\"money\":\"390\",\"remark\":\"车年检，远光灯亮度不足，需更换\",\"create_date\":\"2025-10-10 15:51:36\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":87,\"userId\":1,\"other\":\"390\",\"createDate\":\"2025-10-10 15:51:36\"},\"msg\":\"添加成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 76, '2025-10-11 08:43:52');
+INSERT INTO `operation_log` VALUES (1096, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/add - CREATE', '/api/expensesDetail/add', 'POST', '{\"query\":{},\"body\":{\"expenses_name\":\"other\",\"money\":\"206.4\",\"remark\":\"第三人民医院，验血，现金支付\",\"create_date\":\"2025-10-10 18:36:28\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":88,\"userId\":1,\"other\":\"206.4\",\"createDate\":\"2025-10-10 18:36:28\"},\"msg\":\"添加成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 96, '2025-10-11 08:45:14');
+INSERT INTO `operation_log` VALUES (1097, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/add - CREATE', '/api/expensesDetail/add', 'POST', '{\"query\":{},\"body\":{\"expenses_name\":\"parking\",\"money\":\"5\",\"remark\":\"停车\",\"create_date\":\"2025-10-10 20:39:52\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":89,\"userId\":1,\"parking\":\"5\",\"createDate\":\"2025-10-10 20:39:52\"},\"msg\":\"添加成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 78, '2025-10-11 08:52:18');
+INSERT INTO `operation_log` VALUES (1098, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/add - CREATE', '/api/expensesDetail/add', 'POST', '{\"query\":{},\"body\":{\"expenses_name\":\"eat\",\"money\":\"17.94\",\"remark\":\"淘宝闪购，嘉丽园港式牛腩牛什分面店\",\"create_date\":\"2025-10-10 22:36:27\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":90,\"userId\":1,\"eat\":\"17.94\",\"createDate\":\"2025-10-10 22:36:27\"},\"msg\":\"添加成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 75, '2025-10-11 08:56:11');
+INSERT INTO `operation_log` VALUES (1099, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/add - CREATE', '/api/expensesDetail/add', 'POST', '{\"query\":{},\"body\":{\"expenses_name\":\"eat\",\"money\":\"2\",\"remark\":\"2个菜包\",\"create_date\":\"2025-10-11 07:20:58\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":91,\"userId\":1,\"eat\":\"2\",\"createDate\":\"2025-10-11 07:20:58\"},\"msg\":\"添加成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 223, '2025-10-11 08:56:40');
+INSERT INTO `operation_log` VALUES (1100, NULL, NULL, 'QUERY', 'expenses', 'GET /api/expensesDetail/repairData - QUERY', '/api/expensesDetail/repairData', 'GET', '{\"query\":{},\"params\":{}}', '{\"code\":401,\"msg\":\"token失效，请重新登录\",\"data\":null}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 401, 19, '2025-10-11 08:57:35');
+INSERT INTO `operation_log` VALUES (1101, 1, '大帅', 'QUERY', 'expenses', 'GET /expenses/total - QUERY', '/api/expenses/total?userId=1&startTime=2025-10-01&endTime=2025-10-31', 'GET', '{\"query\":{\"userId\":\"1\",\"startTime\":\"2025-10-01\",\"endTime\":\"2025-10-31\"},\"params\":{}}', '{\"code\":200,\"data\":{\"eat\":157.66,\"drink\":61.08,\"phone_bill\":34.260000000000005,\"supermarket\":8.5,\"online_shopping\":8.2,\"other\":1012.85,\"parking\":5,\"total\":1287.55,\"startTime\":\"2025-10-01\",\"endTime\":\"2025-10-31\"},\"msg\":\"获取花销合计成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 3, '2025-10-11 08:57:54');
+INSERT INTO `operation_log` VALUES (1102, 1, '大帅', 'QUERY', 'expenses', 'GET /expensesDetail/repairData - QUERY', '/api/expensesDetail/repairData', 'GET', '{\"query\":{},\"params\":{}}', '{\"code\":200,\"msg\":\"expenses 数据库完整\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 3, '2025-10-11 08:58:07');
+INSERT INTO `operation_log` VALUES (1103, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/add - CREATE', '/api/expensesDetail/add', 'POST', '{\"query\":{},\"body\":{\"expenses_name\":\"eat\",\"money\":\"2\",\"remark\":\"2个菜包\",\"create_date\":\"2025-10-11 07:20:58\"},\"params\":{}}', '{\"code\":400,\"data\":{\"id\":91,\"user_id\":1,\"user_name\":\"大帅\",\"expenses_name\":\"eat\",\"money\":\"2\",\"image\":null,\"remark\":\"2个菜包\",\"create_date\":\"2025-10-10T23:20:58.000Z\",\"update_date\":null},\"msg\":\"该字段时间段已存在\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 2, '2025-10-11 08:58:18');
+INSERT INTO `operation_log` VALUES (1104, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/add - CREATE', '/api/expensesDetail/add', 'POST', '{\"query\":{},\"body\":{\"expenses_name\":\"eat\",\"money\":\"15\",\"remark\":\"青瓜炒肉\",\"create_date\":\"2025-10-11 10:43:22\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":92,\"userId\":1,\"eat\":\"15\",\"createDate\":\"2025-10-11 10:43:22\"},\"msg\":\"添加成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 652, '2025-10-11 16:08:37');
+INSERT INTO `operation_log` VALUES (1105, 1, '大帅', 'QUERY', 'expenses', 'GET /expenses/total - QUERY', '/api/expenses/total?userId=1&startTime=2025-10-01&endTime=2025-10-31', 'GET', '{\"query\":{\"userId\":\"1\",\"startTime\":\"2025-10-01\",\"endTime\":\"2025-10-31\"},\"params\":{}}', '{\"code\":200,\"data\":{\"eat\":172.66,\"drink\":61.08,\"phone_bill\":34.260000000000005,\"supermarket\":8.5,\"online_shopping\":8.2,\"other\":1012.85,\"parking\":5,\"total\":1302.55,\"startTime\":\"2025-10-01\",\"endTime\":\"2025-10-31\"},\"msg\":\"获取花销合计成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 4, '2025-10-11 16:09:31');
+INSERT INTO `operation_log` VALUES (1106, NULL, NULL, 'CREATE', 'expenses', 'POST /api/expensesDetail/edit - CREATE', '/api/expensesDetail/edit', 'POST', '{\"query\":{},\"body\":{\"id\":92,\"expenses_name\":\"eat\",\"remark\":\"外卖，青瓜炒肉\"},\"params\":{}}', '{\"code\":401,\"msg\":\"token失效，请重新登录\",\"data\":null}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 401, 6, '2025-10-11 16:10:47');
+INSERT INTO `operation_log` VALUES (1107, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/edit - CREATE', '/api/expensesDetail/edit', 'POST', '{\"query\":{},\"body\":{\"id\":92,\"expenses_name\":\"eat\",\"remark\":\"外卖，青瓜炒肉\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":92,\"userId\":1,\"remark\":\"外卖，青瓜炒肉\",\"updateDate\":\"2025-10-11 16:11:00\"},\"msg\":\"更新成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 54, '2025-10-11 16:11:00');
 
 -- ----------------------------
 -- Table structure for user
@@ -1280,7 +1324,7 @@ CREATE TABLE `user`  (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1, '大帅', NULL, '13411111111', 33, 1, '123456', '2025-10-08 13:52:56', '::ffff:127.0.0.1', '1', NULL, NULL, '2025-08-19 15:44:09', NULL);
+INSERT INTO `user` VALUES (1, '大帅', NULL, '13411111111', 33, 1, '123456', '2025-10-11 08:25:28', '::ffff:127.0.0.1', '1', NULL, NULL, '2025-08-19 15:44:09', NULL);
 INSERT INTO `user` VALUES (3, '张三', NULL, '13433333333', 20, 2, '123456', NULL, NULL, '1', NULL, NULL, '2025-08-19 16:49:24', NULL);
 INSERT INTO `user` VALUES (4, '李四', NULL, '13444444444', 18, 1, '123456', NULL, NULL, '1', NULL, NULL, '2025-08-19 16:53:36', NULL);
 INSERT INTO `user` VALUES (5, '王五', NULL, '13455555555', 49, 2, '123456', NULL, NULL, '1', NULL, NULL, '2025-08-19 17:28:36', NULL);
