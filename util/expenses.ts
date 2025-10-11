@@ -2,8 +2,8 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-09-22 16:30:33
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-23 08:32:31
- * @FilePath: \admin\util\expenses.ts
+ * @LastEditTime: 2025-10-11 08:29:26
+ * @FilePath: \wanWan\util\expenses.ts
  * @Description:
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
@@ -44,7 +44,8 @@ const judgeName = (fieldName: string) => {
     'online_shopping',
     'phone_bill',
     'red_packet',
-    'vip'
+    'vip',
+    'other'
   ]
   if (!allowedFields.includes(fieldName)) {
     throw new Error('字段名称无效')

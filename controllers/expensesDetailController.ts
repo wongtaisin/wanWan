@@ -239,6 +239,7 @@ exports.delete = async (req: any, res: any, next: any) => {
     phone_bill,
     red_packet,
     vip,
+    other,
     create_date,
  * }]
  * 3. 合并数据后，根据 user_id 和 create_date 更新 expenses 表
@@ -271,6 +272,7 @@ exports.repairExpensesData = async (req: any, res: any, next: any) => {
     'phone_bill',
     'red_packet',
     'vip',
+    'other',
     'create_date'
   ]
 

@@ -2,8 +2,8 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-25 11:02:53
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-27 10:24:21
- * @FilePath: \admin\middleware\expenses.ts
+ * @LastEditTime: 2025-10-11 08:30:06
+ * @FilePath: \wanWan\middleware\expenses.ts
  * @Description:
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
@@ -26,6 +26,7 @@ import mysql from '../db/mysql'
  * @param {string} phone_bill - 电话
  * @param {string} red_packet - 红包
  * @param {string} vip - 会员
+ * @param {string} other - 其他
  * @param {string} create_date - 时间
  * @returns {void}
  */
@@ -45,6 +46,7 @@ const add = async (req: any, res: any, next: any) => {
       phone_bill,
       red_packet,
       vip,
+      other,
       create_date
     } = req.body
 
@@ -66,6 +68,7 @@ const add = async (req: any, res: any, next: any) => {
       phone_bill,
       red_packet,
       vip,
+      other,
       create_date
     ]
 
@@ -96,6 +99,7 @@ const add = async (req: any, res: any, next: any) => {
  * @param {string} phone_bill - 电话
  * @param {string} red_packet - 红包
  * @param {string} vip - 会员
+ * @param {string} other - 其他
  * @param {string} create_date - 时间
  * @returns {void}
  */
@@ -127,7 +131,8 @@ const update = async (req: any, res: any, next: any) => {
         'online_shopping',
         'phone_bill',
         'red_packet',
-        'vip'
+        'vip',
+        'other'
       ]
 
       const params: any = fields
