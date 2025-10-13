@@ -2,8 +2,8 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 11:41:42
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-11 11:04:19
- * @FilePath: \express\controllers\loginController.ts
+ * @LastEditTime: 2025-10-13 15:37:51
+ * @FilePath: \wanWan\controllers\loginController.ts
  * @Description:
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
@@ -16,6 +16,7 @@ exports.register = async (req: any, res: any) => {
     let { userName, phone, userId } = req.userInfo
 
     res.status(201).json({
+      code: 201,
       data: {
         userId,
         userName,
@@ -44,7 +45,8 @@ exports.login = async (req: any, res: any) => {
   )
 
   res.json({
-    msg: '登录成功',
-    data: { token }
+    code: 200,
+    data: { token },
+    message: '登录成功'
   })
 }

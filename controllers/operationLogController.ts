@@ -44,14 +44,14 @@ class OperationLogController {
 
       res.json({
         code: 200,
-        msg: '获取操作日志列表成功',
+        message: '获取操作日志列表成功',
         data: result
       })
     } catch (error) {
       console.error('获取操作日志列表失败:', error)
       res.status(500).json({
         code: 500,
-        msg: '获取操作日志列表失败',
+        message: '获取操作日志列表失败',
         data: null
       })
     }
@@ -67,7 +67,7 @@ class OperationLogController {
       if (!id) {
         return res.status(400).json({
           code: 400,
-          msg: '日志ID不能为空',
+          message: '日志ID不能为空',
           data: null
         })
       }
@@ -77,21 +77,21 @@ class OperationLogController {
       if (!log) {
         return res.status(404).json({
           code: 404,
-          msg: '操作日志不存在',
+          message: '操作日志不存在',
           data: null
         })
       }
 
       res.json({
         code: 200,
-        msg: '获取操作日志详情成功',
+        message: '获取操作日志详情成功',
         data: log
       })
     } catch (error) {
       console.error('获取操作日志详情失败:', error)
       res.status(500).json({
         code: 500,
-        msg: '获取操作日志详情失败',
+        message: '获取操作日志详情失败',
         data: null
       })
     }
@@ -107,7 +107,7 @@ class OperationLogController {
       if (!id) {
         return res.status(400).json({
           code: 400,
-          msg: '日志ID不能为空',
+          message: '日志ID不能为空',
           data: null
         })
       }
@@ -117,21 +117,21 @@ class OperationLogController {
       if (!success) {
         return res.status(404).json({
           code: 404,
-          msg: '操作日志不存在或删除失败',
+          message: '操作日志不存在或删除失败',
           data: null
         })
       }
 
       res.json({
         code: 200,
-        msg: '删除操作日志成功',
+        message: '删除操作日志成功',
         data: null
       })
     } catch (error) {
       console.error('删除操作日志失败:', error)
       res.status(500).json({
         code: 500,
-        msg: '删除操作日志失败',
+        message: '删除操作日志失败',
         data: null
       })
     }
@@ -147,7 +147,7 @@ class OperationLogController {
       if (!ids || !Array.isArray(ids) || ids.length === 0) {
         return res.status(400).json({
           code: 400,
-          msg: '日志ID列表不能为空',
+          message: '日志ID列表不能为空',
           data: null
         })
       }
@@ -157,21 +157,21 @@ class OperationLogController {
       if (!success) {
         return res.status(400).json({
           code: 400,
-          msg: '批量删除操作日志失败',
+          message: '批量删除操作日志失败',
           data: null
         })
       }
 
       res.json({
         code: 200,
-        msg: '批量删除操作日志成功',
+        message: '批量删除操作日志成功',
         data: null
       })
     } catch (error) {
       console.error('批量删除操作日志失败:', error)
       res.status(500).json({
         code: 500,
-        msg: '批量删除操作日志失败',
+        message: '批量删除操作日志失败',
         data: null
       })
     }
@@ -187,7 +187,7 @@ class OperationLogController {
       if (!beforeDate) {
         return res.status(400).json({
           code: 400,
-          msg: '清理日期不能为空',
+          message: '清理日期不能为空',
           data: null
         })
       }
@@ -196,7 +196,7 @@ class OperationLogController {
 
       res.json({
         code: 200,
-        msg: '清理旧日志成功',
+        message: '清理旧日志成功',
         data: {
           deletedCount
         }
@@ -205,7 +205,7 @@ class OperationLogController {
       console.error('清理旧日志失败:', error)
       res.status(500).json({
         code: 500,
-        msg: '清理旧日志失败',
+        message: '清理旧日志失败',
         data: null
       })
     }
@@ -222,14 +222,14 @@ class OperationLogController {
 
       res.json({
         code: 200,
-        msg: '获取操作统计信息成功',
+        message: '获取操作统计信息成功',
         data: stats
       })
     } catch (error) {
       console.error('获取操作统计信息失败:', error)
       res.status(500).json({
         code: 500,
-        msg: '获取操作统计信息失败',
+        message: '获取操作统计信息失败',
         data: null
       })
     }

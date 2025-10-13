@@ -2,8 +2,8 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 11:41:42
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-02 13:54:24
- * @FilePath: \express\controllers\userController.ts
+ * @LastEditTime: 2025-10-13 15:51:31
+ * @FilePath: \wanWan\controllers\userController.ts
  * @Description:
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
@@ -22,8 +22,9 @@ exports.deleteUser = async (req: any, res: any) => {
 
     if (user.length === 0) {
       return res.status(404).json({
-        message: '用户不存在',
-        id
+        code: 404,
+        id,
+        message: '用户不存在'
       })
     }
 
@@ -41,9 +42,10 @@ exports.deleteUser = async (req: any, res: any) => {
       )
     }
 
-    res.status(200).json({
-      message: '删除成功',
-      id
+    res.json({
+      code: 200,
+      id,
+      message: '删除成功'
     })
   } catch (error: any) {
     console.error('删除用户失败:', error)
@@ -68,7 +70,7 @@ exports.getUser = async (req: any, res: any) => {
       })
     }
 
-    res.status(200).json({
+    res.json({
       code: 200,
       data: jsonData,
       message: '获取成功'

@@ -59,7 +59,7 @@ GET /api/operation-logs
 ```json
 {
   "code": 200,
-  "msg": "获取操作日志列表成功",
+  "message": "获取操作日志列表成功",
   "data": {
     "total": 100,
     "list": [...],

@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 16:38:22
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-30 10:04:05
+ * @LastEditTime: 2025-10-13 15:52:08
  * @FilePath: \wanWan\controllers\expensesController.ts
  * @Description:
  *
@@ -18,7 +18,6 @@ exports.add = async (req: any, res: any, next: any) => {
   const createDate = create_date || new Date().toISOString().split('T')[0]
   // 日期已存在，执行更新合并操作
   if (!!req.updateParams) {
-    console.log('req.updateParams', req.updateParams)
     await mysql.query(expensesService.updateExpenses, req.updateParams)
 
     return res.json({
@@ -28,11 +27,10 @@ exports.add = async (req: any, res: any, next: any) => {
         id: req.updateParams[req.updateParams.length - 1],
         date: createDate
       },
-      msg: '数据已合并更新'
+      message: '数据已合并更新'
     })
   }
 
-  console.log('req.addParams', req.addParams)
   const result: any = await mysql.query(expensesService.addExpenses, req.addParams)
 
   res.json({
@@ -42,7 +40,7 @@ exports.add = async (req: any, res: any, next: any) => {
       userId: req.auth.user_id,
       date: createDate
     },
-    msg: '添加成功'
+    message: '添加成功'
   })
 }
 
@@ -63,14 +61,14 @@ exports.list = async (req: any, res: any) => {
     res.json({
       code: 200,
       data: sorted,
-      msg: '获取花销列表成功'
+      message: '获取花销列表成功'
     })
   } catch (error) {
     // 捕获并处理查询过程中的错误
     console.error('获取花销列表失败:', error)
     res.status(500).json({
-      msg: '获取花销列表失败',
-      code: 500
+      code: 500,
+      message: '获取花销列表失败'
     })
   }
 }
@@ -118,14 +116,14 @@ exports.total = async (req: any, res: any) => {
         startTime,
         endTime
       },
-      msg: '获取花销合计成功'
+      message: '获取花销合计成功'
     })
   } catch (error) {
     // 捕获并处理查询过程中的错误
     console.error('获取花销列表失败:', error)
     res.status(500).json({
-      msg: '获取花销列表失败',
-      code: 500
+      code: 500,
+      message: '获取花销列表失败'
     })
   }
 }
@@ -157,7 +155,7 @@ exports.checkFieldTotal = async (req: any, res: any) => {
       values: arr.join(','),
       total: sum
     },
-    msg: '查询成功'
+    message: '查询成功'
   })
 }
 
@@ -184,13 +182,13 @@ exports.delete = async (req: any, res: any) => {
         affectedRows: affectedRows,
         queries: data.sql.length
       },
-      msg: '批量删除成功'
+      message: '批量删除成功'
     })
   } catch (error) {
     console.error('批量删除失败:', error)
     res.status(500).json({
       code: 500,
-      msg: '批量删除失败'
+      message: '批量删除失败'
     })
   }
 }

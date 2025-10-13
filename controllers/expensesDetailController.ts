@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-09-23 09:55:43
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-10-08 14:31:21
+ * @LastEditTime: 2025-10-13 15:42:26
  * @FilePath: \wanWan\controllers\expensesDetailController.ts
  * @Description:
  *
@@ -30,7 +30,7 @@ exports.list = async (req: any, res: any, next: any) => {
   res.json({
     code: 200,
     data: result,
-    msg: '查询成功'
+    message: '查询成功'
   })
 }
 
@@ -54,7 +54,7 @@ exports.add = async (req: any, res: any, next: any) => {
     return res.json({
       code: 400,
       data: checkResult[0],
-      msg: `该字段时间段已存在`
+      message: `该字段时间段已存在`
     })
   }
 
@@ -99,7 +99,7 @@ exports.add = async (req: any, res: any, next: any) => {
       [expenses_name]: money,
       createDate
     },
-    msg: '添加成功'
+    message: '添加成功'
   })
 }
 
@@ -154,7 +154,7 @@ exports.upDate = async (req: any, res: any, next: any) => {
       remark,
       updateDate: _util.formatDate(Date.now(), 'yyyy-MM-dd hh:mm:ss')
     },
-    msg: '更新成功'
+    message: '更新成功'
   })
 }
 
@@ -172,7 +172,7 @@ exports.delete = async (req: any, res: any, next: any) => {
   if (getInfo.length < 1) {
     return res.json({
       code: 400,
-      msg: '没有数据'
+      message: '没有数据'
     })
   }
 
@@ -214,7 +214,7 @@ exports.delete = async (req: any, res: any, next: any) => {
 
   res.json({
     code: 200,
-    msg: '删除成功'
+    message: '删除成功'
   })
 }
 
@@ -250,11 +250,9 @@ exports.repairExpensesData = async (req: any, res: any, next: any) => {
   if (contrastList.length < 1) {
     return res.json({
       code: 200,
-      msg: 'expenses 数据库完整'
+      message: 'expenses 数据库完整'
     })
   }
-
-  // console.log(`1111`, contrastList)
 
   const fields = [
     'user_id',
@@ -307,8 +305,6 @@ exports.repairExpensesData = async (req: any, res: any, next: any) => {
   // 将Map转换为数组
   const mergedData = Array.from(mergedDataMap.values())
 
-  // console.log(`22222`, mergedData)
-
   // 确保所有字段都存在，没有的设为null
   const params = mergedData.map((item: any) => {
     fields.forEach(field => {
@@ -320,8 +316,6 @@ exports.repairExpensesData = async (req: any, res: any, next: any) => {
     return fields.map(field => item[field])
   })
 
-  // console.log(`3333`, params)
-
   // 批量插入数据
   await Promise.all(
     params.map(async (item: any) => {
@@ -332,6 +326,6 @@ exports.repairExpensesData = async (req: any, res: any, next: any) => {
   res.json({
     code: 200,
     data: mergedData,
-    msg: '对比成功'
+    message: '对比成功'
   })
 }
