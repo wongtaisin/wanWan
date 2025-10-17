@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-09-23 09:55:43
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-10-13 15:42:26
+ * @LastEditTime: 2025-10-17 17:04:53
  * @FilePath: \wanWan\controllers\expensesDetailController.ts
  * @Description:
  *
@@ -15,21 +15,45 @@ const expensesDetailService = require('../service/expensesDetailService')
 const expensesService = require('../service/expensesService')
 
 exports.list = async (req: any, res: any, next: any) => {
-  const { userId, expensesName, startDate, endDate } = req.query
+  const { userId, expensesName, startDate, endDate, page, pageSize } = req.body
 
-  const result: any = await mysql.query(
-    expensesDetailService.buildQueryExpensesDetail({
-      userId,
-      expensesName,
-      startDate,
-      endDate
-    }),
-    [userId, expensesName, startDate, endDate] as never[]
-  )
+  const currentPage = Math.max(1, Number(page) || 1)
+  const size = Math.max(1, Math.min(200, Number(pageSize) || 10))
+  const offset = (currentPage - 1) * size
+
+  const countQuery = expensesDetailService.buildCountExpensesDetail({
+    userId,
+    expensesName,
+    startDate,
+    endDate
+  })
+
+  const listQuery = expensesDetailService.buildQueryExpensesDetail({
+    userId,
+    expensesName,
+    startDate,
+    endDate,
+    limit: size,
+    offset
+  })
+
+  const [countRows, listRows]: any = await Promise.all([
+    mysql.query(countQuery.sql, countQuery.params as never[]),
+    mysql.query(listQuery.sql, listQuery.params as never[])
+  ])
+
+  // console.log(countRows, `查询花销列表总数`)
+
+  const total = Number(countRows?.[0]?.total || 0)
 
   res.json({
     code: 200,
-    data: result,
+    data: {
+      list: listRows,
+      total,
+      page: currentPage,
+      pageSize: size
+    },
     message: '查询成功'
   })
 }

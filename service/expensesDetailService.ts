@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-09-23 09:47:03
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-10-08 14:37:28
+ * @LastEditTime: 2025-10-17 16:53:44
  * @FilePath: \wanWan\service\expensesDetailService.ts
  * @Description:
  *
@@ -73,13 +73,15 @@ export const checkTimeByFieldNameExpensesDetail = (type: string = 'YYMMDD hh:mm:
 }
 
 /**
- * @desc 构建查询花销详情的 SQL 语句
+ * @desc 构建查询花销列表的 SQL 语句
  * @param {number} userId 用户id
  * @param {string} expensesName 花销名称
  * @param {string} startDate 开始日期
  * @param {string} endDate 结束日期
+ * @param {number} limit 每页数量
+ * @param {number} offset 偏移量
  * @returns {object} { sql: string, params: any[] }
- * @example { sql: 'SELECT * FROM expenses_detail WHERE 1=1 AND user_id = ? AND expenses_name = ? AND DATE(create_date) BETWEEN ? AND ?', params: [1, 'eat', '2025-09-01', '2025-09-02'] }
+ * @example { sql: 'SELECT * FROM expenses_detail WHERE 1=1 AND user_id = ? AND expenses_name = ? AND DATE(create_date) BETWEEN ? AND ? ORDER BY create_date DESC LIMIT ? OFFSET ?', params: [1, 'eat', '2025-09-01', '2025-09-02', 10, 0] }
  *
  * @explain DATE() // DATE(create_date) 是将 create_date 转换为日期格式
  * @explain BETWEEN // 用于查询在指定范围内的记录
@@ -88,12 +90,20 @@ export const buildQueryExpensesDetail = ({
   userId,
   expensesName,
   startDate,
-  endDate
+  endDate,
+  limit,
+  offset,
+  orderBy = 'create_date',
+  order = 'DESC'
 }: {
   userId?: number | null
   expensesName?: string | null
   startDate?: string | null
   endDate?: string | null
+  limit?: number | null
+  offset?: number | null
+  orderBy?: string
+  order?: 'ASC' | 'DESC'
 }) => {
   let sql = `SELECT * FROM expenses_detail WHERE 1=1`
   const params: any[] = []
@@ -114,12 +124,58 @@ export const buildQueryExpensesDetail = ({
   if (startDate && endDate) {
     sql += ` AND DATE(create_date) BETWEEN ? AND ?`
     params.push(startDate, endDate)
-  } else if (startDate) {
-    sql += ` AND DATE(create_date) >= ?`
-    params.push(startDate)
-  } else if (endDate) {
-    sql += ` AND DATE(create_date) <= ?`
-    params.push(endDate)
+  }
+
+  // 排序
+  sql += ` ORDER BY ${orderBy} ${order}`
+
+  // 分页
+  if (typeof limit === 'number' && typeof offset === 'number') {
+    sql += ` LIMIT ? OFFSET ?`
+    params.push(limit, offset)
+  }
+
+  return { sql, params }
+}
+
+/**
+ * @desc 统计总数（不含排序与分页），构建统计花销详情总数的 SQL 语句
+ * @param {number} userId 用户id
+ * @param {string} expensesName 花销名称
+ * @param {string} startDate 开始日期
+ * @param {string} endDate 结束日期
+ * @returns {object} { sql: string, params: any[] }
+ * @example { sql: 'SELECT COUNT(*) AS total FROM expenses_detail WHERE 1=1 AND user_id = ? AND expenses_name = ? AND DATE(create_date) BETWEEN ? AND ?', params: [1, 'eat', '2025-09-01', '2025-09-02'] }
+ *
+ * @explain COUNT(*) // 统计记录总数
+ */
+export const buildCountExpensesDetail = ({
+  userId,
+  expensesName,
+  startDate,
+  endDate
+}: {
+  userId?: number | null
+  expensesName?: string | null
+  startDate?: string | null
+  endDate?: string | null
+}) => {
+  let sql = `SELECT COUNT(*) AS total FROM expenses_detail WHERE 1=1`
+  const params: any[] = []
+
+  if (userId) {
+    sql += ` AND user_id = ?`
+    params.push(userId)
+  }
+
+  if (expensesName) {
+    sql += ` AND expenses_name = ?`
+    params.push(expensesName)
+  }
+
+  if (startDate && endDate) {
+    sql += ` AND DATE(create_date) BETWEEN ? AND ?`
+    params.push(startDate, endDate)
   }
 
   return { sql, params }

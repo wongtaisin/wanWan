@@ -11,7 +11,7 @@
  Target Server Version : 90400 (9.4.0)
  File Encoding         : 65001
 
- Date: 13/10/2025 15:58:07
+ Date: 17/10/2025 13:49:59
 */
 
 SET NAMES utf8mb4;
@@ -41,7 +41,7 @@ CREATE TABLE `expenses`  (
   `other` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '其它',
   `create_date` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '花销明细' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 104 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '花销明细' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of expenses
@@ -90,6 +90,10 @@ INSERT INTO `expenses` VALUES (96, 1, '大帅', '1,17.94', '4', NULL, NULL, NULL
 INSERT INTO `expenses` VALUES (97, 1, '大帅', '2,15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-10-11 07:20:58');
 INSERT INTO `expenses` VALUES (98, 1, '大帅', '14.14', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-10-12 23:16:24');
 INSERT INTO `expenses` VALUES (99, 1, '大帅', '2,15', '3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-10-13 07:22:19');
+INSERT INTO `expenses` VALUES (100, 1, '大帅', '2,15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-10-14 07:20:19');
+INSERT INTO `expenses` VALUES (101, 1, '大帅', '2,15,15', '3,5.2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-10-15 07:23:24');
+INSERT INTO `expenses` VALUES (102, 1, '大帅', '2,15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-10-16 07:25:51');
+INSERT INTO `expenses` VALUES (103, 1, '大帅', '2,15', '3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-10-17 07:25:32');
 
 -- ----------------------------
 -- Table structure for expenses_detail
@@ -106,37 +110,37 @@ CREATE TABLE `expenses_detail`  (
   `create_date` datetime NULL DEFAULT NULL,
   `update_date` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 99 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '花销详情，精确到时分秒' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 112 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '花销详情，精确到时分秒' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of expenses_detail
 -- ----------------------------
-INSERT INTO `expenses_detail` VALUES (1, 1, '大帅', 'eat', '2', NULL, '楼下2个菜包', '2025-09-23 07:27:43', NULL);
-INSERT INTO `expenses_detail` VALUES (9, 1, '大帅', 'eat', '15', NULL, '公司饭堂', '2025-09-23 12:11:20', '2025-09-27 10:40:02');
-INSERT INTO `expenses_detail` VALUES (11, 1, '大帅', 'eat', '15', NULL, '公司饭堂', '2025-09-22 19:02:54', NULL);
-INSERT INTO `expenses_detail` VALUES (18, 1, '大帅', 'eat', '2', NULL, '楼下2个菜包', '2025-09-25 07:17:37', NULL);
+INSERT INTO `expenses_detail` VALUES (1, 1, '大帅', 'eat', '2', NULL, '楼下包子店，2个菜包', '2025-09-23 07:27:43', NULL);
+INSERT INTO `expenses_detail` VALUES (9, 1, '大帅', 'eat', '15', NULL, '骏亚饭堂', '2025-09-23 12:11:20', '2025-09-27 10:40:02');
+INSERT INTO `expenses_detail` VALUES (11, 1, '大帅', 'eat', '15', NULL, '骏亚饭堂', '2025-09-22 19:02:54', NULL);
+INSERT INTO `expenses_detail` VALUES (18, 1, '大帅', 'eat', '2', NULL, '楼下包子店，2个菜包', '2025-09-25 07:17:37', NULL);
 INSERT INTO `expenses_detail` VALUES (19, 1, '大帅', 'parking', '25', NULL, '因为台风天，车停在了瑞和家园二期，7-22点5块，22-7点10块', '2025-09-24 21:42:42', '2025-09-25 11:54:08');
 INSERT INTO `expenses_detail` VALUES (20, 1, '大帅', 'oil', '342.13', NULL, '冠德电力加油站 98，每升优化2.2', '2025-09-24 22:32:29', NULL);
 INSERT INTO `expenses_detail` VALUES (22, 1, '大帅', 'supermarket', '9', NULL, '美宜佳，可乐+花生', '2025-09-23 18:17:28', NULL);
-INSERT INTO `expenses_detail` VALUES (25, 1, '大帅', 'eat', '15', NULL, '公司饭堂，卤肥肠+豆角炒肉', '2025-09-25 12:12:36', '2025-09-25 15:56:34');
-INSERT INTO `expenses_detail` VALUES (26, 1, '大帅', 'drink', '3', NULL, '农夫山泉 1.5L', '2025-09-25 12:24:25', '2025-09-26 14:35:06');
+INSERT INTO `expenses_detail` VALUES (25, 1, '大帅', 'eat', '15', NULL, '骏亚饭堂，卤肥肠+豆角炒肉', '2025-09-25 12:12:36', '2025-09-25 15:56:34');
+INSERT INTO `expenses_detail` VALUES (26, 1, '大帅', 'drink', '3', NULL, '骏亚小卖部，农夫山泉 1.5L', '2025-09-25 12:24:25', '2025-09-26 14:35:06');
 INSERT INTO `expenses_detail` VALUES (28, 1, '大帅', 'eat', '23', NULL, '猪脚饭 + 可乐', '2025-09-25 20:30:17', NULL);
-INSERT INTO `expenses_detail` VALUES (30, 1, '大帅', 'eat', '2', NULL, '楼下2个菜包', '2025-09-26 07:24:39', NULL);
-INSERT INTO `expenses_detail` VALUES (31, 1, '大帅', 'eat', '15', NULL, '公司饭堂，卤肥肠+豆角炒肉', '2025-09-26 12:10:56', NULL);
+INSERT INTO `expenses_detail` VALUES (30, 1, '大帅', 'eat', '2', NULL, '楼下包子店，2个菜包', '2025-09-26 07:24:39', NULL);
+INSERT INTO `expenses_detail` VALUES (31, 1, '大帅', 'eat', '15', NULL, '骏亚饭堂，卤肥肠+豆角炒肉', '2025-09-26 12:10:56', NULL);
 INSERT INTO `expenses_detail` VALUES (33, 1, '大帅', 'eat', '15', NULL, '大辉潮汕面店', '2025-09-26 19:38:16', NULL);
 INSERT INTO `expenses_detail` VALUES (34, 1, '大帅', 'vip', '40', NULL, '全明星街球派对', '2025-09-26 21:40:00', NULL);
-INSERT INTO `expenses_detail` VALUES (36, 1, '大帅', 'eat', '2', NULL, '楼下2个菜包', '2025-09-27 07:27:09', NULL);
-INSERT INTO `expenses_detail` VALUES (37, 1, '大帅', 'eat', '15', NULL, '公司饭堂，卤肥肠+冬菇鸡', '2025-09-27 12:10:02', NULL);
-INSERT INTO `expenses_detail` VALUES (38, 1, '大帅', 'drink', '3', NULL, '农夫山泉1.5L', '2025-09-27 12:23:11', NULL);
+INSERT INTO `expenses_detail` VALUES (36, 1, '大帅', 'eat', '2', NULL, '楼下包子店，2个菜包', '2025-09-27 07:27:09', NULL);
+INSERT INTO `expenses_detail` VALUES (37, 1, '大帅', 'eat', '15', NULL, '骏亚饭堂，卤肥肠+冬菇鸡', '2025-09-27 12:10:02', NULL);
+INSERT INTO `expenses_detail` VALUES (38, 1, '大帅', 'drink', '3', NULL, '骏亚小卖部，农夫山泉 1.5L', '2025-09-27 12:23:11', NULL);
 INSERT INTO `expenses_detail` VALUES (39, 1, '大帅', 'eat', '65', NULL, '陈之记烧鹅，鹅腿，鸡腿，鸭腿', '2025-09-27 18:25:32', NULL);
 INSERT INTO `expenses_detail` VALUES (40, 1, '大帅', 'supermarket', '23.76', NULL, '新天虹商城，牛肉+青菜，牛肉打6折都比外面贵，青菜价格贵一倍', '2025-09-27 20:14:24', '2025-09-28 08:44:20');
 INSERT INTO `expenses_detail` VALUES (41, 1, '大帅', 'eat', '2', NULL, '楼下包子店，一个莲蓉，一个豆沙', '2025-09-28 07:20:41', NULL);
-INSERT INTO `expenses_detail` VALUES (42, 1, '大帅', 'eat', '15', NULL, '公司饭堂，卤大肠+莲藕炒肉', '2025-09-28 12:11:23', NULL);
+INSERT INTO `expenses_detail` VALUES (42, 1, '大帅', 'eat', '15', NULL, '骏亚饭堂，卤大肠+莲藕炒肉', '2025-09-28 12:11:23', NULL);
 INSERT INTO `expenses_detail` VALUES (43, 1, '大帅', 'eat', '15', NULL, '潮州创新牛杂店', '2025-09-28 18:47:16', NULL);
-INSERT INTO `expenses_detail` VALUES (44, 1, '大帅', 'drink', '3', NULL, '百事可乐无糖', '2025-09-28 19:05:30', NULL);
-INSERT INTO `expenses_detail` VALUES (46, 1, '大帅', 'eat', '15', NULL, '公司饭堂，卤肥肠+莲藕炒肉', '2025-09-29 12:10:47', '2025-09-29 17:01:05');
-INSERT INTO `expenses_detail` VALUES (50, 1, '大帅', 'eat', '2', NULL, '2个菜包', '2025-09-30 07:26:30', NULL);
-INSERT INTO `expenses_detail` VALUES (51, 1, '大帅', 'eat', '9', NULL, '公司饭堂，鸡肉卷+酸梅汁', '2025-09-30 12:08:15', '2025-09-30 16:32:42');
+INSERT INTO `expenses_detail` VALUES (44, 1, '大帅', 'drink', '3', NULL, '美宜佳，百事可乐无糖', '2025-09-28 19:05:30', NULL);
+INSERT INTO `expenses_detail` VALUES (46, 1, '大帅', 'eat', '15', NULL, '骏亚饭堂，卤肥肠+莲藕炒肉', '2025-09-29 12:10:47', '2025-09-29 17:01:05');
+INSERT INTO `expenses_detail` VALUES (50, 1, '大帅', 'eat', '2', NULL, '楼下包子店，2个菜包', '2025-09-30 07:26:30', NULL);
+INSERT INTO `expenses_detail` VALUES (51, 1, '大帅', 'eat', '9', NULL, '骏亚饭堂，鸡肉卷+酸梅汁', '2025-09-30 12:08:15', '2025-09-30 16:32:42');
 INSERT INTO `expenses_detail` VALUES (62, 1, '大帅', 'eat', '10', NULL, '路边糯米糍', '2025-10-01 17:15:56', NULL);
 INSERT INTO `expenses_detail` VALUES (63, 1, '大帅', 'drink', '4', NULL, '711，0度可口可乐', '2025-10-01 17:56:19', NULL);
 INSERT INTO `expenses_detail` VALUES (64, 1, '大帅', 'eat', '600', NULL, '金源酒家，很坑，服务态度非常不好，食物也一般般', '2025-09-30 20:45:54', NULL);
@@ -166,12 +170,24 @@ INSERT INTO `expenses_detail` VALUES (87, 1, '大帅', 'other', '390', NULL, '�
 INSERT INTO `expenses_detail` VALUES (88, 1, '大帅', 'other', '206.4', NULL, '第三人民医院，验血，现金支付', '2025-10-10 18:36:28', NULL);
 INSERT INTO `expenses_detail` VALUES (89, 1, '大帅', 'parking', '5', NULL, '第三人民医院停车，3小时', '2025-10-10 20:39:52', NULL);
 INSERT INTO `expenses_detail` VALUES (90, 1, '大帅', 'eat', '17.94', NULL, '淘宝闪购，嘉丽园港式牛腩牛什分面店', '2025-10-10 22:36:27', NULL);
-INSERT INTO `expenses_detail` VALUES (91, 1, '大帅', 'eat', '2', NULL, '2个菜包', '2025-10-11 07:20:58', NULL);
+INSERT INTO `expenses_detail` VALUES (91, 1, '大帅', 'eat', '2', NULL, '楼下包子店，2个菜包', '2025-10-11 07:20:58', NULL);
 INSERT INTO `expenses_detail` VALUES (92, 1, '大帅', 'eat', '15', NULL, '外卖，青瓜炒肉', '2025-10-11 10:43:22', '2025-10-11 16:11:00');
 INSERT INTO `expenses_detail` VALUES (93, 1, '大帅', 'eat', '14.14', NULL, '老杨头（总店），鲜菇炒牛肉饭', '2025-10-12 23:16:24', NULL);
-INSERT INTO `expenses_detail` VALUES (94, 1, '大帅', 'eat', '2', NULL, '一个菜包，一个豆沙包', '2025-10-13 07:22:19', NULL);
-INSERT INTO `expenses_detail` VALUES (96, 1, '大帅', 'eat', '15', NULL, '公司饭堂，卤肥肠+辣椒炒肉', '2025-10-13 12:09:46', NULL);
-INSERT INTO `expenses_detail` VALUES (97, 1, '大帅', 'drink', '3', NULL, '农夫山泉，1.5L', '2025-10-13 13:21:45', NULL);
+INSERT INTO `expenses_detail` VALUES (94, 1, '大帅', 'eat', '2', NULL, '楼下包子店，一个菜包，一个豆沙包', '2025-10-13 07:22:19', NULL);
+INSERT INTO `expenses_detail` VALUES (96, 1, '大帅', 'eat', '15', NULL, '骏亚饭堂，卤肥肠+辣椒炒肉', '2025-10-13 12:09:46', NULL);
+INSERT INTO `expenses_detail` VALUES (97, 1, '大帅', 'drink', '3', NULL, '骏亚小卖部，农夫山泉 1.5L', '2025-10-13 13:21:45', NULL);
+INSERT INTO `expenses_detail` VALUES (100, 1, '大帅', 'eat', '2', NULL, '楼下包子店，一个菜包，一个豆沙包', '2025-10-14 07:20:19', NULL);
+INSERT INTO `expenses_detail` VALUES (101, 1, '大帅', 'eat', '15', NULL, '骏亚饭堂，辣椒炒肉+冬菇炒鸡', '2025-10-14 12:09:37', NULL);
+INSERT INTO `expenses_detail` VALUES (102, 1, '大帅', 'eat', '2', NULL, '楼下包子店，一个菜包，一个莲蓉包', '2025-10-15 07:23:24', NULL);
+INSERT INTO `expenses_detail` VALUES (103, 1, '大帅', 'eat', '2', NULL, '楼下包子店，一个菜包，一个莲蓉包', '2025-10-16 07:25:51', NULL);
+INSERT INTO `expenses_detail` VALUES (104, 1, '大帅', 'eat', '15', NULL, '骏亚饭堂，连肉炒肉+豆腐皮焖五花肉', '2025-10-15 12:08:53', NULL);
+INSERT INTO `expenses_detail` VALUES (105, 1, '大帅', 'drink', '3', NULL, '骏亚小卖部，农夫山泉 1.5L', '2025-10-15 12:22:16', NULL);
+INSERT INTO `expenses_detail` VALUES (106, 1, '大帅', 'drink', '5.2', NULL, '美宜佳，可口可乐330ml，2瓶', '2025-10-15 22:00:39', NULL);
+INSERT INTO `expenses_detail` VALUES (107, 1, '大帅', 'eat', '15', NULL, '叉烧饭', '2025-10-15 19:58:03', NULL);
+INSERT INTO `expenses_detail` VALUES (108, 1, '大帅', 'eat', '15', NULL, '骏亚饭堂，莲藕炒肉，辣椒牛肉', '2025-10-16 12:08:19', NULL);
+INSERT INTO `expenses_detail` VALUES (109, 1, '大帅', 'eat', '2', NULL, '一个莲蓉包，一个豆沙包', '2025-10-17 07:25:32', NULL);
+INSERT INTO `expenses_detail` VALUES (110, 1, '大帅', 'eat', '15', NULL, '骏亚食堂，肥肠+冬菇蒸鸡', '2025-10-17 12:10:34', NULL);
+INSERT INTO `expenses_detail` VALUES (111, 1, '大帅', 'drink', '3', NULL, '骏亚小卖部，农夫山泉 1.5L', '2025-10-17 12:25:10', NULL);
 
 -- ----------------------------
 -- Table structure for operation_log
@@ -198,7 +214,7 @@ CREATE TABLE `operation_log`  (
   INDEX `idx_operation_type`(`operation_type` ASC) USING BTREE,
   INDEX `idx_module`(`module` ASC) USING BTREE,
   INDEX `idx_create_time`(`create_time` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1160 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '操作日志表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1186 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '操作日志表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of operation_log
@@ -1356,6 +1372,32 @@ INSERT INTO `operation_log` VALUES (1156, 1, '大帅', 'CREATE', 'expenses', 'PO
 INSERT INTO `operation_log` VALUES (1157, 1, '大帅', 'DELETE', 'expenses', 'DELETE /expensesDetail/del/98 - DELETE', '/api/expensesDetail/del/98', 'DELETE', '{\"query\":{},\"params\":{\"id\":\"98\"}}', '{\"code\":200,\"message\":\"删除成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 132, '2025-10-13 15:53:20');
 INSERT INTO `operation_log` VALUES (1158, 1, '大帅', 'QUERY', 'expenses', 'GET /expensesDetail/repairData - QUERY', '/api/expensesDetail/repairData', 'GET', '{\"query\":{},\"params\":{}}', '{\"code\":200,\"message\":\"expenses 数据库完整\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 8, '2025-10-13 15:57:28');
 INSERT INTO `operation_log` VALUES (1159, 1, '大帅', 'QUERY', 'expenses', 'GET /expenses/total - QUERY', '/api/expenses/total?userId=1&startTime=2025-10-01&endTime=2025-10-31', 'GET', '{\"query\":{\"userId\":\"1\",\"startTime\":\"2025-10-01\",\"endTime\":\"2025-10-31\"},\"params\":{}}', '{\"code\":200,\"data\":{\"eat\":203.8,\"drink\":64.08,\"phone_bill\":34.260000000000005,\"supermarket\":8.5,\"online_shopping\":8.2,\"other\":1012.85,\"parking\":5,\"total\":1336.69,\"startTime\":\"2025-10-01\",\"endTime\":\"2025-10-31\"},\"message\":\"获取花销合计成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 3, '2025-10-13 15:57:38');
+INSERT INTO `operation_log` VALUES (1160, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/add - CREATE', '/api/expensesDetail/add', 'POST', '{\"query\":{},\"body\":{\"expenses_name\":\"eat\",\"money\":\"2\",\"create_date\":\"2025-10-13 13:21:45\",\"remake\":\"333\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":99,\"userId\":1,\"eat\":\"2\",\"createDate\":\"2025-10-13 13:21:45\"},\"message\":\"添加成功\"}', NULL, 'Mozilla/5.1 (Phone; OpenHarmony 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 ArkWeb/4.1.6.1 Mobile', 200, 71, '2025-10-13 16:04:10');
+INSERT INTO `operation_log` VALUES (1161, 1, '大帅', 'DELETE', 'expenses', 'DELETE /expensesDetail/del/99 - DELETE', '/api/expensesDetail/del/99', 'DELETE', '{\"query\":{},\"params\":{\"id\":\"99\"}}', '{\"code\":200,\"message\":\"删除成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 125, '2025-10-13 16:04:44');
+INSERT INTO `operation_log` VALUES (1162, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/add - CREATE', '/api/expensesDetail/add', 'POST', '{\"query\":{},\"body\":{\"expenses_name\":\"eat\",\"money\":\"2\",\"create_date\":\"2025-10-13 07:22:19\",\"remark\":\"\"},\"params\":{}}', '{\"code\":400,\"data\":{\"id\":94,\"user_id\":1,\"user_name\":\"大帅\",\"expenses_name\":\"eat\",\"money\":\"2\",\"image\":null,\"remark\":\"一个菜包，一个豆沙包\",\"create_date\":\"2025-10-12T23:22:19.000Z\",\"update_date\":null},\"message\":\"该字段时间段已存在\"}', NULL, 'Mozilla/5.1 (Phone; OpenHarmony 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 ArkWeb/4.1.6.1 Mobile', 200, 2, '2025-10-13 16:09:01');
+INSERT INTO `operation_log` VALUES (1163, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/add - CREATE', '/api/expensesDetail/add', 'POST', '{\"query\":{},\"body\":{\"expenses_name\":\"eat\",\"money\":\"2\",\"create_date\":\"2025-10-13 07:22:19\",\"remark\":\"\"},\"params\":{}}', '{\"code\":400,\"data\":{\"id\":94,\"user_id\":1,\"user_name\":\"大帅\",\"expenses_name\":\"eat\",\"money\":\"2\",\"image\":null,\"remark\":\"一个菜包，一个豆沙包\",\"create_date\":\"2025-10-12T23:22:19.000Z\",\"update_date\":null},\"message\":\"该字段时间段已存在\"}', NULL, 'Mozilla/5.1 (Phone; OpenHarmony 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 ArkWeb/4.1.6.1 Mobile', 200, 2, '2025-10-13 16:09:15');
+INSERT INTO `operation_log` VALUES (1164, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/add - CREATE', '/api/expensesDetail/add', 'POST', '{\"query\":{},\"body\":{\"expenses_name\":\"eat\",\"money\":\"2\",\"create_date\":\"2025-10-14 07:20:19\",\"remark\":\"一个菜包，一个豆沙包\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":100,\"userId\":1,\"eat\":\"2\",\"createDate\":\"2025-10-14 07:20:19\"},\"message\":\"添加成功\"}', NULL, 'Mozilla/5.1 (Phone; OpenHarmony 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 ArkWeb/4.1.6.1 Mobile', 200, 410, '2025-10-14 09:48:25');
+INSERT INTO `operation_log` VALUES (1165, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/add - CREATE', '/api/expensesDetail/add', 'POST', '{\"query\":{},\"body\":{\"expenses_name\":\"eat\",\"money\":\"15\",\"create_date\":\"2025-10-14 12:09:37\",\"remark\":\"公司饭堂，辣椒炒肉+冬菇炒鸡\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":101,\"userId\":1,\"eat\":\"15\",\"createDate\":\"2025-10-14 12:09:37\"},\"message\":\"添加成功\"}', NULL, 'Mozilla/5.1 (Phone; OpenHarmony 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 ArkWeb/4.1.6.1 Mobile', 200, 402, '2025-10-14 14:35:00');
+INSERT INTO `operation_log` VALUES (1166, NULL, NULL, 'CREATE', 'login', 'POST /login - CREATE', '/api/login', 'POST', '{\"query\":{},\"body\":{\"user_name\":\"大帅\",\"password\":\"123456\"},\"params\":{}}', '{\"code\":200,\"data\":{\"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VyX25hbWUiOiLlpKfluIUiLCJwaG9uZSI6IjEzNDExMTExMTExIiwiaWF0IjoxNzYwNDg3MjYyLCJleHAiOjE3NjA1NzM2NjJ9.P3pgGTD-SM7ZRbCnqCTBquXGf-v_TdGASE4r5_yo-LE\"},\"message\":\"登录成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 342, '2025-10-15 08:14:22');
+INSERT INTO `operation_log` VALUES (1167, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/add - CREATE', '/api/expensesDetail/add', 'POST', '{\"query\":{},\"body\":{\"expenses_name\":\"eat\",\"money\":\"2\",\"remark\":\"一个菜包，一个莲蓉包\",\"create_date\":\"2025-10-15 07:23:24\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":102,\"userId\":1,\"eat\":\"2\",\"createDate\":\"2025-10-15 07:23:24\"},\"message\":\"添加成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 144, '2025-10-15 08:15:29');
+INSERT INTO `operation_log` VALUES (1168, 1, '大帅', 'QUERY', 'expenses', 'GET /expenses/total - QUERY', '/api/expenses/total?userId=1&startTime=2025-10-01&endTime=2025-10-31', 'GET', '{\"query\":{\"userId\":\"1\",\"startTime\":\"2025-10-01\",\"endTime\":\"2025-10-31\"},\"params\":{}}', '{\"code\":200,\"data\":{\"eat\":222.8,\"drink\":64.08,\"phone_bill\":34.260000000000005,\"supermarket\":8.5,\"online_shopping\":8.2,\"other\":1012.85,\"parking\":5,\"total\":1355.69,\"startTime\":\"2025-10-01\",\"endTime\":\"2025-10-31\"},\"message\":\"获取花销合计成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 3, '2025-10-15 08:15:47');
+INSERT INTO `operation_log` VALUES (1169, NULL, NULL, 'QUERY', 'expenses', 'GET /api/expensesDetail/repairData - QUERY', '/api/expensesDetail/repairData', 'GET', '{\"query\":{},\"params\":{}}', '{\"code\":401,\"message\":\"jwt expired\",\"data\":null}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 401, 2, '2025-10-15 08:23:16');
+INSERT INTO `operation_log` VALUES (1170, NULL, NULL, 'CREATE', 'expenses', 'POST /api/expensesDetail/add - CREATE', '/api/expensesDetail/add', 'POST', '{\"query\":{},\"body\":{\"expenses_name\":\"eat\",\"money\":\"2\",\"remark\":\"一个菜包，一个莲蓉包\",\"create_date\":\"2025-10-16 07:25:51\"},\"params\":{}}', '{\"code\":401,\"message\":\"jwt expired\",\"data\":null}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 401, 5, '2025-10-16 08:44:08');
+INSERT INTO `operation_log` VALUES (1171, NULL, NULL, 'CREATE', 'login', 'POST /login - CREATE', '/api/login', 'POST', '{\"query\":{},\"body\":{\"user_name\":\"大帅\",\"password\":\"123456\"},\"params\":{}}', '{\"code\":200,\"data\":{\"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VyX25hbWUiOiLlpKfluIUiLCJwaG9uZSI6IjEzNDExMTExMTExIiwiaWF0IjoxNzYwNTc1NDU3LCJleHAiOjE3NjA2NjE4NTd9.x-5s6EprG_-d0Os1aiIUPjyEv32-tPapcreBaCxrUvw\"},\"message\":\"登录成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 64, '2025-10-16 08:44:17');
+INSERT INTO `operation_log` VALUES (1172, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/add - CREATE', '/api/expensesDetail/add', 'POST', '{\"query\":{},\"body\":{\"expenses_name\":\"eat\",\"money\":\"2\",\"remark\":\"一个菜包，一个莲蓉包\",\"create_date\":\"2025-10-16 07:25:51\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":103,\"userId\":1,\"eat\":\"2\",\"createDate\":\"2025-10-16 07:25:51\"},\"message\":\"添加成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 92, '2025-10-16 08:44:30');
+INSERT INTO `operation_log` VALUES (1173, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/add - CREATE', '/api/expensesDetail/add', 'POST', '{\"query\":{},\"body\":{\"expenses_name\":\"eat\",\"money\":\"15\",\"remark\":\"公司饭堂，连肉炒肉+豆腐皮焖五花肉\",\"create_date\":\"2025-10-15 12:08:53\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":104,\"userId\":1,\"eat\":\"15\",\"createDate\":\"2025-10-15 12:08:53\"},\"message\":\"添加成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 102, '2025-10-16 08:45:19');
+INSERT INTO `operation_log` VALUES (1174, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/add - CREATE', '/api/expensesDetail/add', 'POST', '{\"query\":{},\"body\":{\"expenses_name\":\"drink\",\"money\":\"3\",\"remark\":\"农夫山泉，1.5L\",\"create_date\":\"2025-10-15 12:22:16\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":105,\"userId\":1,\"drink\":\"3\",\"createDate\":\"2025-10-15 12:22:16\"},\"message\":\"添加成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 96, '2025-10-16 08:46:11');
+INSERT INTO `operation_log` VALUES (1175, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/add - CREATE', '/api/expensesDetail/add', 'POST', '{\"query\":{},\"body\":{\"expenses_name\":\"drink\",\"money\":\"5.2\",\"remark\":\"美宜佳，可口可乐330ml，2瓶\",\"create_date\":\"2025-10-15 22:00:39\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":106,\"userId\":1,\"drink\":\"5.2\",\"createDate\":\"2025-10-15 22:00:39\"},\"message\":\"添加成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 115, '2025-10-16 08:46:53');
+INSERT INTO `operation_log` VALUES (1176, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/add - CREATE', '/api/expensesDetail/add', 'POST', '{\"query\":{},\"body\":{\"expenses_name\":\"eat\",\"money\":\"15\",\"remark\":\"叉烧饭\",\"create_date\":\"2025-10-15 19:58:03\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":107,\"userId\":1,\"eat\":\"15\",\"createDate\":\"2025-10-15 19:58:03\"},\"message\":\"添加成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 80, '2025-10-16 08:47:21');
+INSERT INTO `operation_log` VALUES (1177, NULL, NULL, 'CREATE', 'login', 'POST /login - CREATE', '/api/login', 'POST', '{\"query\":{},\"body\":{\"user_name\":\"大帅\",\"password\":\"123456\"},\"params\":{}}', '{\"code\":200,\"data\":{\"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VyX25hbWUiOiLlpKfluIUiLCJwaG9uZSI6IjEzNDExMTExMTExIiwiaWF0IjoxNzYwNjYyNDU3LCJleHAiOjE3NjA3NDg4NTd9.CK-rY5ZmMBzNHJt1N4RnBPs69lq7Xs5maou7rz3VcBw\"},\"message\":\"登录成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 375, '2025-10-17 08:54:17');
+INSERT INTO `operation_log` VALUES (1178, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/add - CREATE', '/api/expensesDetail/add', 'POST', '{\"query\":{},\"body\":{\"expenses_name\":\"eat\",\"money\":\"2\",\"remark\":\"一楼莲蓉包，一个菜包\",\"create_date\":\"2025-10-16 07:25:51\"},\"params\":{}}', '{\"code\":400,\"data\":{\"id\":103,\"user_id\":1,\"user_name\":\"大帅\",\"expenses_name\":\"eat\",\"money\":\"2\",\"image\":null,\"remark\":\"楼下包子店，一个菜包，一个莲蓉包\",\"create_date\":\"2025-10-15T23:25:51.000Z\",\"update_date\":null},\"message\":\"该字段时间段已存在\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 9, '2025-10-17 08:55:53');
+INSERT INTO `operation_log` VALUES (1179, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/add - CREATE', '/api/expensesDetail/add', 'POST', '{\"query\":{},\"body\":{\"expenses_name\":\"eat\",\"money\":\"15\",\"remark\":\"莲藕炒肉，辣椒牛肉\",\"create_date\":\"2025-10-16 12:08:19\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":108,\"userId\":1,\"eat\":\"15\",\"createDate\":\"2025-10-16 12:08:19\"},\"message\":\"添加成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 250, '2025-10-17 08:56:37');
+INSERT INTO `operation_log` VALUES (1180, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/add - CREATE', '/api/expensesDetail/add', 'POST', '{\"query\":{},\"body\":{\"expenses_name\":\"eat\",\"money\":\"2\",\"remark\":\"一个莲蓉包，一个豆沙包\",\"create_date\":\"2025-10-17 07:25:32\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":109,\"userId\":1,\"eat\":\"2\",\"createDate\":\"2025-10-17 07:25:32\"},\"message\":\"添加成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 227, '2025-10-17 08:57:04');
+INSERT INTO `operation_log` VALUES (1181, 1, '大帅', 'QUERY', 'expenses', 'GET /expenses/total - QUERY', '/api/expenses/total?userId=1&startTime=2025-10-01&endTime=2025-10-31', 'GET', '{\"query\":{\"userId\":\"1\",\"startTime\":\"2025-10-01\",\"endTime\":\"2025-10-31\"},\"params\":{}}', '{\"code\":200,\"data\":{\"eat\":271.8,\"drink\":72.28,\"phone_bill\":34.260000000000005,\"supermarket\":8.5,\"online_shopping\":8.2,\"other\":1012.85,\"parking\":5,\"total\":1412.89,\"startTime\":\"2025-10-01\",\"endTime\":\"2025-10-31\"},\"message\":\"获取花销合计成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 3, '2025-10-17 09:11:15');
+INSERT INTO `operation_log` VALUES (1182, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/add - CREATE', '/api/expensesDetail/add', 'POST', '{\"query\":{},\"body\":{\"expenses_name\":\"eat\",\"money\":\"15\",\"remark\":\"骏亚食堂，肥肠+冬菇蒸鸡\",\"create_date\":\"2025-10-17 12:10:34\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":110,\"userId\":1,\"eat\":\"15\",\"createDate\":\"2025-10-17 12:10:34\"},\"message\":\"添加成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 416, '2025-10-17 13:48:05');
+INSERT INTO `operation_log` VALUES (1183, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/add - CREATE', '/api/expensesDetail/add', 'POST', '{\"query\":{},\"body\":{\"expenses_name\":\"drink\",\"money\":\"3\",\"remark\":\"骏亚小卖部，农夫山泉 1.5L\",\"create_date\":\"2025-10-17 12:25:10\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":111,\"userId\":1,\"drink\":\"3\",\"createDate\":\"2025-10-17 12:25:10\"},\"message\":\"添加成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 238, '2025-10-17 13:48:52');
+INSERT INTO `operation_log` VALUES (1184, 1, '大帅', 'QUERY', 'expenses', 'GET /expenses/total - QUERY', '/api/expenses/total?userId=1&startTime=2025-10-01&endTime=2025-10-31', 'GET', '{\"query\":{\"userId\":\"1\",\"startTime\":\"2025-10-01\",\"endTime\":\"2025-10-31\"},\"params\":{}}', '{\"code\":200,\"data\":{\"eat\":286.8,\"drink\":75.28,\"phone_bill\":34.260000000000005,\"supermarket\":8.5,\"online_shopping\":8.2,\"other\":1012.85,\"parking\":5,\"total\":1430.89,\"startTime\":\"2025-10-01\",\"endTime\":\"2025-10-31\"},\"message\":\"获取花销合计成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 4, '2025-10-17 13:49:17');
+INSERT INTO `operation_log` VALUES (1185, 1, '大帅', 'QUERY', 'expenses', 'GET /expensesDetail/repairData - QUERY', '/api/expensesDetail/repairData', 'GET', '{\"query\":{},\"params\":{}}', '{\"code\":200,\"message\":\"expenses 数据库完整\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 4, '2025-10-17 13:49:40');
 
 -- ----------------------------
 -- Table structure for user
@@ -1382,7 +1424,7 @@ CREATE TABLE `user`  (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1, '大帅', NULL, '13411111111', 33, 1, '123456', '2025-10-13 15:45:47', '::ffff:127.0.0.1', '1', NULL, NULL, '2025-08-19 15:44:09', NULL);
+INSERT INTO `user` VALUES (1, '大帅', NULL, '13411111111', 33, 1, '123456', '2025-10-17 08:54:17', '::ffff:127.0.0.1', '1', NULL, NULL, '2025-08-19 15:44:09', NULL);
 INSERT INTO `user` VALUES (3, '张三', NULL, '13433333333', 20, 2, '123456', NULL, NULL, '1', NULL, NULL, '2025-08-19 16:49:24', NULL);
 INSERT INTO `user` VALUES (4, '李四', NULL, '13444444444', 18, 1, '123456', NULL, NULL, '1', NULL, NULL, '2025-08-19 16:53:36', NULL);
 INSERT INTO `user` VALUES (5, '王五', NULL, '13455555555', 49, 2, '123456', NULL, NULL, '1', NULL, NULL, '2025-08-19 17:28:36', NULL);
