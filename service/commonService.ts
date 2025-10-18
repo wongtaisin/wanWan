@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-10-17 14:43:25
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-10-18 10:22:11
+ * @LastEditTime: 2025-10-18 14:02:04
  * @FilePath: \wanWan\service\commonService.ts
  * @Description:
  *
@@ -25,7 +25,8 @@ import mysql from '../db/mysql'
  */
 export interface ExpensesDetailFilters {
   userId?: number | null
-  expensesName?: string[] | null // 支持单个字符串或数组
+  userName?: string | null // 支持模糊查询
+  expensesName?: string[] | null // 支持数组查询
   startDate?: string | null
   endDate?: string | null
   limit?: number
@@ -44,6 +45,7 @@ export async function queryExpensesDetailList(
 ): Promise<ExpensesDetailResult> {
   const {
     userId = null,
+    userName = null,
     expensesName = null,
     startDate = null,
     endDate = null,
@@ -64,6 +66,12 @@ export async function queryExpensesDetailList(
     params.push(userId)
   }
 
+  // ✅ userName 模糊查询
+  if (userName) {
+    sql += ' AND user_name LIKE CONCAT("%", ?, "%")'
+    params.push(userName.trim())
+  }
+
   // ✅ 数组 ['eat', 'play']
   if (expensesName && expensesName.length > 0) {
     // expensesName.split(',').map(s => s.trim()) // 处理逗号分隔的字符串，例如: 'eat, play' => ['eat', 'play']
@@ -82,16 +90,18 @@ export async function queryExpensesDetailList(
    * @param {string} sql 公共SQL片段（WHERE）
    * @param {any[]} params 查询参数
    * @param {number|null} userId 用户ID，可选
+   * @param {string|null} userName 用户名，可选
    * @param {string[]|null} expensesName 消费名称，可选
    * @param {string|null} startDate 开始时间，可选
    * @param {string|null} endDate 结束时间，可选
    * @returns {number} 消费明细列表总数
-   * @example [userId, expensesName, startDate, endDate]
-   * @demo [1, 'eat', '2025-09-01', '2025-09-02']
+   * @example [userId, userName, expensesName, startDate, endDate]
+   * @demo [1, '大帅', 'eat', '2025-09-01', '2025-09-02']
    *
    * @sql SELECT COUNT(*) AS total
             FROM expenses_detail
             WHERE 1=1 AND user_id = ?
+              AND user_name LIKE CONCAT("%", ?, "%")
               AND expenses_name IN (?)
               AND DATE(create_date) BETWEEN ? AND ?
    */
@@ -110,6 +120,7 @@ export async function queryExpensesDetailList(
    * @param {string} sql 公共SQL片段（WHERE）
    * @param {any[]} params 查询参数
    * @param {number|null} userId 用户ID，可选
+   * @param {string|null} userName 用户名，可选
    * @param {string[]|null} expensesName 消费名称，可选
    * @param {string|null} startDate 开始时间，可选
    * @param {string|null} endDate 结束时间，可选
@@ -118,12 +129,13 @@ export async function queryExpensesDetailList(
    * @param {string} orderBy 排序字段（默认create_date）
    * @param {string} sort 排序方向（默认DESC，升序）
    * @returns {any[]} 消费明细列表
-   * @example [userId, expensesName, startDate, endDate, limit, offset]
-   * @demo [1, 'eat', '2025-09-01', '2025-09-02', 10, 0]
+   * @example [userId, userName, expensesName, startDate, endDate, limit, offset]
+   * @demo [1, '大帅', 'eat', '2025-09-01', '2025-09-02', 10, 0]
    *
    * @sql SELECT *
             FROM expenses_detail
             WHERE 1=1 AND user_id = ?
+              AND user_name LIKE CONCAT("%", ?, "%")
               AND expenses_name IN (?)
               AND DATE(create_date) BETWEEN ? AND ?
             ORDER BY create_date DESC

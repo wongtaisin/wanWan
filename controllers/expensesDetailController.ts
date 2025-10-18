@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-09-23 09:55:43
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-10-18 10:05:06
+ * @LastEditTime: 2025-10-18 14:04:47
  * @FilePath: \wanWan\controllers\expensesDetailController.ts
  * @Description:
  *
@@ -16,7 +16,8 @@ const expensesService = require('../service/expensesService')
 const commonService = require('../service/commonService')
 
 exports.list = async (req: any, res: any, next: any) => {
-  const { userId, expensesName, startDate, endDate, page, pageSize, orderBy, sort } = req.body
+  const { userId, userName, expensesName, startDate, endDate, page, pageSize, orderBy, sort } =
+    req.body
 
   const currentPage = Math.max(1, Number(page) || 1)
   const size = Math.max(1, Math.min(200, Number(pageSize) || 10))
@@ -24,6 +25,7 @@ exports.list = async (req: any, res: any, next: any) => {
 
   const result = await commonService.queryExpensesDetailList({
     userId,
+    userName,
     expensesName,
     startDate,
     endDate,
