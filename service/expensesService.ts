@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 16:38:48
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-10-18 15:37:38
+ * @LastEditTime: 2025-10-18 17:23:06
  * @FilePath: \wanWan\service\expensesService.ts
  * @Description:
  *
@@ -134,7 +134,7 @@ export const checkDateByUserId = `SELECT * FROM expenses WHERE DATE(create_date)
 
 /**
  * @desc 查询指定字段的值，支持用户ID和可选的日期范围（不限制日期，可传可不传）
- * @param {string} fieldName 字段名，必填
+ * @param {string[]} fieldName 字段名，必填
  * @param {number} userId 用户ID，直接从 req.auth.user_id 获取
  * @param {string} startDate 开始日期
  * @param {string} endDate 结束日期
@@ -151,8 +151,14 @@ export const checkDateByUserId = `SELECT * FROM expenses WHERE DATE(create_date)
           AND user_id = ?
           AND DATE(create_date) BETWEEN IFNULL(?, DATE(create_date)) AND IFNULL(?, DATE(create_date))
  */
-export const getFieldValues = (fieldName: string) =>
-  `SELECT id, ${fieldName}, DATE_FORMAT(create_date, '%Y-%m-%d') AS create_date FROM expenses WHERE ${fieldName} IS NOT NULL AND user_id = ? AND DATE(create_date) BETWEEN IFNULL(?, DATE(create_date)) AND IFNULL(?, DATE(create_date))`
+export const getFieldValues = (fieldName: string[]) => {
+  const queryPromises: string[] = fieldName.map(
+    field =>
+      `SELECT id, ${field}, DATE_FORMAT(create_date, '%Y-%m-%d') AS create_date FROM expenses WHERE ${field} IS NOT NULL AND user_id = ? AND DATE(create_date) BETWEEN IFNULL(?, DATE(create_date)) AND IFNULL(?, DATE(create_date))`
+  )
+
+  return queryPromises
+}
 
 // 生成批量 UPDATE SQL 和参数数组（删除字段里部分值）,每一个值都会循环执行一次 SQL 语句
 export const batchDeleteExpenses = (

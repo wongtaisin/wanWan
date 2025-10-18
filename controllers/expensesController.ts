@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 16:38:22
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-10-18 15:43:43
+ * @LastEditTime: 2025-10-18 17:41:01
  * @FilePath: \wanWan\controllers\expensesController.ts
  * @Description:
  *
@@ -131,26 +131,58 @@ exports.checkFieldTotal = async (req: any, res: any) => {
 
   const params = [req.auth.user_id, startDate, endDate] as never[]
 
-  const data: any = await mysql.query(expensesService.getFieldValues(name), params)
+  const queryPromises = expensesService.getFieldValues(name)
 
-  const result = [] as string[]
+  const data: any = await Promise.all(queryPromises.map((query: any) => mysql.query(query, params)))
 
-  data.forEach((item: any) => {
-    result.push(...item[name].split(','))
+  const result = {} as any
+
+  // 定义需要跳过的字段
+  const SKIP_FIELDS = ['id', 'user_id', 'create_date']
+
+  // 使用 flatMap 将 data 展平为一维数组
+  const flatRecords = data.flatMap((fieldArray: any) => fieldArray)
+
+  flatRecords.forEach((record: any) => {
+    Object.entries(record).forEach(([key, value]: any) => {
+      if (SKIP_FIELDS.includes(key)) return
+      if (!result[key]) result[key] = '' // 初始化空字符串
+      result[key] += (result[key] ? ',' : '') + value // 累加值
+    })
   })
 
-  const arr = result.filter((item: any) => item.trim() !== '') // 移除空字符串
+  // flatRecords.forEach((record: any) => {
+  //   for (const [key, value] of Object.entries(record)) {
+  //     if (SKIP_FIELDS.includes(key)) continue
+  //     result[key] = result[key] ? `${result[key]},${value}` : String(value) // 初始化或累加值
+  //   }
+  // })
 
-  const sum = arr
-    .map(Number) // 转为数字类型
-    .reduce((total: number, num: number) => total + num, 0) // 累加
+  const sum = {} as any
+  Object.entries(result).forEach(([key, value]: any) => {
+    // 将每个值转为数字并累加，保留两位小数
+    sum[key] = String(value)
+      .split(',')
+      .map(Number)
+      .filter(num => !isNaN(num))
+      .reduce((total: number, num: number) => total + num, 0)
+      .toFixed(2)
+  })
+
+  // 计算所有字段的总合计
+  const grandTotal = Object.values(sum)
+    .map(Number)
+    .reduce((acc, value) => {
+      return acc + Number(value)
+    }, 0)
     .toFixed(2)
 
   res.json({
     code: 200,
     data: {
-      [name]: arr.join(','),
-      total: sum,
+      expenses: { ...result },
+      sum: { ...sum },
+      total: grandTotal,
       startDate,
       endDate
     },
