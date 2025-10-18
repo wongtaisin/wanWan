@@ -11,7 +11,7 @@
 import mysql from '../db/mysql'
 
 /**
- * @description 获取消费明细列表 + 总数统计
+ * @desc 获取消费明细列表 + 总数统计
  * @param {Object} filters 查询条件
  * @param {number|null} filters.userId 用户ID（可选）
  * @param {string[]|null} filters.expensesName 消费名称（可选）
@@ -86,7 +86,7 @@ export async function queryExpensesDetailList(
   }
 
   /**
-   * @description ✅ 获取消费明细列表总数
+   * @desc ✅ 获取消费明细列表总数
    * @param {string} sql 公共SQL片段（WHERE）
    * @param {any[]} params 查询参数
    * @param {number|null} userId 用户ID，可选
@@ -116,7 +116,7 @@ export async function queryExpensesDetailList(
   const total = totalRows?.[0]?.total ?? 0
 
   /**
-   * @description ✅ 获取分页数据
+   * @desc ✅ 获取分页数据
    * @param {string} sql 公共SQL片段（WHERE）
    * @param {any[]} params 查询参数
    * @param {number|null} userId 用户ID，可选

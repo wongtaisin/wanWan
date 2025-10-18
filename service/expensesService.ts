@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 16:38:48
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-10-17 16:54:45
+ * @LastEditTime: 2025-10-18 15:37:38
  * @FilePath: \wanWan\service\expensesService.ts
  * @Description:
  *
@@ -14,41 +14,75 @@ export const expensesAll = `SELECT * FROM expenses`
 
 /**
  * @desc 根据 userId，时间，查询，都可传可不传
- * @param {number} userId 用户ID
+ * @param {number} userId 用户ID 可选
  * @param {string} startDate 开始日期
  * @param {string} endDate 结束日期
- * @example [userId, startDate, endDate]
- * @demo [1, '2025-09-01', '2025-09-02']
+ * @example [userId, startDate, endDate] 或 [startDate, endDate]
+ * @demo [1, '2025-09-01', '2025-09-02'] 或 ['2025-09-01', '2025-09-02']
  *
- * @sql SELECT * FROM expenses WHERE user_id = ? AND DATE(create_date) BETWEEN IFNULL(?, DATE(create_date)) AND IFNULL(?, DATE(create_date))
+ * @sql SELECT * FROM expenses WHERE user_id = ?
+          AND DATE(create_date) BETWEEN IFNULL(?, DATE(create_date))
+          AND IFNULL(?, DATE(create_date)) ORDER BY create_date DESC
  *
- * @sql SELECT * FROM expenses WHERE 1=1 AND DATE(create_date) BETWEEN IFNULL(?, DATE(create_date)) AND IFNULL(?, DATE(create_date))
+ * @sql SELECT * FROM expenses WHERE 1=1
+          AND DATE(create_date) BETWEEN IFNULL(?, DATE(create_date))
+          AND IFNULL(?, DATE(create_date)) ORDER BY create_date DESC
+ *
+ * @explain ORDER BY create_date DESC 是将数据库的 create_date 排序，最新的在前面
  */
 export const expensesById = (userId?: number) => {
   const id = userId ? `user_id = ?` : `1=1`
   const date = `AND DATE(create_date) BETWEEN IFNULL(?, DATE(create_date)) AND IFNULL(?, DATE(create_date))`
 
-  return `SELECT * FROM expenses WHERE ${id} ${date}`
+  return `SELECT * FROM expenses WHERE ${id} ${date} ORDER BY create_date DESC`
 }
 
 // 添加
 export const addExpenses = `INSERT INTO expenses (user_id, user_name, eat, drink, play, glad, tolls, oil, parking, traffic, supermarket, online_shopping, phone_bill, red_packet, vip, other, create_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, COALESCE(NULLIF(?, ''), now()))`
 
-// 根据 id 更新
+/**
+ * @desc 根据表ID更新 expenses 表中的值
+ * @param {string} eat 吃
+ * @param {string} drink 喝
+ * @param {string} play 玩
+ * @param {string} glad 乐
+ * @param {string} tolls 过路费
+ * @param {string} oil 油
+ * @param {string} parking 停车
+ * @param {string} traffic 交通
+ * @param {string} supermarket 超市
+ * @param {string} online_shopping 网购
+ * @param {string} phone_bill 电话
+ * @param {string} red_packet 红包
+ * @param {string} vip vip
+ * @param {string} other 其他
+ * @param {number} id 表ID
+ *
+ * @explain UPDATE // 更新 expenses 表中的值
+ */
 export const updateExpenses = `UPDATE expenses SET eat = ?, drink = ?, play = ?, glad = ?, tolls = ?, oil = ?, parking = ?, traffic = ?, supermarket = ?, online_shopping = ?, phone_bill = ?, red_packet = ?, vip = ?, other = ? WHERE id = ?`
 
 /**
- * @desc 更改指定字段的值，支持用户ID
+ * @desc 更改指定字段的值，根据表ID
  * @param {string} fieldName 字段名
  * @param {string} value 要更改的值
- * @param {number} userId 用户ID
- * @example [value, userId]
+ * @param {number} id 表ID
+ * @example [value, id]
  * @demo ['2,15', 1]
  */
 export const updateExpensesFieldName = (fieldName: string) => {
   return `UPDATE expenses SET ${fieldName} = ? WHERE id = ?`
 }
 
+/**
+ * @desc 更改指定日期的值，根据 用户ID 和 时间
+ * @param {string} fieldName 字段名，补充在 sql expenses 表中
+ * @param {string} value 要更改的值
+ * @param {number} user_id 用户ID
+ * @param {string} create_date 日期
+ * @example [value, user_id, create_date]
+ * @demo ['2,15', 1, '2025-09-01']
+ */
 export const updateExpensesDate = (fieldName: string) => {
   return `UPDATE expenses
           SET ${fieldName} = ?
@@ -56,6 +90,18 @@ export const updateExpensesDate = (fieldName: string) => {
             AND DATE(create_date) = DATE(?)`
 }
 
+/**
+ * @desc 添加指定字段的值，支持用户ID
+ * @param {string} fieldName 字段名，补充在 sql expenses 表中
+ * @param {number} user_id 用户ID
+ * @param {string} user_name 用户名
+ * @param {string} value 要添加的值
+ * @param {string} create_date 日期
+ * @example [user_id, user_name, value, create_date]
+ * @demo [1, '大帅', '2', '2025-09-01']
+ *
+ * @explain COALESCE(NULLIF(?, ''), now()) // 如果 create_date 为空，则使用当前日期
+ */
 export const addExpensesFieldName = (fieldName: string) => {
   return `INSERT INTO expenses (user_id, user_name, ${fieldName}, create_date) VALUES (?, ?, ?, COALESCE(NULLIF(?, ''), now()))`
 }
@@ -88,8 +134,8 @@ export const checkDateByUserId = `SELECT * FROM expenses WHERE DATE(create_date)
 
 /**
  * @desc 查询指定字段的值，支持用户ID和可选的日期范围（不限制日期，可传可不传）
- * @param {string} fieldName 字段名
- * @param {number} userId 用户ID
+ * @param {string} fieldName 字段名，必填
+ * @param {number} userId 用户ID，直接从 req.auth.user_id 获取
  * @param {string} startDate 开始日期
  * @param {string} endDate 结束日期
  * @example [userId, startDate, endDate]
@@ -97,9 +143,10 @@ export const checkDateByUserId = `SELECT * FROM expenses WHERE DATE(create_date)
  *
  * @explain DATE() // DATE(create_date) 是将 create_date 转换为日期格式
  * @explain BETWEEN // 用于查询在指定范围内的记录
- * @example IFNULL(?, DATE(create_date)) // 如果 startDate 为空，则使用当前日期
- * @sql SELECT eat
-        FROM expenses
+ * @explain IFNULL(?, DATE(create_date)) // 如果 startDate 为空，则使用当前日期
+ * @explain DATE_FORMAT(create_date, '%Y-%m-%d') AS create_date // 将 create_date 转换为日期格式，格式为 'YYYY-MM-DD'
+ *
+ * @sql SELECT id, eat, DATE_FORMAT(create_date, '%Y-%m-%d') AS create_date FROM expenses
         WHERE eat IS NOT NULL
           AND user_id = ?
           AND DATE(create_date) BETWEEN IFNULL(?, DATE(create_date)) AND IFNULL(?, DATE(create_date))

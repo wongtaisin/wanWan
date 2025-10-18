@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 16:38:22
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-10-13 15:52:08
+ * @LastEditTime: 2025-10-18 15:43:43
  * @FilePath: \wanWan\controllers\expensesController.ts
  * @Description:
  *
@@ -46,25 +46,24 @@ exports.add = async (req: any, res: any, next: any) => {
 
 // 获取花销列表
 exports.list = async (req: any, res: any) => {
-  let { userId, startTime, endTime } = req.body
+  let { userId, startDate, endDate } = req.body
 
-  const params = [userId, startTime, endTime] as never[]
+  const params = userId ? [userId, startDate, endDate] : [startDate, endDate]
 
   try {
-    const data: any = await _expenses.list(userId, params)
-
-    // 按创建日期排序
-    const sorted = data.sort((a: any, b: any) => {
-      return new Date(b.create_date).getTime() - new Date(a.create_date).getTime()
-    })
+    const result: any = await _expenses.list(userId, params as never[])
 
     res.json({
       code: 200,
-      data: sorted,
+      data: {
+        list: result,
+        total: result.length,
+        startDate,
+        endDate
+      },
       message: '获取花销列表成功'
     })
   } catch (error) {
-    // 捕获并处理查询过程中的错误
     console.error('获取花销列表失败:', error)
     res.status(500).json({
       code: 500,
@@ -75,11 +74,11 @@ exports.list = async (req: any, res: any) => {
 
 // 获取合计花销
 exports.total = async (req: any, res: any) => {
-  let { userId, startTime, endTime } = req.query // get 请求参数
+  let { userId, startDate, endDate } = req.query // get 请求参数
 
   let user_id = Number(userId) // 转为数字类型
 
-  const params = [user_id, startTime, endTime] as never[]
+  const params = [user_id, startDate, endDate] as never[]
 
   try {
     const data: any = await _expenses.list(user_id, params)
@@ -111,15 +110,14 @@ exports.total = async (req: any, res: any) => {
     res.json({
       code: 200,
       data: {
-        ...result,
+        expenses: { ...result },
         total,
-        startTime,
-        endTime
+        startDate,
+        endDate
       },
       message: '获取花销合计成功'
     })
   } catch (error) {
-    // 捕获并处理查询过程中的错误
     console.error('获取花销列表失败:', error)
     res.status(500).json({
       code: 500,
@@ -129,13 +127,13 @@ exports.total = async (req: any, res: any) => {
 }
 
 exports.checkFieldTotal = async (req: any, res: any) => {
-  let { name, startTime, endTime } = req.body
+  let { name, startDate, endDate } = req.body
 
-  const params = [req.auth.user_id, startTime, endTime] as never[]
+  const params = [req.auth.user_id, startDate, endDate] as never[]
 
   const data: any = await mysql.query(expensesService.getFieldValues(name), params)
 
-  const result = [] as any
+  const result = [] as string[]
 
   data.forEach((item: any) => {
     result.push(...item[name].split(','))
@@ -151,9 +149,10 @@ exports.checkFieldTotal = async (req: any, res: any) => {
   res.json({
     code: 200,
     data: {
-      keys: name,
-      values: arr.join(','),
-      total: sum
+      [name]: arr.join(','),
+      total: sum,
+      startDate,
+      endDate
     },
     message: '查询成功'
   })

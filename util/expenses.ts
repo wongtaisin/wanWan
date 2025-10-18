@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-09-22 16:30:33
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-10-11 08:29:26
+ * @LastEditTime: 2025-10-18 16:02:16
  * @FilePath: \wanWan\util\expenses.ts
  * @Description:
  *
@@ -12,8 +12,13 @@ import mysql from '../db/mysql'
 import _util from '../util/util'
 const expensesService = require('../service/expensesService')
 
-// 执行查询获取花销列表
-const list = (userId: number, params: never[]): Promise<unknown> => {
+/**
+ * @desc 获取花销列表
+ * @param {number} userId 用户ID 可选
+ * @param {never[]} params 查询参数 [userId, startDate, endDate] 或 [startDate, endDate]
+ * @return {Promise<unknown>} 花销列表
+ */
+const list = (userId: number | undefined, params: never[]): Promise<unknown> => {
   return new Promise<void>(async (resolve, reject): Promise<void> => {
     try {
       const data: any = await mysql.query(expensesService.expensesById(userId), params)
@@ -21,6 +26,7 @@ const list = (userId: number, params: never[]): Promise<unknown> => {
       data.forEach((item: any) => {
         item.create_date = _util.formatDate(item.create_date, 'yyyy-MM-dd')
       })
+
       resolve(data)
     } catch (error) {
       console.error('格式化日期失败:', error)
