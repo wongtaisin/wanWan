@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 16:38:22
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-10-18 17:41:01
+ * @LastEditTime: 2025-10-20 16:25:00
  * @FilePath: \wanWan\controllers\expensesController.ts
  * @Description:
  *
@@ -166,7 +166,7 @@ exports.checkFieldTotal = async (req: any, res: any) => {
       .map(Number)
       .filter(num => !isNaN(num))
       .reduce((total: number, num: number) => total + num, 0)
-      .toFixed(2)
+    // .toFixed(2)
   })
 
   // 计算所有字段的总合计
@@ -175,7 +175,7 @@ exports.checkFieldTotal = async (req: any, res: any) => {
     .reduce((acc, value) => {
       return acc + Number(value)
     }, 0)
-    .toFixed(2)
+  // .toFixed(2)
 
   res.json({
     code: 200,
