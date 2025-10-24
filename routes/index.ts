@@ -13,6 +13,7 @@ const userRouter = require('./user')
 const loginRouter = require('./login')
 const expensesRouter = require('./expenses')
 const expensesDetailRouter = require('./expensesDetail')
+const shopRouter = require('./shop')
 const operationLogRouter = require('./operationLog')
 const jwtAuth = require('../util/user-jwt')
 const router = express.Router()
@@ -22,7 +23,8 @@ router.use(jwtAuth) // 注入jwt认证中间件
 router.use('/api', userRouter) // 注入用户路由模块
 router.use('/api', loginRouter) // 注入登录路由模块
 router.use('/api', expensesRouter) // 注入花销路由模块
-router.use('/api', expensesDetailRouter) // 注入花销app详情路由模块
+router.use('/api', expensesDetailRouter) // 注入消费明细详情路由模块
+router.use('/api', shopRouter) // 注入店铺路由模块
 router.use('/api', operationLogRouter) // 注入操作日志路由模块
 
 // 自定义统一异常处理中间件，需要放在代码最后
