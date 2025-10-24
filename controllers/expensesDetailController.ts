@@ -67,7 +67,7 @@ exports.list = async (req: any, res: any, next: any) => {
  * @param {string} money // 金额
  * @param {string} remark // 备注
  * @param {string} image // 图片
- * @param {string} shop // 店铺
+ * @param {string} shop_name // 店铺
  * @param {string} province // 省份
  * @param {string} city // 城市
  * @param {string} area // 区县
@@ -76,8 +76,18 @@ exports.list = async (req: any, res: any, next: any) => {
  *
  */
 exports.add = async (req: any, res: any, next: any) => {
-  let { expenses_name, money, remark, image, shop, province, city, area, address, create_date } =
-    req.body
+  let {
+    expenses_name,
+    money,
+    remark,
+    image,
+    shop_name,
+    province,
+    city,
+    area,
+    address,
+    create_date
+  } = req.body
 
   let { user_id, user_name } = req.auth
 
@@ -136,7 +146,7 @@ exports.add = async (req: any, res: any, next: any) => {
     money,
     remark,
     image,
-    shop,
+    shop_name,
     province,
     city,
     area,
@@ -151,7 +161,7 @@ exports.add = async (req: any, res: any, next: any) => {
       id: result.insertId,
       userId: req.auth.user_id,
       [expenses_name]: money,
-      shop,
+      shop_name,
       remark,
       image,
       province,
@@ -171,14 +181,15 @@ exports.add = async (req: any, res: any, next: any) => {
  * @param {string} money // 金额
  * @param {string} remark // 备注
  * @param {string} image // 图片
- * @param {string} shop // 店铺
+ * @param {string} shop_name // 店铺
  * @param {string} province // 省份
  * @param {string} city // 城市
  * @param {string} area // 区县
  * @param {string} address // 地址
  */
 exports.upDate = async (req: any, res: any, next: any) => {
-  let { id, expenses_name, money, remark, image, shop, province, city, area, address } = req.body
+  let { id, expenses_name, money, remark, image, shop_name, province, city, area, address } =
+    req.body
 
   // 先获取id的 info
   const getInfo: any = await mysql.query(expensesDetailService.getIdExpensesDetail, [id] as never[])
@@ -193,7 +204,7 @@ exports.upDate = async (req: any, res: any, next: any) => {
     money,
     remark,
     image,
-    shop,
+    shop_name,
     province,
     city,
     area,
@@ -231,7 +242,7 @@ exports.upDate = async (req: any, res: any, next: any) => {
       [expenses_name]: money,
       remark,
       image,
-      shop,
+      shop_name,
       province,
       city,
       area,

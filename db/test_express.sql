@@ -11,7 +11,7 @@
  Target Server Version : 90400 (9.4.0)
  File Encoding         : 65001
 
- Date: 24/10/2025 17:12:58
+ Date: 24/10/2025 17:28:48
 */
 
 SET NAMES utf8mb4;
@@ -100,7 +100,7 @@ INSERT INTO `expenses` VALUES (106, 1, '大帅', '14.4', NULL, NULL, NULL, NULL,
 INSERT INTO `expenses` VALUES (107, 1, '大帅', '2,15,5,116', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '611.74,351.93,19.8', NULL, NULL, NULL, NULL, '2025-10-21 07:24:22');
 INSERT INTO `expenses` VALUES (108, 1, '大帅', '15,15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '40', NULL, '2025-10-22 12:09:26');
 INSERT INTO `expenses` VALUES (109, 1, '大帅', '2,15,3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '22.03,28.12,14,19.89,12.6', NULL, NULL, NULL, NULL, '2025-10-23 07:27:05');
-INSERT INTO `expenses` VALUES (110, 1, '大帅', '20', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-10-24 12:45:32');
+INSERT INTO `expenses` VALUES (110, 1, '大帅', '20', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-10-24 12:45:32');
 
 -- ----------------------------
 -- Table structure for expenses_detail
@@ -123,7 +123,7 @@ CREATE TABLE `expenses_detail`  (
   `create_date` datetime NULL DEFAULT NULL COMMENT '创建日期',
   `update_date` datetime NULL DEFAULT NULL COMMENT '更新日期',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 144 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '花销详情，精确到时分秒' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 146 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '花销详情，精确到时分秒' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of expenses_detail
@@ -256,7 +256,7 @@ CREATE TABLE `operation_log`  (
   INDEX `idx_operation_type`(`operation_type` ASC) USING BTREE,
   INDEX `idx_module`(`module` ASC) USING BTREE,
   INDEX `idx_create_time`(`create_time` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2194 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '操作日志表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2199 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '操作日志表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of operation_log
@@ -2448,6 +2448,11 @@ INSERT INTO `operation_log` VALUES (2190, 1, '大帅', 'CREATE', 'unknown', 'POS
 INSERT INTO `operation_log` VALUES (2191, 1, '大帅', 'CREATE', 'unknown', 'POST /shop/add - CREATE', '/api/shop/add', 'POST', '{\"query\":{},\"body\":{\"shopName\":\"淘宝\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":1,\"userId\":1,\"shopName\":\"淘宝\",\"createTime\":\"2025-10-24T09:04:00.665Z\"},\"message\":\"添加成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 84, '2025-10-24 17:04:00');
 INSERT INTO `operation_log` VALUES (2192, 1, '大帅', 'CREATE', 'unknown', 'POST /shop/add - CREATE', '/api/shop/add', 'POST', '{\"query\":{},\"body\":{\"shopName\":\"711(美博城店)\",\"province\":\"广东省\",\"city\":\"惠州市\",\"area\":\"惠城区\",\"address\":\"南坛东路17号美博城\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":2,\"userId\":1,\"shopName\":\"711(美博城店)\",\"province\":\"广东省\",\"city\":\"惠州市\",\"area\":\"惠城区\",\"address\":\"南坛东路17号美博城\",\"createTime\":\"2025-10-24T09:07:45.045Z\"},\"message\":\"添加成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 42, '2025-10-24 17:07:45');
 INSERT INTO `operation_log` VALUES (2193, 1, '大帅', 'CREATE', 'unknown', 'POST /shop/add - CREATE', '/api/shop/add', 'POST', '{\"query\":{},\"body\":{\"shopName\":\"大辉潮汕面店\",\"province\":\"广东省\",\"city\":\"惠州市\",\"area\":\"惠城区\",\"address\":\"河南岸螺仔湖二路19号\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":3,\"userId\":1,\"shopName\":\"大辉潮汕面店\",\"province\":\"广东省\",\"city\":\"惠州市\",\"area\":\"惠城区\",\"address\":\"河南岸螺仔湖二路19号\",\"createTime\":\"2025-10-24T09:11:26.780Z\"},\"message\":\"添加成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 44, '2025-10-24 17:11:26');
+INSERT INTO `operation_log` VALUES (2194, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/add - CREATE', '/api/expensesDetail/add', 'POST', '{\"query\":{},\"body\":{\"expenses_name\":\"glad\",\"payment\":\"现金\",\"money\":\"430\",\"shop_name\":\"骏亚食堂\",\"remark\":\"卤大肠+莲藕炒肉\",\"image\":\"64\",\"province\":\"广东省\",\"city\":\"惠州市\",\"area\":\"惠城区\",\"address\":\"麦地\",\"create_date\":\"2025-10-24 11:06:20\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":144,\"userId\":1,\"glad\":\"430\",\"remark\":\"卤大肠+莲藕炒肉\",\"image\":\"64\",\"province\":\"广东省\",\"city\":\"惠州市\",\"area\":\"惠城区\",\"address\":\"麦地\",\"createDate\":\"2025-10-24 11:06:20\"},\"message\":\"添加成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 141, '2025-10-24 17:24:51');
+INSERT INTO `operation_log` VALUES (2195, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/edit - CREATE', '/api/expensesDetail/edit', 'POST', '{\"query\":{},\"body\":{\"id\":144,\"expenses_name\":\"eat\",\"payment_name\":\"微信支付\",\"money\":\"15\",\"shop_name\":\"全季酒店\",\"remark\":\"30车费+400\",\"image\":\"图片\",\"province\":\"广东省\",\"city\":\"惠州市\",\"area\":\"惠城区\",\"address\":\"麦地南路\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":144,\"userId\":1,\"eat\":\"15\",\"remark\":\"30车费+400\",\"image\":\"图片\",\"shop_name\":\"全季酒店\",\"province\":\"广东省\",\"city\":\"惠州市\",\"area\":\"惠城区\",\"address\":\"麦地南路\",\"updateDate\":\"2025-10-24 17:26:29\"},\"message\":\"更新成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 163, '2025-10-24 17:26:30');
+INSERT INTO `operation_log` VALUES (2196, 1, '大帅', 'CREATE', 'expenses', 'POST /expensesDetail/add - CREATE', '/api/expensesDetail/add', 'POST', '{\"query\":{},\"body\":{\"expenses_name\":\"glad\",\"payment\":\"现金\",\"money\":\"430\",\"shop_name\":\"骏亚食堂111\",\"remark\":\"卤大肠+莲藕炒11111肉\",\"image\":\"64\",\"province\":\"广东省\",\"city\":\"惠州市\",\"area\":\"惠城区\",\"address\":\"麦地\",\"create_date\":\"2025-10-24 15:06:20\"},\"params\":{}}', '{\"code\":200,\"data\":{\"id\":145,\"userId\":1,\"glad\":\"430\",\"shop_name\":\"骏亚食堂111\",\"remark\":\"卤大肠+莲藕炒11111肉\",\"image\":\"64\",\"province\":\"广东省\",\"city\":\"惠州市\",\"area\":\"惠城区\",\"address\":\"麦地\",\"createDate\":\"2025-10-24 15:06:20\"},\"message\":\"添加成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 80, '2025-10-24 17:27:25');
+INSERT INTO `operation_log` VALUES (2197, 1, '大帅', 'DELETE', 'expenses', 'DELETE /expensesDetail/del/144 - DELETE', '/api/expensesDetail/del/144', 'DELETE', '{\"query\":{},\"params\":{\"id\":\"144\"}}', '{\"code\":200,\"message\":\"删除成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 95, '2025-10-24 17:27:46');
+INSERT INTO `operation_log` VALUES (2198, 1, '大帅', 'DELETE', 'expenses', 'DELETE /expensesDetail/del/145 - DELETE', '/api/expensesDetail/del/145', 'DELETE', '{\"query\":{},\"params\":{\"id\":\"145\"}}', '{\"code\":200,\"message\":\"删除成功\"}', '::ffff:127.0.0.1', 'PostmanRuntime-ApipostRuntime/1.1.0', 200, 139, '2025-10-24 17:27:56');
 
 -- ----------------------------
 -- Table structure for payment
@@ -2494,7 +2499,7 @@ CREATE TABLE `shop`  (
 -- Records of shop
 -- ----------------------------
 INSERT INTO `shop` VALUES (1, '淘宝', NULL, NULL, NULL, NULL, NULL, '2025-10-24 17:04:00', NULL);
-INSERT INTO `shop` VALUES (2, '711（美博城店）', '广东省', '惠州市', '惠城区', '南坛东路17号美博城', NULL, '2025-10-24 17:07:45', NULL);
+INSERT INTO `shop` VALUES (2, '7-ELEVEn（美博城店）', '广东省', '惠州市', '惠城区', '南坛东路17号美博城F1层', NULL, '2025-10-24 17:07:45', NULL);
 INSERT INTO `shop` VALUES (3, '大辉潮汕面店', '广东省', '惠州市', '惠城区', '河南岸螺仔湖二路19号', NULL, '2025-10-24 17:11:26', NULL);
 
 -- ----------------------------
