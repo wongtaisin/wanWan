@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-09-23 09:55:43
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-10-24 14:54:48
+ * @LastEditTime: 2025-10-24 15:02:49
  * @FilePath: \wanWan\controllers\expensesDetailController.ts
  * @Description:
  *
@@ -15,6 +15,19 @@ const expensesDetailService = require('../service/expensesDetailService')
 const expensesService = require('../service/expensesService')
 const commonService = require('../service/commonService')
 
+/**
+ * @desc 查询花销详情列表
+ * @param {number} userId // 用户ID
+ * @param {string} userName // 用户名，模糊查询
+ * @param {string[]} expensesName // 花销名称
+ * @param {string} startDate // 开始时间
+ * @param {string} endDate // 结束时间
+ * @param {number} page // 页码 必填
+ * @param {number} pageSize // 每页数量 必填
+ * @param {string} orderBy // 排序字段，默认 create_date
+ * @param {string} sort // 排序方式，默认 DESC
+ *
+ */
 exports.list = async (req: any, res: any, next: any) => {
   const { userId, userName, expensesName, startDate, endDate, page, pageSize, orderBy, sort } =
     req.body
