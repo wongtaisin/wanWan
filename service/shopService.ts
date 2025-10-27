@@ -1,3 +1,13 @@
+/*
+ * @Author: wingddd wongtaisin1024@gmail.com
+ * @Date: 2025-10-24 15:17:06
+ * @LastEditors: wingddd wongtaisin1024@gmail.com
+ * @LastEditTime: 2025-10-27 11:41:43
+ * @FilePath: \wanWan\service\shopService.ts
+ * @Description:
+ *
+ * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
+ */
 // 查询所有
 export const getIdShop = `SELECT * FROM shop WHERE 1=1 AND id = ?`
 

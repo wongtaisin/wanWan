@@ -1,3 +1,13 @@
+/*
+ * @Author: wingddd wongtaisin1024@gmail.com
+ * @Date: 2025-10-24 15:28:24
+ * @LastEditors: wingddd wongtaisin1024@gmail.com
+ * @LastEditTime: 2025-10-27 11:58:55
+ * @FilePath: \wanWan\middleware\shop.ts
+ * @Description:
+ *
+ * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
+ */
 import mysql from '../db/mysql'
 
 const shopService = require('../service/shopService')
@@ -26,15 +36,21 @@ const verifyShop = async (req: any, res: any, next: any) => {
 
     // 检查店铺名称是否存在
     const result: any = await mysql.query(shopService.checkShopName, [shopName] as never[])
-    // console.log(result, `111111`)
+
     if (result.length > 0) {
       const shop = result[0]
       const shopInfo = `${shop.shop_name}-(${shop.province}${shop.city}${shop.area}${shop.address})`
       const inputShopInfo = `${shopName}-(${province}${city}${area}${address})`
-      // console.log(shopInfo, inputShopInfo, `222222`)
       if (shopInfo === inputShopInfo) {
         return res.status(400).json({
           code: 400,
+          data: {
+            name: shop.shop_name,
+            province: shop.province,
+            city: shop.city,
+            area: shop.area,
+            address: shop.address
+          },
           message: `店铺已存在`
         })
       }
