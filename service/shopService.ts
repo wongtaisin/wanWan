@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-10-24 15:17:06
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-10-27 11:41:43
+ * @LastEditTime: 2025-10-28 09:01:38
  * @FilePath: \wanWan\service\shopService.ts
  * @Description:
  *
@@ -44,9 +44,6 @@ export const addShop = `INSERT INTO shop ( shop_name, province, city, area, addr
  */
 export const editShop = `UPDATE shop SET shop_name = ?, province = COALESCE(?, province), city = COALESCE(?, city), area = COALESCE(?, area), address = COALESCE(?, address), images = COALESCE(?, images), update_date = NOW() WHERE id = ?`
 
-// 根据 id 删除
-export const deleteShopId = `DELETE FROM shop WHERE id = ?`
-
 /**
  * @desc 检查店铺名称是否存在
  * @param {string} shopName 店铺名称
@@ -62,4 +59,12 @@ export const checkShopName = `SELECT * FROM shop WHERE shop_name = ?`
  * @example [id]
  * @demo [1]
  */
-exports.deleteExpensesDetail = `DELETE FROM expenses_detail WHERE id = ?;`
+exports.deleteShopId = `DELETE FROM shop WHERE id = ?`
+
+/**
+ * @desc 查询所有店铺
+ * @example []
+ * @demo []
+ *
+ */
+exports.shopAll = `SELECT * FROM shop`

@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-10-24 15:11:26
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-10-24 17:11:44
+ * @LastEditTime: 2025-10-28 08:56:49
  * @FilePath: \wanWan\controllers\shopController.ts
  * @Description:
  *
@@ -43,5 +43,15 @@ exports.add = async (req: any, res: any, next: any) => {
       createDate: new Date()
     },
     message: '添加成功'
+  })
+}
+
+exports.all = async (req: any, res: any, next: any) => {
+  const result = await mysql.query(shopService.shopAll, [])
+
+  res.json({
+    code: 200,
+    data: result,
+    message: '查询成功'
   })
 }
