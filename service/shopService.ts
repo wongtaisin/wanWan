@@ -12,7 +12,8 @@
 export const getIdShop = `SELECT * FROM shop WHERE 1=1 AND id = ?`
 
 /**
- * @desc 添加
+ * @desc 添加店铺
+ * @param {number} user_id 用户id 必填
  * @param {string} shop_name 店铺名称 必填
  * @param {string} province 省份
  * @param {string} city 城市
@@ -23,7 +24,7 @@ export const getIdShop = `SELECT * FROM shop WHERE 1=1 AND id = ?`
  * @demo ['店铺', '省份', '城市', '区县', '详细地址', '图片base64编码']
  *
  */
-export const addShop = `INSERT INTO shop ( shop_name, province, city, area, address, images, create_date) VALUES (?, ?, ?, ?, ?, ?, now())`
+export const addShop = `INSERT INTO shop (user_id, shop_name, province, city, area, address, images, create_date) VALUES (?, ?, ?, ?, ?, ?, ?, now())`
 
 /**
  * @desc 根据 id 更新，其它参数不传时，直接使用数据库里的值
