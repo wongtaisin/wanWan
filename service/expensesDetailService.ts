@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-09-23 09:47:03
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-10-25 11:49:20
+ * @LastEditTime: 2025-10-29 16:42:51
  * @FilePath: \wanWan\service\expensesDetailService.ts
  * @Description:
  *
@@ -26,8 +26,8 @@ export const getIdExpensesDetail = `SELECT * FROM expenses_detail WHERE 1=1 AND 
  * @param {string} area 区县
  * @param {string} address 详细地址
  * @param {string} create_date 花销日期
- * @example [user_id, user_name, expenses_name, money, shop_name, remark, image, province, city, area, address, create_date]
- * @demo [1, '大帅', 'eat', 15, '店铺', '备注', '图片base64编码', '省份', '城市', '区县', '详细地址', '2025-09-01 10:10:10']
+ * @example [user_id, user_name, expenses_name, money, payment_name, shop_name, remark, image, province, city, area, address, create_date]
+ * @demo [1, '大帅', 'eat', 15, '现金', '店铺', '备注', '图片base64编码', '省份', '城市', '区县', '详细地址', '2025-09-01 10:10:10']
  *
  * @explain COALESCE(NULLIF(?, ''), now()) 当 create_date 为空时，使用当前时间
  */
@@ -48,7 +48,7 @@ export const add = `INSERT INTO expenses_detail (user_id, user_name, expenses_na
  * @param {string} address 详细地址
  * @param {string} update_date 更新时间 now() 自动更新
  * @example [expenses_name, money, payment_name, shop_name, remark, image, province, city, area, address, update_date, id]
- * @demo ['eat', 15, '支付宝', '店铺', '备注', '图片base64编码', '省份', '城市', '区县', '详细地址', '2025-09-01 10:10:10', 1]
+ * @demo ['eat', 15, '现金', '店铺', '备注', '图片base64编码', '省份', '城市', '区县', '详细地址', '2025-09-01 10:10:10', 1]
  *
  * @explain COALESCE() 用于从参数列表中返回第一个非NULL值，至少需两个参数，遇到第一个非NULL参数后停止后续计算
  * @explain COALESCE(NULLIF(?, ''), now()) 当 update_date 为空时，使用当前时间

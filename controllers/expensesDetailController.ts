@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-09-23 09:55:43
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-10-25 11:53:08
+ * @LastEditTime: 2025-10-29 17:13:09
  * @FilePath: \wanWan\controllers\expensesDetailController.ts
  * @Description:
  *
@@ -14,6 +14,7 @@ import _util from '../util/util'
 const expensesDetailService = require('../service/expensesDetailService')
 const expensesService = require('../service/expensesService')
 const commonService = require('../service/commonService')
+const shopService = require('../service/shopService')
 
 /**
  * @desc 查询花销详情列表
@@ -67,7 +68,8 @@ exports.list = async (req: any, res: any, next: any) => {
  * @param {string} money // 金额
  * @param {string} remark // 备注
  * @param {string} image // 图片
- * @param {string} shop_name // 店铺
+ * @param {string} shop_id // 店铺id，有值是用户存储的店铺
+ * @param {string} shop_name // TODO: 店铺（1,调用高德地图获取; 2,可使用用户存储的店铺）
  * @param {string} province // 省份
  * @param {string} city // 城市
  * @param {string} area // 区县
@@ -76,21 +78,46 @@ exports.list = async (req: any, res: any, next: any) => {
  *
  */
 exports.add = async (req: any, res: any, next: any) => {
-  let {
+  const {
     expensesName,
     paymentName,
     money,
+    shopId,
+    // shopName,
     remark,
     image,
-    shopName,
-    province,
-    city,
-    area,
-    address,
+    // province,
+    // city,
+    // area,
+    // address,
     createDate
   } = req.body
 
-  let { user_id, user_name } = req.auth
+  const { user_id, user_name } = req.auth
+
+  let shopParams: {
+    shop_name: string
+    province: string
+    city: string
+    area: string
+    address: string
+  } = {
+    shop_name: req.body.shopName, // 店铺名称
+    province: req.body.province, // 省份
+    city: req.body.city, // 城市
+    area: req.body.area, // 区县
+    address: req.body.address // 地址
+  } // 店铺地址参数
+
+  // 检查店铺是否存在，存在则更新地址信息
+  if (!!shopId) {
+    const shopResult: any = await mysql.query(shopService.checkShopUserId, [
+      user_id,
+      shopId
+    ] as never[])
+    const { shop_name, province, city, area, address } = shopResult[0]
+    shopParams = { shop_name, province, city, area, address }
+  }
 
   const createTime = !createDate ? _util.formatDate(Date.now(), 'yyyy-MM-dd hh:mm:ss') : createDate
 
@@ -144,13 +171,13 @@ exports.add = async (req: any, res: any, next: any) => {
     expensesName,
     money,
     paymentName,
-    shopName,
+    shopParams.shop_name,
     remark,
     image,
-    province,
-    city,
-    area,
-    address,
+    shopParams.province,
+    shopParams.city,
+    shopParams.area,
+    shopParams.address,
     createDate
   ] as never[]
   const result: any = await mysql.query(expensesDetailService.add, params)
@@ -162,13 +189,13 @@ exports.add = async (req: any, res: any, next: any) => {
       userId: req.auth.user_id,
       [expensesName]: money,
       paymentName,
-      shopName,
+      shopName: shopParams.shop_name,
       remark,
       image,
-      province,
-      city,
-      area,
-      address,
+      province: shopParams.province,
+      city: shopParams.city,
+      area: shopParams.area,
+      address: shopParams.address,
       createDate: createTime
     },
     message: '添加成功'
@@ -183,7 +210,7 @@ exports.add = async (req: any, res: any, next: any) => {
  * @param {string} money // 金额
  * @param {string} remark // 备注
  * @param {string} image // 图片
- * @param {string} shop_name // 店铺
+ * @param {string} shop_name // TODO: 1-店铺（调用高德地图，获取），2-可用户自己新增
  * @param {string} province // 省份
  * @param {string} city // 城市
  * @param {string} area // 区县
@@ -195,14 +222,39 @@ exports.upDate = async (req: any, res: any, next: any) => {
     expensesName,
     paymentName,
     money,
-    shopName,
+    shopId,
+    // shopName,
     remark,
-    image,
-    province,
-    city,
-    area,
-    address
+    image
+    // province,
+    // city,
+    // area,
+    // address
   } = req.body
+
+  let shopParams: {
+    shop_name: string
+    province: string
+    city: string
+    area: string
+    address: string
+  } = {
+    shop_name: req.body.shopName, // 店铺名称
+    province: req.body.province, // 省份
+    city: req.body.city, // 城市
+    area: req.body.area, // 区县
+    address: req.body.address // 地址
+  } // 店铺地址参数
+
+  // 检查店铺是否存在，存在则更新地址信息
+  if (!!shopId) {
+    const shopResult: any = await mysql.query(shopService.checkShopUserId, [
+      req.auth.user_id,
+      shopId
+    ] as never[])
+    const { shop_name, province, city, area, address } = shopResult[0]
+    shopParams = { shop_name, province, city, area, address }
+  }
 
   // 先获取id的 info
   const getInfo: any = await mysql.query(expensesDetailService.getIdExpensesDetail, [id] as never[])
@@ -216,13 +268,13 @@ exports.upDate = async (req: any, res: any, next: any) => {
     expensesName,
     money,
     paymentName,
-    shopName,
+    shopParams.shop_name,
     remark,
     image,
-    province,
-    city,
-    area,
-    address,
+    shopParams.province,
+    shopParams.city,
+    shopParams.area,
+    shopParams.address,
     id
   ] as never[]
   await mysql.query(expensesDetailService.updateExpensesDetail, params)
@@ -254,13 +306,14 @@ exports.upDate = async (req: any, res: any, next: any) => {
       id,
       userId: req.auth.user_id,
       [expensesName]: money,
+      paymentName,
+      shopName: shopParams.shop_name,
       remark,
+      province: shopParams.province,
+      city: shopParams.city,
+      area: shopParams.area,
+      address: shopParams.address,
       image,
-      shopName,
-      province,
-      city,
-      area,
-      address,
       updateDate: _util.formatDate(Date.now(), 'yyyy-MM-dd hh:mm:ss')
     },
     message: '更新成功'

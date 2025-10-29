@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-10-24 15:17:06
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-10-28 09:01:38
+ * @LastEditTime: 2025-10-29 16:31:40
  * @FilePath: \wanWan\service\shopService.ts
  * @Description:
  *
@@ -68,3 +68,13 @@ exports.deleteShopId = `DELETE FROM shop WHERE id = ?`
  *
  */
 exports.shopAll = `SELECT * FROM shop`
+
+/**
+ * @desc 根据用户ID查询店铺
+ * @param {number} user_id 用户ID
+ * @param {number} id 店铺ID
+ * @example [user_id, id]
+ * @demo [1, 1]
+ *
+ */
+export const checkShopUserId = `SELECT * FROM shop WHERE user_id = ? AND id = ?`
