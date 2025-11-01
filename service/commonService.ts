@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-10-17 14:43:25
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-10-18 14:02:04
+ * @LastEditTime: 2025-11-01 17:21:56
  * @FilePath: \wanWan\service\commonService.ts
  * @Description:
  *
@@ -132,7 +132,7 @@ export async function queryExpensesDetailList(
    * @example [userId, userName, expensesName, startDate, endDate, limit, offset]
    * @demo [1, '大帅', 'eat', '2025-09-01', '2025-09-02', 10, 0]
    *
-   * @sql SELECT *
+   * @sql SELECT *, DATE_FORMAT(create_date, '%Y-%m-%d %H:%i:%s') AS create_date
             FROM expenses_detail
             WHERE 1=1 AND user_id = ?
               AND user_name LIKE CONCAT("%", ?, "%")
@@ -140,9 +140,11 @@ export async function queryExpensesDetailList(
               AND DATE(create_date) BETWEEN ? AND ?
             ORDER BY create_date DESC
             LIMIT ? OFFSET ?
+
+    @explain DATE_FORMAT(create_date, '%Y-%m-%d %H:%i:%s') AS create_date // 将 create_date 转换为日期格式，格式为 'YYYY-MM-DD HH:MM:SS'
    */
   const dataSql = `
-    SELECT *
+    SELECT *, DATE_FORMAT(create_date, '%Y-%m-%d %H:%i:%s') AS create_date
     FROM expenses_detail
     ${sql}
     ORDER BY ${orderBy} ${sort}
