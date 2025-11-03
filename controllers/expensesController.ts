@@ -111,7 +111,7 @@ exports.total = async (req: any, res: any) => {
       code: 200,
       data: {
         expenses: { ...result },
-        total,
+        total: total.toFixed(2),
         startDate,
         endDate
       },
