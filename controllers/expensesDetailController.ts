@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-09-23 09:55:43
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-10-29 17:13:09
+ * @LastEditTime: 2025-11-03 16:14:22
  * @FilePath: \wanWan\controllers\expensesDetailController.ts
  * @Description:
  *
@@ -30,8 +30,8 @@ const shopService = require('../service/shopService')
  *
  */
 exports.list = async (req: any, res: any, next: any) => {
-  const { userId, userName, expensesName, startDate, endDate, page, pageSize, orderBy, sort } =
-    req.body
+  const { userName, expensesName, startDate, endDate, page, pageSize, orderBy, sort } = req.body
+  const userId = req.body.userId ?? req.auth.user_id
 
   const currentPage = Math.max(1, Number(page) || 1)
   const size = Math.max(1, Math.min(200, Number(pageSize) || 10))

@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-10-17 14:43:25
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-11-01 17:21:56
+ * @LastEditTime: 2025-11-01 17:23:16
  * @FilePath: \wanWan\service\commonService.ts
  * @Description:
  *
@@ -142,6 +142,11 @@ export async function queryExpensesDetailList(
             LIMIT ? OFFSET ?
 
     @explain DATE_FORMAT(create_date, '%Y-%m-%d %H:%i:%s') AS create_date // 将 create_date 转换为日期格式，格式为 'YYYY-MM-DD HH:MM:SS'
+    @explain user_name LIKE CONCAT("%", ?, "%") // 模糊查询用户名
+    @explain expenses_name IN (?) // 数组查询消费名称
+    @explain DATE(create_date) BETWEEN ? AND ? // 查询日期范围
+    @explain ORDER BY create_date DESC // 排序
+    @explain LIMIT ? OFFSET ? // 分页
    */
   const dataSql = `
     SELECT *, DATE_FORMAT(create_date, '%Y-%m-%d %H:%i:%s') AS create_date

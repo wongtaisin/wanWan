@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 16:38:22
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-10-20 16:25:00
+ * @LastEditTime: 2025-11-03 16:12:01
  * @FilePath: \wanWan\controllers\expensesController.ts
  * @Description:
  *
@@ -46,7 +46,8 @@ exports.add = async (req: any, res: any, next: any) => {
 
 // 获取花销列表
 exports.list = async (req: any, res: any) => {
-  let { userId, startDate, endDate } = req.body
+  const { startDate, endDate } = req.body
+  const userId = req.body.userId ?? req.auth.user_id
 
   const params = userId ? [userId, startDate, endDate] : [startDate, endDate]
 
@@ -74,16 +75,15 @@ exports.list = async (req: any, res: any) => {
 
 // 获取合计花销
 exports.total = async (req: any, res: any) => {
-  let { userId, startDate, endDate } = req.query // get 请求参数
+  const { startDate, endDate } = req.query // get 请求参数
+  const userId = req.query.userId ?? req.auth.user_id
 
-  let user_id = Number(userId) // 转为数字类型
-
-  const params = [user_id, startDate, endDate] as never[]
+  const params = [userId, startDate, endDate] as never[]
 
   try {
-    const data: any = await _expenses.list(user_id, params)
+    const data: any = await _expenses.list(userId, params)
 
-    const filteredData = data.filter((item: any) => item.user_id === user_id)
+    const filteredData = data.filter((item: any) => item.user_id === userId)
 
     const result = {} as any
 
