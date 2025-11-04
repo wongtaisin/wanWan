@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-09-23 09:47:03
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-10-29 16:42:51
+ * @LastEditTime: 2025-11-04 17:10:31
  * @FilePath: \wanWan\service\expensesDetailService.ts
  * @Description:
  *
@@ -17,7 +17,9 @@ export const getIdExpensesDetail = `SELECT * FROM expenses_detail WHERE 1=1 AND 
  * @param {string} user_name 用户名
  * @param {string} expenses_name 花销名称 必填
  * @param {number} money 花销金额 必填
+ * @param {number} payment_id 支付方式id
  * @param {string} payment_name 支付方式
+ * @param {number} shop_id 店铺id
  * @param {string} shop_name 店铺
  * @param {string} remark 备注
  * @param {string} image 图片base64编码
@@ -31,14 +33,16 @@ export const getIdExpensesDetail = `SELECT * FROM expenses_detail WHERE 1=1 AND 
  *
  * @explain COALESCE(NULLIF(?, ''), now()) 当 create_date 为空时，使用当前时间
  */
-export const add = `INSERT INTO expenses_detail (user_id, user_name, expenses_name, money, payment_name, shop_name, remark, image, province, city, area, address, create_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, COALESCE(NULLIF(?, ''), now()))`
+export const add = `INSERT INTO expenses_detail (user_id, user_name, expenses_name, money, payment_id, payment_name, shop_id, shop_name, remark, image, province, city, area, address, create_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, COALESCE(NULLIF(?, ''), now()))`
 
 /**
  * @desc 根据 id 更新，其它参数不传时，直接使用数据库里的值
  * @param {number} id 花销详情id 必填
  * @param {string} expenses_name 花销名称 必填
  * @param {number} money 花销金额
+ * @param {number} payment_id 支付方式id
  * @param {string} payment_name 支付方式
+ * @param {number} shop_id 店铺id
  * @param {string} shop_name 店铺
  * @param {string} remark 备注
  * @param {string} image 图片base64编码
@@ -47,14 +51,14 @@ export const add = `INSERT INTO expenses_detail (user_id, user_name, expenses_na
  * @param {string} area 区县
  * @param {string} address 详细地址
  * @param {string} update_date 更新时间 now() 自动更新
- * @example [expenses_name, money, payment_name, shop_name, remark, image, province, city, area, address, update_date, id]
- * @demo ['eat', 15, '现金', '店铺', '备注', '图片base64编码', '省份', '城市', '区县', '详细地址', '2025-09-01 10:10:10', 1]
+ * @example [expenses_name, money, payment_id, payment_name, shop_id, shop_name, remark, image, province, city, area, address, update_date, id]
+ * @demo ['eat', 15, 1, '现金', 1, '店铺', '备注', '图片base64编码', '省份', '城市', '区县', '详细地址', '2025-09-01 10:10:10', 1]
  *
  * @explain COALESCE() 用于从参数列表中返回第一个非NULL值，至少需两个参数，遇到第一个非NULL参数后停止后续计算
  * @explain COALESCE(NULLIF(?, ''), now()) 当 update_date 为空时，使用当前时间
  * @explain COALESCE(?, money) 当 money 为空时，使用数据库里的值
  */
-export const updateExpensesDetail = `UPDATE expenses_detail SET expenses_name = ?, money = COALESCE(?, money), payment_name = COALESCE(?, payment_name), shop_name = COALESCE(?, shop_name), remark = COALESCE(?, remark), image = COALESCE(?, image), province = COALESCE(?, province), city = COALESCE(?, city), area = COALESCE(?, area), address = COALESCE(?, address), update_date = NOW() WHERE id = ?`
+export const updateExpensesDetail = `UPDATE expenses_detail SET expenses_name = ?, money = COALESCE(?, money), payment_id = COALESCE(?, payment_id), payment_name = COALESCE(?, payment_name), shop_id = COALESCE(?, shop_id), shop_name = COALESCE(?, shop_name), remark = COALESCE(?, remark), image = COALESCE(?, image), province = COALESCE(?, province), city = COALESCE(?, city), area = COALESCE(?, area), address = COALESCE(?, address), update_date = NOW() WHERE id = ?`
 
 // 根据 id 删除
 export const deleteExpensesDetailId = `DELETE FROM expenses_detail WHERE id = ?`
