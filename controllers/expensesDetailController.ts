@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-09-23 09:55:43
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-11-04 17:09:16
+ * @LastEditTime: 2025-11-05 08:19:31
  * @FilePath: \wanWan\controllers\expensesDetailController.ts
  * @Description:
  *
@@ -99,14 +99,12 @@ exports.add = async (req: any, res: any, next: any) => {
   const { user_id, user_name } = req.auth
 
   let shopParams: {
-    shop_id: number
     shop_name: string
     province: string
     city: string
     area: string
     address: string
   } = {
-    shop_id: req.body.shopId, // 店铺名称
     shop_name: req.body.shopName, // 店铺名称
     province: req.body.province, // 省份
     city: req.body.city, // 城市
@@ -120,8 +118,8 @@ exports.add = async (req: any, res: any, next: any) => {
       user_id,
       shopId
     ] as never[])
-    const { shop_id, shop_name, province, city, area, address } = shopResult[0]
-    shopParams = { shop_id, shop_name, province, city, area, address }
+    const { shop_name, province, city, area, address } = shopResult[0]
+    shopParams = { shop_name, province, city, area, address }
   }
 
   const createTime = !createDate ? _util.formatDate(Date.now(), 'yyyy-MM-dd hh:mm:ss') : createDate
@@ -177,7 +175,7 @@ exports.add = async (req: any, res: any, next: any) => {
     money,
     paymentId,
     paymentName,
-    shopParams.shop_id,
+    shopId,
     shopParams.shop_name,
     remark,
     image,
