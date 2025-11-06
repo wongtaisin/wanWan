@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 16:38:22
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-11-03 16:12:01
+ * @LastEditTime: 2025-11-06 14:05:49
  * @FilePath: \wanWan\controllers\expensesController.ts
  * @Description:
  *
@@ -162,11 +162,12 @@ exports.checkFieldTotal = async (req: any, res: any) => {
   Object.entries(result).forEach(([key, value]: any) => {
     // 将每个值转为数字并累加，保留两位小数
     sum[key] = String(value)
-      .split(',')
-      .map(Number)
-      .filter(num => !isNaN(num))
-      .reduce((total: number, num: number) => total + num, 0)
-    // .toFixed(2)
+      .split(',') // 分割成数组
+      .map(Number) // 转为数字
+      .filter(num => !isNaN(num)) // 过滤掉非数字
+      .reduce((total: number, num: number) => total + num, 0) // 累加
+      .toFixed(2) // 保留两位小数
+      .replace(/\.?0+$/, '') // 正则表达式移除末尾的0
   })
 
   // 计算所有字段的总合计
@@ -175,7 +176,8 @@ exports.checkFieldTotal = async (req: any, res: any) => {
     .reduce((acc, value) => {
       return acc + Number(value)
     }, 0)
-  // .toFixed(2)
+    .toFixed(2)
+    .replace(/\.?0+$/, '')
 
   res.json({
     code: 200,
