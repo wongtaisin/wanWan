@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 16:38:22
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-11-06 14:05:49
+ * @LastEditTime: 2025-11-07 15:55:44
  * @FilePath: \wanWan\controllers\expensesController.ts
  * @Description:
  *
@@ -85,7 +85,7 @@ exports.total = async (req: any, res: any) => {
 
     const filteredData = data.filter((item: any) => item.user_id === userId)
 
-    const result = {} as any
+    const result: Record<string, number> = {}
 
     filteredData.forEach((item: any) => {
       Object.entries(item).forEach(([key, value]) => {
@@ -103,15 +103,13 @@ exports.total = async (req: any, res: any) => {
       })
     })
 
-    const total = Object.entries(result).reduce((acc, [key, value]) => {
-      return acc + Number(value)
-    }, 0)
+    const total = Object.values(result).reduce((acc: number, value) => acc + value, 0)
 
     res.json({
       code: 200,
       data: {
         expenses: { ...result },
-        total: total.toFixed(2),
+        total: total.toFixed(2).replace(/\.?0+$/, ''),
         startDate,
         endDate
       },
