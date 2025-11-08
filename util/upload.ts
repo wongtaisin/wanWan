@@ -1,3 +1,13 @@
+/*
+ * @Author: wingddd wongtaisin1024@gmail.com
+ * @Date: 2025-10-11 08:22:31
+ * @LastEditors: wingddd wongtaisin1024@gmail.com
+ * @LastEditTime: 2025-11-08 16:06:02
+ * @FilePath: \wanWan\util\upload.ts
+ * @Description: 上传文件到服务器
+ *
+ * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
+ */
 import path from 'path'
 const fs = require('fs')
 const multer = require('multer')
@@ -20,7 +30,7 @@ const storage = multer.diskStorage({
     const uid = uuid.v1()
     // 获取文件扩展名
     let ext = path.extname(file.originalname)
-    cb(null, uid + ext)
+    cb(null, `${uid}_${ext}`)
   }
 })
 
@@ -32,6 +42,7 @@ function fileFilter(req: any, file: any, callback: any) {
     callback(null, true)
   }
 }
+
 const upload = multer({
   storage: storage,
   fileFilter: fileFilter,

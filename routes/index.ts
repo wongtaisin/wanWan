@@ -15,6 +15,7 @@ const expensesRouter = require('./expenses')
 const expensesDetailRouter = require('./expensesDetail')
 const shopRouter = require('./shop')
 const operationLogRouter = require('./operationLog')
+const commonRouter = require('./common')
 const jwtAuth = require('../util/user-jwt')
 const router = express.Router()
 
@@ -26,6 +27,7 @@ router.use('/api', expensesRouter) // 注入花销路由模块
 router.use('/api', expensesDetailRouter) // 注入消费明细详情路由模块
 router.use('/api', shopRouter) // 注入店铺路由模块
 router.use('/api', operationLogRouter) // 注入操作日志路由模块
+router.use('/api', commonRouter) // 注入公共路由模块
 
 // 自定义统一异常处理中间件，需要放在代码最后
 router.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
