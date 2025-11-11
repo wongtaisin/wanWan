@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-10-24 15:17:06
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-10-29 16:31:40
+ * @LastEditTime: 2025-11-11 17:19:18
  * @FilePath: \wanWan\service\shopService.ts
  * @Description:
  *
@@ -79,3 +79,14 @@ exports.shopAll = `SELECT * FROM shop`
  *
  */
 export const checkShopUserId = `SELECT * FROM shop WHERE user_id = ? AND id = ?`
+
+/**
+ * @desc 根据用户ID查询店铺
+ * @param {number} user_id 用户ID
+ * @param {number} limit 每页数量
+ * @param {number} offset 偏移量
+ * @example [user_id, limit, offset]
+ * @demo [1, 10, 0]
+ *
+ */
+export const getUserIdShop = `SELECT *, DATE_FORMAT(create_date, '%Y-%m-%d %H:%i:%s') AS create_date FROM shop WHERE 1=1 AND user_id = ? LIMIT ? OFFSET ?`

@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-10-24 15:11:26
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-10-29 17:18:43
+ * @LastEditTime: 2025-11-11 16:51:03
  * @FilePath: \wanWan\controllers\shopController.ts
  * @Description:
  *
@@ -63,5 +63,39 @@ exports.all = async (req: any, res: any, next: any) => {
     code: 200,
     data: result,
     message: '查询成功'
+  })
+}
+
+/**
+ * @desc 查询用户店铺列表
+ * @param {string} userId 用户ID，默认当前用户
+ * @param {number} page 页码，默认第一页
+ * @param {number} pageSize 每页数量，默认10条，最大200条
+ * @example [userId, page, pageSize]
+ * @demo [1, 1, 10]
+ *
+ */
+exports.list = async (req: any, res: any, next: any) => {
+  const { page, pageSize } = req.body
+
+  const currentPage = Math.max(1, Number(page) || 1) // 当前页码，默认第一页
+  const limit = Math.max(1, Math.min(200, Number(pageSize))) // 每页数量，默认10条，最大200条
+  const offset = (currentPage - 1) * limit // 偏移量，用于分页查询
+
+  const userId = req.query?.userId ?? req.auth.user_id
+
+  const result = await mysql.query(shopService.getUserIdShop, [userId, limit, offset] as never[])
+
+  const totalResult: any = await mysql.query(shopService.shopAll, [])
+
+  res.json({
+    code: 200,
+    data: {
+      list: result,
+      total: totalResult.length,
+      page: currentPage,
+      pageSize: limit
+    },
+    message: '查询店铺成功'
   })
 }

@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 16:52:43
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-10-28 09:04:04
+ * @LastEditTime: 2025-11-11 16:17:13
  * @FilePath: \wanWan\routes\shop.ts
  * @Description:
  *
@@ -17,5 +17,7 @@ const router = express.Router() //模块化路由
 router.post('/shop/add', [_middleware.verifyShop], shopController.add)
 
 router.get('/shop/all', shopController.all)
+
+router.post('/shop/list', shopController.list)
 
 module.exports = router
