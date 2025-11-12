@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-10-24 15:11:26
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-11-11 16:51:03
+ * @LastEditTime: 2025-11-12 17:23:58
  * @FilePath: \wanWan\controllers\shopController.ts
  * @Description:
  *
@@ -14,17 +14,30 @@ import mysql from '../db/mysql'
 /**
  * @desc 添加店铺
  * @param {string} shopName 店铺名称 必填
+ * @param {string} provinceCode 省份编码
  * @param {string} province 省份
  * @param {string} city 城市
+ * @param {string} areaCode 区县编码
  * @param {string} area 区县
  * @param {string} address 详细地址
  * @param {string[]} images 图片base64编码，多个图片用逗号隔开
- * @example [shop_name, province, city, area, address, images]
- * @demo ['店铺', '省份', '城市', '区县', '详细地址', '图片base64编码']
+ * @example [shop_name, provinceCode, province, cityCode, city, areaCode, area, address, images]
+ * @demo ['店铺', '省份编码', '省份', '城市编码', '城市', '区县编码', '区县', '详细地址', '图片base64编码']
  *
  */
 exports.add = async (req: any, res: any, next: any) => {
-  const { shopName, province, city, area, address, images } = req.body
+  const {
+    shopName,
+    provinceCode,
+    province,
+    cityCode,
+    city,
+    areaCode,
+    area,
+    address,
+    images,
+    remark
+  } = req.body
 
   // 验证参数是否为空
   if (!shopName) {
@@ -36,7 +49,19 @@ exports.add = async (req: any, res: any, next: any) => {
 
   const { user_id } = req.auth
 
-  const params = [user_id, shopName, province, city, area, address, images]
+  const params = [
+    user_id,
+    shopName,
+    provinceCode,
+    province,
+    cityCode,
+    city,
+    areaCode,
+    area,
+    address,
+    images,
+    remark
+  ]
 
   const result: any = await mysql.query(shopService.addShop, params as never[])
 
@@ -50,6 +75,8 @@ exports.add = async (req: any, res: any, next: any) => {
       city,
       area,
       address,
+      images,
+      remark,
       createDate: new Date()
     },
     message: '添加成功'
