@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-10-24 15:17:06
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-11-12 17:26:34
+ * @LastEditTime: 2025-11-13 10:36:34
  * @FilePath: \wanWan\service\shopService.ts
  * @Description:
  *
@@ -97,4 +97,7 @@ export const checkShopUserId = `SELECT * FROM shop WHERE user_id = ? AND id = ?`
  * @demo [1, 10, 0]
  *
  */
-export const getUserIdShop = `SELECT *, DATE_FORMAT(create_date, '%Y-%m-%d %H:%i:%s') AS create_date FROM shop WHERE 1=1 AND user_id = ? LIMIT ? OFFSET ?`
+export const getUserIdShop = `SELECT *, DATE_FORMAT(create_date, '%Y-%m-%d %H:%i:%s') AS create_date FROM shop WHERE 1=1 AND user_id = ? ORDER BY create_date DESC LIMIT ? OFFSET ?`
+
+// 根据 id 删除
+export const deleteShopId = `DELETE FROM shop WHERE id = ?`

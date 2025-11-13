@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-10-24 15:11:26
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-11-12 17:23:58
+ * @LastEditTime: 2025-11-13 10:46:38
  * @FilePath: \wanWan\controllers\shopController.ts
  * @Description:
  *
@@ -48,8 +48,7 @@ exports.add = async (req: any, res: any, next: any) => {
   }
 
   const { user_id } = req.auth
-
-  const params = [
+  const result: any = await mysql.query(shopService.addShop, [
     user_id,
     shopName,
     provinceCode,
@@ -61,9 +60,7 @@ exports.add = async (req: any, res: any, next: any) => {
     address,
     images,
     remark
-  ]
-
-  const result: any = await mysql.query(shopService.addShop, params as never[])
+  ] as never[])
 
   res.json({
     code: 200,
@@ -81,6 +78,57 @@ exports.add = async (req: any, res: any, next: any) => {
     },
     message: '添加成功'
   })
+}
+
+exports.edit = async (req: any, res: any, next: any) => {
+  const {
+    id,
+    shopName,
+    provinceCode,
+    province,
+    cityCode,
+    city,
+    areaCode,
+    area,
+    address,
+    images,
+    remark
+  } = req.body
+
+  // 验证参数是否为空
+  if (!shopName) {
+    return res.json({
+      code: 400,
+      message: '店铺名称不能为空'
+    })
+  }
+
+  try {
+    const result: any = await mysql.query(shopService.editShop, [
+      shopName,
+      provinceCode,
+      province,
+      cityCode,
+      city,
+      areaCode,
+      area,
+      address,
+      images,
+      remark,
+      id
+    ] as never[])
+
+    res.json({
+      code: 200,
+      data: result,
+      message: '更新成功'
+    })
+  } catch (error) {
+    res.json({
+      code: 500,
+      message: '更新失败'
+    })
+  }
 }
 
 exports.all = async (req: any, res: any, next: any) => {
@@ -125,4 +173,22 @@ exports.list = async (req: any, res: any, next: any) => {
     },
     message: '查询店铺成功'
   })
+}
+
+exports.delete = async (req: any, res: any, next: any) => {
+  const { id }: { id: number } = req.params
+
+  try {
+    await mysql.query(shopService.deleteShopId, [id] as never[])
+
+    res.json({
+      code: 200,
+      message: '删除成功'
+    })
+  } catch (error) {
+    res.json({
+      code: 500,
+      message: '删除失败'
+    })
+  }
 }
