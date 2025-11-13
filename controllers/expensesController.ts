@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 16:38:22
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-11-07 15:55:44
+ * @LastEditTime: 2025-11-13 16:12:25
  * @FilePath: \wanWan\controllers\expensesController.ts
  * @Description:
  *
@@ -10,6 +10,7 @@
  */
 import mysql from '../db/mysql'
 import _expenses from '../util/expenses'
+import _util from '../util/util'
 const expensesService = require('../service/expensesService')
 
 // 添加花销
@@ -46,13 +47,12 @@ exports.add = async (req: any, res: any, next: any) => {
 
 // 获取花销列表
 exports.list = async (req: any, res: any) => {
-  const { startDate, endDate } = req.body
-  const userId = req.body.userId ?? req.auth.user_id
+  const { userId, startDate, endDate } = req.body
 
-  const params = userId ? [userId, startDate, endDate] : [startDate, endDate]
+  const params = [userId, startDate, endDate].filter(item => item !== undefined)
 
   try {
-    const result: any = await _expenses.list(userId, params as never[])
+    const result: any = await _expenses.list({ userId, startDate, endDate }, params as never[])
 
     res.json({
       code: 200,
@@ -75,41 +75,43 @@ exports.list = async (req: any, res: any) => {
 
 // 获取合计花销
 exports.total = async (req: any, res: any) => {
-  const { startDate, endDate } = req.query // get 请求参数
-  const userId = req.query.userId ?? req.auth.user_id
+  const { userId, startDate, endDate } = req.query // get 请求参数
 
-  const params = [userId, startDate, endDate] as never[]
+  const params = [userId, startDate, endDate].filter(item => item !== undefined) // 过滤掉 undefined 参数
 
   try {
-    const data: any = await _expenses.list(userId, params)
+    const result: any = await _expenses.list({ userId, startDate, endDate }, params as never[])
 
-    const filteredData = data.filter((item: any) => item.user_id === userId)
+    const filteredData = result.filter((item: any) => Number(item.user_id) === Number(userId)) // 这里做一次过滤，确保 user_id 一致
 
-    const result: Record<string, number> = {}
+    const listData = userId ? filteredData : result // 如果没有 userId，则使用全部数据
 
-    filteredData.forEach((item: any) => {
-      Object.entries(item).forEach(([key, value]) => {
-        if (['id', 'user_id', 'create_date'].includes(key)) return // 跳过不需要的字段
-        if (value && value !== '') {
-          String(value)
-            .split(',')
-            .forEach(v => {
-              const num = Number(v)
-              if (!isNaN(num)) {
-                result[key] = (result[key] || 0) + num
-              }
-            })
+    const expenses: Record<string, number> = {} // 用于存储各字段的合计值
+
+    listData.forEach((item: any) => {
+      Object.entries(item).forEach(([key, value]: any) => {
+        if (['id', 'user_id', 'user_name', 'create_date'].includes(key)) return // 跳过不需要的字段
+        if (!!value) {
+          // 将可能的逗号分隔值解析为数字并求和，然后累加到 expenses[key]
+          const sum = String(value) // 转换为字符串
+            .split(',') // 分割成数组
+            .map(v => Number(v)) // 转换为数字
+            .filter(n => !isNaN(n)) // 过滤非数字
+            .reduce((acc, n) => acc + n, 0) // 求和
+
+          expenses[key] = (expenses[key] || 0) + sum // 累加到总和
         }
       })
     })
 
-    const total = Object.values(result).reduce((acc: number, value) => acc + value, 0)
+    const grandTotal = Object.values(expenses).reduce((acc: number, value) => acc + value, 0) // 累加所有值
 
     res.json({
       code: 200,
       data: {
-        expenses: { ...result },
-        total: total.toFixed(2).replace(/\.?0+$/, ''),
+        userId,
+        expenses,
+        total: _util.formatNumber(grandTotal),
         startDate,
         endDate
       },
@@ -136,7 +138,7 @@ exports.checkFieldTotal = async (req: any, res: any) => {
   const result = {} as any
 
   // 定义需要跳过的字段
-  const SKIP_FIELDS = ['id', 'user_id', 'create_date']
+  const SKIP_FIELDS = ['id', 'user_id', 'user_name', 'create_date']
 
   // 使用 flatMap 将 data 展平为一维数组
   const flatRecords = data.flatMap((fieldArray: any) => fieldArray)
@@ -159,13 +161,13 @@ exports.checkFieldTotal = async (req: any, res: any) => {
   const sum = {} as any
   Object.entries(result).forEach(([key, value]: any) => {
     // 将每个值转为数字并累加，保留两位小数
-    sum[key] = String(value)
+    const acc = String(value)
       .split(',') // 分割成数组
       .map(Number) // 转为数字
-      .filter(num => !isNaN(num)) // 过滤掉非数字
+      .filter(n => !isNaN(n)) // 过滤非数字
       .reduce((total: number, num: number) => total + num, 0) // 累加
-      .toFixed(2) // 保留两位小数
-      .replace(/\.?0+$/, '') // 正则表达式移除末尾的0
+
+    sum[key] = _util.formatNumber(acc)
   })
 
   // 计算所有字段的总合计
@@ -174,15 +176,13 @@ exports.checkFieldTotal = async (req: any, res: any) => {
     .reduce((acc, value) => {
       return acc + Number(value)
     }, 0)
-    .toFixed(2)
-    .replace(/\.?0+$/, '')
 
   res.json({
     code: 200,
     data: {
       expenses: { ...result },
       sum: { ...sum },
-      total: grandTotal,
+      total: _util.formatNumber(grandTotal),
       startDate,
       endDate
     },

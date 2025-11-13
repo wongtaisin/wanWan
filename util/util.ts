@@ -216,6 +216,26 @@ const selectedDate = (days: number = 0) => {
   return `${year}-${month}-${day}`
 }
 
+/**
+ * @desc 格式化数字，去除多余的零
+ * @param {number} num - 要格式化的数字
+ * @param {number} to - 小数位数,默认2
+ *
+ * @returns {string} 格式化后的数字字符串
+ * @example 假设 num = 123.456
+ * @demo formatNumber(123.456) => 123.46
+ * @demo formatNumber(123.456, 2) => 123.46
+ * @demo formatNumber(123.456, 1) => 123.5
+ * @demo formatNumber(123.456, 0) => 123
+ */
+const formatNumber = (num: number, to: number = 2) => {
+  const sum = num
+    .toFixed(to) // 保留 to 位小数
+    .replace(/\.?0+$/, '') // 移除末尾的零
+
+  return Number(sum)
+}
+
 export default {
   deepClone,
   formatDate,
@@ -225,5 +245,6 @@ export default {
   monthDates,
   timeDifference,
   handleTree,
-  selectedDate
+  selectedDate,
+  formatNumber
 }

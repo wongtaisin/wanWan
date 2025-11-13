@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 16:38:48
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-10-18 17:23:06
+ * @LastEditTime: 2025-11-13 15:56:21
  * @FilePath: \wanWan\service\expensesService.ts
  * @Description:
  *
@@ -14,27 +14,37 @@ export const expensesAll = `SELECT * FROM expenses`
 
 /**
  * @desc 根据 userId，时间，查询，都可传可不传
- * @param {number} userId 用户ID 可选
- * @param {string} startDate 开始日期
- * @param {string} endDate 结束日期
- * @example [userId, startDate, endDate] 或 [startDate, endDate]
- * @demo [1, '2025-09-01', '2025-09-02'] 或 ['2025-09-01', '2025-09-02']
+ * @param {Object} row 包含 userId, startDate, endDate 的对象
+ * @param {number} row.userId 用户ID
+ * @param {string} row.startDate 开始日期
+ * @param {string} row.endDate 结束日期
+ * @example [userId, startDate, endDate]
+ * @demo [1, '2025-09-01', '2025-09-02']
  *
- * @sql SELECT * FROM expenses WHERE user_id = ?
+ * @sql SELECT * FROM expenses WHERE 1=1 ORDER BY create_date DESC
+ *
+ * @sql SELECT * FROM expenses WHERE 1=1 AND user_id = ?
           AND DATE(create_date) BETWEEN IFNULL(?, DATE(create_date))
           AND IFNULL(?, DATE(create_date)) ORDER BY create_date DESC
  *
- * @sql SELECT * FROM expenses WHERE 1=1
-          AND DATE(create_date) BETWEEN IFNULL(?, DATE(create_date))
-          AND IFNULL(?, DATE(create_date)) ORDER BY create_date DESC
- *
+ * @explain IFNULL(?, DATE(create_date)) // 如果 startDate 或 endDate 为空，则使用当前日期
+ * @explain DATE_FORMAT(create_date, '%Y-%m-%d') // 格式化日期为 'YYYY-MM-DD'
  * @explain ORDER BY create_date DESC 是将数据库的 create_date 排序，最新的在前面
  */
-export const expensesById = (userId?: number) => {
-  const id = userId ? `user_id = ?` : `1=1`
-  const date = `AND DATE(create_date) BETWEEN IFNULL(?, DATE(create_date)) AND IFNULL(?, DATE(create_date))`
+export const filterUserIdAndDate = (row: {
+  userId?: number
+  startDate?: string
+  endDate?: string
+}) => {
+  const id = row?.userId ? ` AND user_id = ?` : ``
+  const date =
+    row?.startDate && row?.endDate
+      ? ` AND DATE(create_date) BETWEEN IFNULL(?, DATE(create_date)) AND IFNULL(?, DATE(create_date))`
+      : ``
 
-  return `SELECT * FROM expenses WHERE ${id} ${date} ORDER BY create_date DESC`
+  const sql = `SELECT *, DATE_FORMAT(create_date, '%Y-%m-%d') AS create_date FROM expenses WHERE 1=1 ${id} ${date} ORDER BY create_date DESC`
+
+  return sql
 }
 
 // 添加
