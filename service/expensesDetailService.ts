@@ -2,14 +2,14 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-09-23 09:47:03
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-11-04 17:10:31
+ * @LastEditTime: 2025-11-14 14:15:55
  * @FilePath: \wanWan\service\expensesDetailService.ts
  * @Description:
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
 // 查询所有
-export const getIdExpensesDetail = `SELECT * FROM expenses_detail WHERE 1=1 AND id = ?`
+export const getIdExpensesDetail = `SELECT *, DATE_FORMAT(create_date, '%Y-%m-%d %H:%i:%s') AS create_date FROM expenses_detail WHERE 1=1 AND id = ?`
 
 /**
  * @desc 添加
@@ -58,7 +58,7 @@ export const add = `INSERT INTO expenses_detail (user_id, user_name, expenses_na
  * @explain COALESCE(NULLIF(?, ''), now()) 当 update_date 为空时，使用当前时间
  * @explain COALESCE(?, money) 当 money 为空时，使用数据库里的值
  */
-export const updateExpensesDetail = `UPDATE expenses_detail SET expenses_name = ?, money = COALESCE(?, money), payment_id = COALESCE(?, payment_id), payment_name = COALESCE(?, payment_name), shop_id = COALESCE(?, shop_id), shop_name = COALESCE(?, shop_name), remark = COALESCE(?, remark), image = COALESCE(?, image), province = COALESCE(?, province), city = COALESCE(?, city), area = COALESCE(?, area), address = COALESCE(?, address), update_date = NOW() WHERE id = ?`
+export const updateExpensesDetail = `UPDATE expenses_detail SET expenses_name = ?, money = COALESCE(?, money), payment_id = COALESCE(?, payment_id), payment_name = COALESCE(?, payment_name), shop_id = ?, shop_name = ?, remark = COALESCE(?, remark), image = COALESCE(?, image), province = ?, city = ?, area = ?, address = ?, update_date = NOW() WHERE id = ?`
 
 // 根据 id 删除
 export const deleteExpensesDetailId = `DELETE FROM expenses_detail WHERE id = ?`

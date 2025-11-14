@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-09-23 09:55:43
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-11-05 08:19:31
+ * @LastEditTime: 2025-11-14 14:57:39
  * @FilePath: \wanWan\controllers\expensesDetailController.ts
  * @Description:
  *
@@ -241,35 +241,42 @@ exports.upDate = async (req: any, res: any, next: any) => {
   } = req.body
 
   let shopParams: {
-    shop_name: string
-    province: string
-    city: string
-    area: string
-    address: string
+    shopName: string
+    province: string | null
+    city: string | null
+    area: string | null
+    address: string | null
   } = {
-    shop_name: req.body.shopName, // 店铺名称
+    shopName: req.body.shopName, // 店铺名称
     province: req.body.province, // 省份
     city: req.body.city, // 城市
     area: req.body.area, // 区县
     address: req.body.address // 地址
   } // 店铺地址参数
 
-  // 检查店铺是否存在，存在则更新地址信息
-  if (!!shopId) {
-    const shopResult: any = await mysql.query(shopService.checkShopUserId, [
-      req.auth.user_id,
-      shopId
-    ] as never[])
-    const { shop_name, province, city, area, address } = shopResult[0]
-    shopParams = { shop_name, province, city, area, address }
-  }
-
-  // 先获取id的 info
+  // 先获取id的 info，获取 userId, create_date, expenses_name 字段值，用于更新 expenses 表
   const getInfo: any = await mysql.query(expensesDetailService.getIdExpensesDetail, [id] as never[])
 
-  const createDate = _util.formatDate(getInfo[0].create_date, 'yyyy-MM-dd hh:mm:ss')
+  const { user_id: userId, create_date: createDate, expenses_name: createName } = getInfo[0]
 
-  const createName = getInfo[0].expenses_name
+  if (!shopId) {
+    // 不存在则删除数据库之前存的地址信息
+    shopParams = {
+      shopName: req.body.shopName,
+      province: null,
+      city: null,
+      area: null,
+      address: null
+    }
+  } else {
+    // 存在则更新地址信息
+    const shopResult: any = await mysql.query(shopService.checkShopUserId, [
+      userId,
+      shopId
+    ] as never[])
+    const { shop_name: shopName, province, city, area, address } = shopResult[0]
+    shopParams = { shopName, province, city, area, address }
+  }
 
   // 更新 expensesDetail 表的字段值，需要先更新 expensesDetail 表的字段值，再更新 expenses 表的字段值
   const params = [
@@ -278,7 +285,7 @@ exports.upDate = async (req: any, res: any, next: any) => {
     paymentId,
     paymentName,
     shopId,
-    shopParams.shop_name,
+    shopParams.shopName,
     remark,
     image,
     shopParams.province,
@@ -292,21 +299,21 @@ exports.upDate = async (req: any, res: any, next: any) => {
   // 更改 expenses_name 的值，需要把 expenses[createName] 的值一并改变
   if (createName !== expensesName && !!expensesName) {
     // 先删除旧的字段值
-    const oldValues = await valuesResult(req.auth.user_id, createDate, createName)
+    const oldValues = await valuesResult(userId, createDate, createName)
     await mysql.query(expensesService.updateExpensesDate(createName), [
       oldValues,
-      req.auth.user_id,
+      userId,
       createDate
     ] as never[])
   }
 
   // 获取 expenses_name 新的字段值
-  const newValues = await valuesResult(req.auth.user_id, createDate, expensesName, money)
+  const newValues = await valuesResult(userId, createDate, expensesName, money)
 
   // 更新 expenses 表的字段值
   await mysql.query(expensesService.updateExpensesDate(expensesName), [
     newValues,
-    req.auth.user_id,
+    userId,
     createDate
   ] as never[])
 
@@ -314,15 +321,11 @@ exports.upDate = async (req: any, res: any, next: any) => {
     code: 200,
     data: {
       id,
-      userId: req.auth.user_id,
+      userId,
       [expensesName]: money,
       paymentName,
-      shopName: shopParams.shop_name,
+      ...shopParams,
       remark,
-      province: shopParams.province,
-      city: shopParams.city,
-      area: shopParams.area,
-      address: shopParams.address,
       image,
       updateDate: _util.formatDate(Date.now(), 'yyyy-MM-dd hh:mm:ss')
     },
@@ -337,8 +340,6 @@ exports.upDate = async (req: any, res: any, next: any) => {
 exports.delete = async (req: any, res: any, next: any) => {
   const { id }: { id: number } = req.params
 
-  const { user_id } = req.auth
-
   const getInfo: any = await mysql.query(expensesDetailService.getIdExpensesDetail, [id] as never[])
 
   if (getInfo.length < 1) {
@@ -348,7 +349,7 @@ exports.delete = async (req: any, res: any, next: any) => {
     })
   }
 
-  const { create_date, expenses_name } = getInfo[0]
+  const { user_id, create_date, expenses_name } = getInfo[0]
 
   // 先删除 deleteExpenses 的 id 数据
   await mysql.query(expensesDetailService.deleteExpensesDetail, [id] as never[])
