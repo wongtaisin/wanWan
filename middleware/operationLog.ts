@@ -85,6 +85,10 @@ export const autoOperationLogMiddleware = () => {
 
     // 重写res.send方法以捕获响应数据
     res.send = function (data) {
+      // 添加跳过日志检查
+      if ((req as any).skipLog) {
+        return originalSend.call(this, data)
+      }
       const executionTime = Date.now() - startTime
 
       // 异步记录日志，不阻塞响应
