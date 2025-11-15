@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 16:38:22
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-11-13 16:12:25
+ * @LastEditTime: 2025-11-15 17:09:33
  * @FilePath: \wanWan\controllers\expensesController.ts
  * @Description:
  *
@@ -54,11 +54,30 @@ exports.list = async (req: any, res: any) => {
   try {
     const result: any = await _expenses.list({ userId, startDate, endDate }, params as never[])
 
+    const totalResult = result.map((item: any) => {
+      let total = 0
+      Object.entries(item).forEach(([key, value]: any) => {
+        if (['id', 'user_id', 'user_name', 'create_date'].includes(key)) return
+        if (!!value) {
+          const sum = String(value)
+            .split(',')
+            .map(v => Number(v))
+            .filter(n => !isNaN(n))
+            .reduce((acc, n) => acc + n, 0)
+          total += sum
+        }
+      })
+      return { info: _util.formatNumber(total), date: item.create_date }
+    })
+
+    console.log('totalResult', totalResult)
+
     res.json({
       code: 200,
       data: {
         list: result,
         total: result.length,
+        sum: totalResult,
         startDate,
         endDate
       },
