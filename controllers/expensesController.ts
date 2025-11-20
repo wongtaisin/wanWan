@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 16:38:22
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-11-15 17:09:33
+ * @LastEditTime: 2025-11-17 08:26:40
  * @FilePath: \wanWan\controllers\expensesController.ts
  * @Description:
  *
@@ -70,8 +70,6 @@ exports.list = async (req: any, res: any) => {
       return { info: _util.formatNumber(total), date: item.create_date }
     })
 
-    console.log('totalResult', totalResult)
-
     res.json({
       code: 200,
       data: {
@@ -94,7 +92,9 @@ exports.list = async (req: any, res: any) => {
 
 // 获取合计花销
 exports.total = async (req: any, res: any) => {
-  const { userId, startDate, endDate } = req.query // get 请求参数
+  const { startDate, endDate } = req.query // get 请求参数
+
+  const userId = req.query.userId ?? req.auth.user_id // TODO: 需要修改成可不传 userId 参数
 
   const params = [userId, startDate, endDate].filter(item => item !== undefined) // 过滤掉 undefined 参数
 
@@ -148,7 +148,9 @@ exports.total = async (req: any, res: any) => {
 exports.checkFieldTotal = async (req: any, res: any) => {
   let { name, startDate, endDate } = req.body
 
-  const params = [req.auth.user_id, startDate, endDate] as never[]
+  const userId = req.body.userId ?? req.auth.user_id // TODO: 需要修改成可不传 userId 参数
+
+  const params = [userId, startDate, endDate] as never[]
 
   const queryPromises = expensesService.getFieldValues(name)
 
