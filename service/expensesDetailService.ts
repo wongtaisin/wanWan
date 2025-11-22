@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-09-23 09:47:03
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-11-14 14:15:55
+ * @LastEditTime: 2025-11-22 16:51:23
  * @FilePath: \wanWan\service\expensesDetailService.ts
  * @Description:
  *
@@ -120,4 +120,33 @@ LEFT JOIN (
  AND DATE(ed.create_date) = e.d
 WHERE e.d IS NULL
 ORDER BY ed.user_id, ed.create_date;
+`
+
+/**
+ * @desc 检查指定日期是否存在
+ * @param {number} userId 用户id
+ * @param {string} startDate 开始日期
+ * @param {string} endDate 结束日期
+ * @example [userId, startDate, endDate]
+ * @demo [1, 2025-01-31, 2025-12-31]
+ *
+ */
+/**
+ * @desc 根据用户ID与日期范围查询花销明细
+ * @param {number} userId 用户id
+ * @param {string} startDate 开始日期（YYYY-MM-DD）
+ * @param {string} endDate 结束日期（YYYY-MM-DD）
+ * @example [userId, startDate, endDate]
+ * @demo [1, '2025-01-01', '2025-12-31']
+ *
+ * @explain 使用 DATE(create_date) 提取日期部分，避免时间干扰；IFNULL 处理空参数，保持查询兼容
+ */
+export const checkDateRange = `
+  SELECT *,
+    DATE_FORMAT(create_date, '%Y-%m-%d %H:%i:%s') AS create_date,
+    DATE_FORMAT(update_date, '%Y-%m-%d %H:%i:%s') AS update_date
+  FROM expenses_detail
+  WHERE user_id = ?
+    AND DATE(create_date) BETWEEN IFNULL(?, DATE(create_date)) AND IFNULL(?, DATE(create_date))
+  ORDER BY create_date DESC
 `

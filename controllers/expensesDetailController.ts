@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-09-23 09:55:43
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-11-14 14:57:39
+ * @LastEditTime: 2025-11-22 17:25:18
  * @FilePath: \wanWan\controllers\expensesDetailController.ts
  * @Description:
  *
@@ -500,5 +500,71 @@ exports.repairExpensesData = async (req: any, res: any, next: any) => {
     code: 200,
     data: mergedData,
     message: '对比成功'
+  })
+}
+
+exports.checkDatePrice = async (req: any, res: any, next: any) => {
+  const { userId, startDate, endDate } = req.query
+
+  const checkDateRangeResult: any = await mysql.query(expensesDetailService.checkDateRange, [
+    userId,
+    startDate,
+    endDate
+  ] as never[])
+
+  const expensesName = [
+    'eat',
+    'drink',
+    'play',
+    'glad',
+    'tolls',
+    'oil',
+    'parking',
+    'traffic',
+    'supermarket',
+    'online_shopping',
+    'phone_bill',
+    'red_packet',
+    'vip',
+    'other'
+  ]
+
+  // 按 expenses_name 分组并计算合计
+  const sum: Record<string, number> = {}
+  const monthMap: Record<string, Record<string, number>> = {}
+  checkDateRangeResult.forEach((item: any) => {
+    if (expensesName.includes(item.expenses_name)) {
+      const key = item.expenses_name
+      const money = Number(item.money) || 0
+      sum[key] = _util.formatNumber((sum[key] || 0) + money)
+
+      // 计算月份合计
+      const monthKey = _util.formatDate(item.create_date, 'yyyy-MM')
+      if (!monthMap[monthKey]) monthMap[monthKey] = {} // 初始化月份合计对象
+      monthMap[monthKey][key] = _util.formatNumber((monthMap[monthKey][key] || 0) + money) // 累加当前月份当前支出类型的金额
+    }
+  })
+
+  // 计算每个月份的总支出
+  for (const monthKey in monthMap) {
+    const monthData = monthMap[monthKey]
+    monthData.total = Object.values(monthData).reduce((acc: number, value: string | number) => {
+      return acc + Number(value)
+    }, 0)
+    monthData.total = _util.formatNumber(monthData.total)
+  }
+
+  const total = Object.keys(sum).reduce((acc: number, key: string) => {
+    return acc + Number(sum[key])
+  }, 0)
+
+  res.json({
+    code: 200,
+    data: {
+      monthMap,
+      sum,
+      total: _util.formatNumber(total)
+    },
+    message: '查询成功'
   })
 }
