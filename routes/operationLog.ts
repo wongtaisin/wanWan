@@ -2,8 +2,8 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-30 16:00:00
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-02 13:45:16
- * @FilePath: \express\routes\operationLog.ts
+ * @LastEditTime: 2025-11-24 17:18:44
+ * @FilePath: \wanWan\routes\operationLog.ts
  * @Description: 操作日志路由
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
@@ -11,11 +11,12 @@
 
 import express from 'express'
 import operationLogController from '../controllers/operationLogController'
+import { skipOperationLog } from '../middleware/operationLog' // 跳过接口的日志记录
 
 const router = express.Router()
 
 // 获取操作日志列表
-router.get('/operation-logs', operationLogController.getLogList)
+router.get('/operation-logs', skipOperationLog(), operationLogController.getLogList)
 
 // 获取操作日志详情
 router.get('/operation-logs/:id', operationLogController.getLogDetail)
