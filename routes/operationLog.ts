@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-30 16:00:00
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-11-24 17:18:44
+ * @LastEditTime: 2025-11-25 16:52:48
  * @FilePath: \wanWan\routes\operationLog.ts
  * @Description: 操作日志路由
  *
@@ -19,7 +19,7 @@ const router = express.Router()
 router.get('/operation-logs', skipOperationLog(), operationLogController.getLogList)
 
 // 获取操作日志详情
-router.get('/operation-logs/:id', operationLogController.getLogDetail)
+router.get('/operation-logs/:id', skipOperationLog(), operationLogController.getLogDetail)
 
 // 删除操作日志
 router.delete('/operation-logs/:id', operationLogController.deleteLog)

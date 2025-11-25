@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-30 16:00:00
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-11-25 16:41:36
+ * @LastEditTime: 2025-11-25 17:08:24
  * @FilePath: \wanWan\service\operationLogService.ts
  * @Description: 操作日志服务层
  *
@@ -14,7 +14,25 @@ import { OperationLog, OperationLogQuery, OperationLogResponse } from '../models
 
 class OperationLogService {
   /**
-   * 创建操作日志
+   * @description: 创建操作日志
+   * @param {OperationLog} log - 操作日志对象
+   * @return {Promise<number>} - 操作日志ID
+   *
+   * @example 假设 log = {
+   *   user_id: 1,
+   *   user_name: '大帅',
+   *   operation_type: 'login',
+   *   module: 'user',
+   *   description: '用户登录',
+   *   request_url: '/user/login',
+   *   request_method: 'POST',
+   *   request_params: '{"username": "dashuai", "password": "123456"}',
+   *   response_data: '{"token": "123456"}',
+   *   ip_address: '127.0.0.1'
+   *   user_agent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36'
+   *   status_code: 200
+   *   execution_time: 100
+   * }
    */
   async createLog(log: OperationLog): Promise<number> {
     try {
@@ -50,7 +68,12 @@ class OperationLogService {
   }
 
   /**
-   * 查询操作日志列表
+   * @description: 查询操作日志列表
+   * @param {OperationLogQuery} query - 查询参数
+   * @return {Promise<OperationLogResponse>} - 操作日志列表响应
+   *
+   * @example 假设 query = { user_id: 1, operation_type: 'login', module: 'user', start_time: '2025-11-25 00:00:00', end_time: '2025-11-25 23:59:59' },
+   * 则返回用户ID为1、操作类型为login、模块为user、在2025-11-25 00:00:00至2025-11-25 23:59:59之间的操作日志列表
    */
   async getLogList(query: OperationLogQuery): Promise<OperationLogResponse> {
     try {
@@ -120,11 +143,16 @@ class OperationLogService {
   }
 
   /**
-   * 根据ID查询操作日志详情
+   * @description: 根据ID查询操作日志详情
+   * @param {number} id - 操作日志ID
+   * @return {Promise<OperationLog | null>} - 操作日志详情或null
+   *
+   * @example 假设 id = 1, 则返回ID为1的操作日志详情
    */
   async getLogById(id: number): Promise<OperationLog | null> {
     try {
-      const sql = 'SELECT * FROM operation_log WHERE id = ?'
+      const sql =
+        'SELECT *, DATE_FORMAT(create_time, "%Y-%m-%d %H:%i:%s") AS create_time FROM operation_log WHERE id = ?'
       const result: any = await mysql.query(sql, [id] as never[])
       return result.length > 0 ? result[0] : null
     } catch (error) {
@@ -134,7 +162,11 @@ class OperationLogService {
   }
 
   /**
-   * 删除操作日志
+   * @description: 删除操作日志
+   * @param {number} id - 操作日志ID
+   * @return {Promise<boolean>} - 是否删除成功
+   *
+   * @example 假设 id = 1, 则删除ID为1的操作日志
    */
   async deleteLog(id: number): Promise<boolean> {
     try {
@@ -148,7 +180,11 @@ class OperationLogService {
   }
 
   /**
-   * 批量删除操作日志
+   * @description: 批量删除操作日志
+   * @param {number[]} ids - 操作日志ID列表
+   * @return {Promise<boolean>} - 是否删除成功
+   *
+   * @example 假设 ids = [1, 2, 3], 则删除ID为1、2、3的操作日志
    */
   async batchDeleteLog(ids: number[]): Promise<boolean> {
     try {
@@ -163,7 +199,11 @@ class OperationLogService {
   }
 
   /**
-   * 清理指定日期之前的日志
+   * @deprecated 清理指定日期之前的日志
+   * @param {string} beforeDate - 清理日期，格式为YYYY-MM-DD
+   * @return {Promise<number>} - 受影响的行数
+   *
+   * @example 假设 beforeDate = '2025-11-25', 则删除该日期之前的所有操作日志
    */
   async cleanOldLogs(beforeDate: string): Promise<number> {
     try {
@@ -177,7 +217,18 @@ class OperationLogService {
   }
 
   /**
-   * 获取操作统计信息
+   * @description: 获取操作统计信息
+   * @param {number} days - 统计时间范围（天），默认7天
+   * @return {Promise<any[]>} - 操作统计信息列表
+   *
+   * @example 假设 days = 7, 则结果为
+   * [
+   *   { date: '2025-11-25', operation_type: 'create', count: 123 },
+   *   { date: '2025-11-25', operation_type: 'update', count: 45 },
+   *   ...
+   * ]
+   * @demo const stats = await operationLogService.getOperationStats() // 获取最近7天的操作统计信息
+   * @demo const stats30 = await operationLogService.getOperationStats(30) // 获取最近30天的操作统计信息
    */
   async getOperationStats(days: number = 7): Promise<any[]> {
     try {

@@ -2,8 +2,8 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-30 16:00:00
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-08-30 16:00:00
- * @FilePath: \express\controllers\operationLogController.ts
+ * @LastEditTime: 2025-11-25 17:23:19
+ * @FilePath: \wanWan\controllers\operationLogController.ts
  * @Description: 操作日志控制器
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
