@@ -2,8 +2,8 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-30 16:00:00
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-02 13:56:07
- * @FilePath: \express\service\operationLogService.ts
+ * @LastEditTime: 2025-11-25 16:41:36
+ * @FilePath: \wanWan\service\operationLogService.ts
  * @Description: 操作日志服务层
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.

@@ -1,5 +1,14 @@
+/*
+ * @Author: wingddd wongtaisin1024@gmail.com
+ * @Date: 2025-11-08 16:22:20
+ * @LastEditors: wingddd wongtaisin1024@gmail.com
+ * @LastEditTime: 2025-11-25 13:41:38
+ * @FilePath: \wanWan\routes\common.ts
+ * @Description:
+ *
+ * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
+ */
 import express from 'express' // 引入express模块
-import { skipOperationLog } from '../middleware/operationLog' // 跳过接口的日志记录
 const commonController = require('../controllers/commonController')
 const upload = require('../util/upload')
 const router = express.Router() //模块化路由
@@ -8,6 +17,6 @@ const router = express.Router() //模块化路由
 router.post('/common/upload', upload, commonController.uploadFile)
 
 // 地区数据接口 - 添加跳过日志记录
-router.get('/common/areaData', skipOperationLog(), commonController.getAreaData)
+router.get('/common/areaData', commonController.getAreaData)
 
 module.exports = router

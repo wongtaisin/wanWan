@@ -1,14 +1,15 @@
-import mysql from '../db/mysql'
 /*
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-25 11:02:53
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-11 10:48:13
- * @FilePath: \express\middleware\login.ts
+ * @LastEditTime: 2025-11-25 16:45:55
+ * @FilePath: \wanWan\middleware\login.ts
  * @Description:
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
+import mysql from '../db/mysql'
+import _util from '../util/util'
 const loginService = require('../service/loginService')
 
 /**
@@ -26,6 +27,7 @@ const login_params = async (req: any, res: any, next: any) => {
   // 检查用户名和密码是否为空
   if (!user_name || !password) {
     return res.status(400).json({
+      code: 400,
       message: '账号和密码不能为空'
     })
   }
@@ -39,12 +41,16 @@ const login_params = async (req: any, res: any, next: any) => {
 
     if (user.length === 0) {
       return res.status(401).json({
+        code: 401,
         message: '账号或密码不正确'
       })
     }
 
     // 根据用户ID更新登录时间，并且获取 login_ip
-    await mysql.query(loginService.updateLoginTimeAndGetIp, [req.ip, user[0].user_id] as never[])
+    await mysql.query(loginService.updateLoginTimeAndGetIp, [
+      _util.getClientIp(req),
+      user[0].user_id
+    ] as never[])
 
     // 验证通过，将用户信息添加到请求对象中
     req.user = user[0]
@@ -52,6 +58,7 @@ const login_params = async (req: any, res: any, next: any) => {
   } catch (error) {
     console.error('验证失败:', error)
     res.status(500).json({
+      code: 500,
       message: '服务器错误，请稍后重试'
     })
   }
@@ -73,20 +80,29 @@ const register_params = async (req: any, res: any, next: any) => {
   try {
     const { user_name, password, phone, age, sex } = req.body
     if (!user_name || !password || !phone) {
-      return res.status(400).json({ message: '用户名、密码和手机号都是必填项' })
+      return res.status(400).json({
+        code: 400,
+        message: '用户名、密码和手机号都是必填项'
+      })
     }
 
     // 手机号格式验证
     const phoneRegex = /^1[3-9]\d{9}$/
     if (!phoneRegex.test(String(phone))) {
-      return res.status(400).json({ message: '手机号码格式如:138xxxx8754' })
+      return res.status(400).json({
+        code: 400,
+        message: '手机号码格式如:138xxxx8754'
+      })
     }
 
     // 查询用户是否已存在
     const checkUser: any = await mysql.query(loginService.checkUser, [user_name, phone] as never[])
 
     if (checkUser.length > 0) {
-      return res.status(400).json({ message: '用户名或手机号已存在' })
+      return res.status(400).json({
+        code: 400,
+        message: '用户名或手机号已存在'
+      })
     }
 
     const result: any = await mysql.query(loginService.addUser, [
@@ -110,6 +126,7 @@ const register_params = async (req: any, res: any, next: any) => {
   } catch (error) {
     console.error('验证失败:', error)
     res.status(500).json({
+      code: 500,
       message: '服务器错误，请稍后重试'
     })
   }

@@ -2,8 +2,8 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-30 16:00:00
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-09-03 17:24:06
- * @FilePath: \express\middleware\operationLog.ts
+ * @LastEditTime: 2025-11-25 16:22:17
+ * @FilePath: \wanWan\middleware\operationLog.ts
  * @Description: 操作日志中间件
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
@@ -11,6 +11,7 @@
 
 import { NextFunction, Request, Response } from 'express'
 import operationLogService from '../service/operationLogService'
+import _util from '../util/util'
 
 interface AuthenticatedRequest extends Request {
   auth?: {
@@ -127,6 +128,10 @@ export const autoOperationLogMiddleware = () => {
             module = 'login'
           } else if (req.path.includes('/operation-logs')) {
             module = 'operation_log'
+          } else if (req.path.includes('/shop')) {
+            module = 'shop'
+          } else if (req.path.includes('/common')) {
+            module = 'common'
           }
 
           // 生成描述
@@ -146,8 +151,8 @@ export const autoOperationLogMiddleware = () => {
               params: req.params
             }),
             response_data: typeof data === 'string' ? data : JSON.stringify(data),
-            ip_address:
-              req.ip || req.connection.remoteAddress || (req.headers['x-forwarded-for'] as string),
+            ip_address: _util.getClientIp(req),
+            // ip_address: req.ip || req.connection.remoteAddress || (req.headers['x-forwarded-for'] as string),
             user_agent: req.headers['user-agent'],
             status_code: res.statusCode,
             execution_time: executionTime

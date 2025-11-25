@@ -236,6 +236,30 @@ const formatNumber = (num: number, to: number = 2) => {
   return Number(sum)
 }
 
+/**
+ * @desc 获取客户端IP地址
+ * @param {Request} req - 请求对象
+ *
+ * @returns {string} 客户端IP地址
+ */
+const getClientIp = (req: any) => {
+  // 1. 尝试从 X-Forwarded-For 拿真实 IP
+  const forwarded = req.headers['x-forwarded-for']
+  if (forwarded) {
+    // X-Forwarded-For 可能是 "真实IP, 代理IP, 代理IP"
+    return forwarded.split(',')[0].trim()
+  }
+
+  // 2. Express 自带的 req.ip 在 trust proxy 开启后会自动识别
+  if (req.ip) {
+    return req.ip
+  }
+
+  // 3. Node 原生字段（通常不是真实IP）
+  const remote = req.connection?.remoteAddress || req.socket?.remoteAddress
+  return remote || ''
+}
+
 export default {
   deepClone,
   formatDate,
@@ -246,5 +270,6 @@ export default {
   timeDifference,
   handleTree,
   selectedDate,
-  formatNumber
+  formatNumber,
+  getClientIp
 }
