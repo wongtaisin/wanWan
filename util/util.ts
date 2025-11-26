@@ -257,7 +257,7 @@ const getClientIp = (req: any) => {
 
   // 3. Node 原生字段（通常不是真实IP）
   const remote = req.connection?.remoteAddress || req.socket?.remoteAddress
-  return remote || ''
+  return remote || null
 }
 
 export default {
