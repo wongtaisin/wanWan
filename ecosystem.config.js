@@ -4,7 +4,7 @@ module.exports = {
     // 开发环境（使用 ts-node/register 运行 TS）
     // ============================
     {
-      name: 'ts-dev',
+      name: 'wanWan-dev',
       script: 'node',
       args: '-r ts-node/register app.ts', // 使用 ts-node 运行 TS
       watch: [
@@ -33,7 +33,7 @@ module.exports = {
     // dist/app.js 必须存在（tsc 编译后）
     // ============================
     {
-      name: 'ts-prod',
+      name: 'wanWan-prod',
       script: 'dist/app.js',
       instances: 1,
       autorestart: true,
