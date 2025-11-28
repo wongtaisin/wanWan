@@ -37,14 +37,13 @@ router.use((err: any, req: express.Request, res: express.Response, next: express
     // 抛出401异常
     res.status(status).json({
       code: status,
-      message: message || 'token失效，请重新登录',
-      data: null
+      message: `${message}，token失效，请重新登录`
     })
   } else {
     const { output } = err || {}
     // 错误码和错误信息
-    const errCode = (output && output.statusCode) || 500
-    const errMsg = (output && output.payload && output.payload.error) || err.message
+    const errCode = output?.statusCode || 500
+    const errMsg = output?.payload?.error || err.message
     res.status(errCode).json({
       code: errCode,
       message: errMsg

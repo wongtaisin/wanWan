@@ -10,6 +10,7 @@
  */
 import mysql from '../db/mysql'
 import _expenses from '../util/expenses'
+import { ReFail, ReSuccess } from '../util/response'
 import _util from '../util/util'
 const expensesService = require('../service/expensesService')
 
@@ -47,7 +48,9 @@ exports.add = async (req: any, res: any, next: any) => {
 
 // 获取花销列表
 exports.list = async (req: any, res: any) => {
-  const { userId, startDate, endDate } = req.body
+  const { startDate, endDate } = req.body
+
+  const userId = req.body.userId ?? req.auth.user_id
 
   const params = [userId, startDate, endDate].filter(item => item !== undefined)
 
@@ -70,23 +73,15 @@ exports.list = async (req: any, res: any) => {
       return { info: _util.formatNumber(total), date: item.create_date }
     })
 
-    res.json({
-      code: 200,
-      data: {
-        list: result,
-        total: result.length,
-        sum: totalResult,
-        startDate,
-        endDate
-      },
-      message: '获取花销列表成功'
+    ReSuccess(res, 200, '获取花销列表成功', {
+      list: result,
+      total: result.length,
+      sum: totalResult,
+      startDate,
+      endDate
     })
   } catch (error) {
-    console.error('获取花销列表失败:', error)
-    res.status(500).json({
-      code: 500,
-      message: '获取花销列表失败'
-    })
+    ReFail(res, '获取花销列表失败')
   }
 }
 
