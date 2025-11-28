@@ -11,6 +11,7 @@
 
 import { Request, Response } from 'express'
 import operationLogService from '../service/operationLogService'
+import { ReFail, ReSuccess } from '../util/response'
 
 class OperationLogController {
   /**
@@ -42,18 +43,9 @@ class OperationLogController {
 
       const result = await operationLogService.getLogList(query)
 
-      res.json({
-        code: 200,
-        message: '获取操作日志列表成功',
-        data: result
-      })
+      ReSuccess(res, 200, '获取操作日志列表成功', result)
     } catch (error) {
-      console.error('获取操作日志列表失败:', error)
-      res.status(500).json({
-        code: 500,
-        message: '获取操作日志列表失败',
-        data: null
-      })
+      ReFail(res, '获取操作日志列表失败', error)
     }
   }
 
@@ -82,18 +74,9 @@ class OperationLogController {
         })
       }
 
-      res.json({
-        code: 200,
-        message: '获取操作日志详情成功',
-        data: log
-      })
+      ReSuccess(res, 200, '获取操作日志详情成功', log)
     } catch (error) {
-      console.error('获取操作日志详情失败:', error)
-      res.status(500).json({
-        code: 500,
-        message: '获取操作日志详情失败',
-        data: null
-      })
+      ReFail(res, '获取操作日志详情失败', error)
     }
   }
 
@@ -122,18 +105,9 @@ class OperationLogController {
         })
       }
 
-      res.json({
-        code: 200,
-        message: '删除操作日志成功',
-        data: null
-      })
+      ReSuccess(res, 200, '获取操作日志详情成功', null)
     } catch (error) {
-      console.error('删除操作日志失败:', error)
-      res.status(500).json({
-        code: 500,
-        message: '删除操作日志失败',
-        data: null
-      })
+      ReFail(res, '删除操作日志失败', error)
     }
   }
 
@@ -162,18 +136,9 @@ class OperationLogController {
         })
       }
 
-      res.json({
-        code: 200,
-        message: '批量删除操作日志成功',
-        data: null
-      })
+      ReSuccess(res, 200, '批量删除操作日志成功', null)
     } catch (error) {
-      console.error('批量删除操作日志失败:', error)
-      res.status(500).json({
-        code: 500,
-        message: '批量删除操作日志失败',
-        data: null
-      })
+      ReFail(res, '批量删除操作日志失败', error)
     }
   }
 
@@ -194,20 +159,9 @@ class OperationLogController {
 
       const deletedCount = await operationLogService.cleanOldLogs(beforeDate)
 
-      res.json({
-        code: 200,
-        message: '清理旧日志成功',
-        data: {
-          deletedCount
-        }
-      })
+      ReSuccess(res, 200, '清理旧日志成功', { deletedCount })
     } catch (error) {
-      console.error('清理旧日志失败:', error)
-      res.status(500).json({
-        code: 500,
-        message: '清理旧日志失败',
-        data: null
-      })
+      ReFail(res, '清理旧日志失败', error)
     }
   }
 
@@ -220,18 +174,9 @@ class OperationLogController {
 
       const stats = await operationLogService.getOperationStats(Number(days))
 
-      res.json({
-        code: 200,
-        message: '获取操作统计信息成功',
-        data: stats
-      })
+      ReSuccess(res, 200, '获取操作统计信息成功', stats)
     } catch (error) {
-      console.error('获取操作统计信息失败:', error)
-      res.status(500).json({
-        code: 500,
-        message: '获取操作统计信息失败',
-        data: null
-      })
+      ReFail(res, '获取操作统计信息失败', error)
     }
   }
 }

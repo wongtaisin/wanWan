@@ -31,6 +31,6 @@ router.delete('/operation-logs', operationLogController.batchDeleteLog)
 router.post('/operation-logs/clean', operationLogController.cleanOldLogs)
 
 // 获取操作统计信息
-router.get('/operation-logs/stats', operationLogController.getOperationStats)
+router.get('/operationLogs/stats', operationLogController.getOperationStats)
 
 module.exports = router
