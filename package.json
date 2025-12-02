@@ -20,11 +20,14 @@
     "typescript": "^5.9.2"
   },
   "dependencies": {
+    "@types/ioredis": "^4.28.10",
     "add": "^2.0.6",
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "express-jwt": "^8.5.1",
+    "ioredis": "^5.4.2",
     "jsonwebtoken": "^9.0.2",
     "multer": "^2.0.2",
     "mysql2": "^3.14.3",

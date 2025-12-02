@@ -9,6 +9,7 @@
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
 import fs from 'fs'
+import redis from '../db/redis'
 
 export const uploadFile = (req: any, res: any) => {
   try {
@@ -41,17 +42,31 @@ export const uploadFile = (req: any, res: any) => {
   }
 }
 
+const AREA_DATA_CACHE_KEY = 'common:area-tree'
+const AREA_DATA_TTL_SECONDS = 60 * 60 * 6 // 6 小时
+
 // 新增获取地区数据接口
-export const getAreaData = (req: any, res: any) => {
+export const getAreaData = async (req: any, res: any) => {
   try {
+    const cached = await redis.get(AREA_DATA_CACHE_KEY)
+    if (cached) {
+      return res.status(200).json({
+        code: 200,
+        data: JSON.parse(cached),
+        message: '获取地区数据成功（缓存）'
+      })
+    }
+
     // 读取JSON文件
     const filePath = require.resolve('../json/area-city-china.json')
     const data = fs.readFileSync(filePath, 'utf8')
-    const areaData = JSON.parse(data)
+    const areaData = handleTree(JSON.parse(data))
+
+    await redis.set(AREA_DATA_CACHE_KEY, JSON.stringify(areaData), 'EX', AREA_DATA_TTL_SECONDS)
 
     res.status(200).json({
       code: 200,
-      data: handleTree(areaData),
+      data: areaData,
       message: '获取地区数据成功'
     })
   } catch (error: any) {
