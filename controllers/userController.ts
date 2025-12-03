@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 11:41:42
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-10-13 15:51:31
+ * @LastEditTime: 2025-12-03 15:41:40
  * @FilePath: \wanWan\controllers\userController.ts
  * @Description:
  *
@@ -80,6 +80,44 @@ exports.getUser = async (req: any, res: any) => {
     res.status(500).json({
       code: 500,
       message: '获取用户列表失败',
+      error: error.message
+    })
+  }
+}
+
+// 获取用户信息
+exports.getUserInfo = async (req: any, res: any) => {
+  const { user_id }: { user_id: number } = req.auth
+
+  try {
+    // 检查用户是否存在
+    const user = (await mysql.query(userService.getUserById, [user_id] as any)) as any[]
+
+    if (user.length === 0) {
+      return res.status(404).json({
+        code: 404,
+        user_id,
+        message: '用户不存在'
+      })
+    }
+    const userInfo = user[0]
+
+    res.status(200).json({
+      code: 200,
+      data: {
+        user: {
+          userId: userInfo.user_id,
+          userName: userInfo.user_name,
+          phone: userInfo.phone
+        },
+        permissions: user_id === 1 ? ['*:*:*'] : [] // 管理员默认有所有权限，获取数据需要 JSON.stringify 转 JSON.parse
+      },
+      message: '获取成功'
+    })
+  } catch (error: any) {
+    console.error('获取用户信息失败:', error)
+    res.status(500).json({
+      message: '获取用户信息失败',
       error: error.message
     })
   }

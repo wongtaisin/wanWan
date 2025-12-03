@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 11:41:42
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-10-13 15:37:51
+ * @LastEditTime: 2025-12-03 14:25:46
  * @FilePath: \wanWan\controllers\loginController.ts
  * @Description:
  *
@@ -44,7 +44,7 @@ exports.login = async (req: any, res: any) => {
     { expiresIn: 60 * 60 * 24 } //1 day
   )
 
-  res.json({
+  res.status(200).json({
     code: 200,
     data: { token },
     message: '登录成功'
