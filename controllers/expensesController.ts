@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 16:38:22
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-11-17 08:26:40
+ * @LastEditTime: 2025-12-03 14:19:48
  * @FilePath: \wanWan\controllers\expensesController.ts
  * @Description:
  *
@@ -22,35 +22,25 @@ exports.add = async (req: any, res: any, next: any) => {
   if (!!req.updateParams) {
     await mysql.query(expensesService.updateExpenses, req.updateParams)
 
-    return res.json({
-      code: 200,
-      data: {
-        userId: req.auth.user_id,
-        id: req.updateParams[req.updateParams.length - 1],
-        date: createDate
-      },
-      message: '数据已合并更新'
+    return ReSuccess(res, 200, '数据已合并更新', {
+      userId: req.auth.user_id,
+      id: req.updateParams[req.updateParams.length - 1],
+      date: createDate
     })
   }
 
   const result: any = await mysql.query(expensesService.addExpenses, req.addParams)
 
-  res.json({
-    code: 200,
-    data: {
-      id: result.insertId,
-      userId: req.auth.user_id,
-      date: createDate
-    },
-    message: '添加成功'
+  ReSuccess(res, 200, '添加成功', {
+    id: result.insertId,
+    userId: req.auth.user_id,
+    date: createDate
   })
 }
 
 // 获取花销列表
 exports.list = async (req: any, res: any) => {
-  const { startDate, endDate } = req.body
-
-  const userId = req.body.userId ?? req.auth.user_id
+  const { userId, startDate, endDate } = req.body
 
   const params = [userId, startDate, endDate].filter(item => item !== undefined)
 
@@ -87,14 +77,12 @@ exports.list = async (req: any, res: any) => {
 
 // 获取合计花销
 exports.total = async (req: any, res: any) => {
-  const { startDate, endDate } = req.query // get 请求参数
-
-  const userId = req.query.userId ?? req.auth.user_id // TODO: 需要修改成可不传 userId 参数
+  const { userId, startDate, endDate } = req.query // get 请求参数
 
   const params = [userId, startDate, endDate].filter(item => item !== undefined) // 过滤掉 undefined 参数
 
   try {
-    const result: any = await _expenses.list({ userId, startDate, endDate }, params as never[])
+    const result: any = await _expenses.list({ userId, startDate, endDate }, params as never[]) // TODO: userId 为空时，查询所有用户
 
     const filteredData = result.filter((item: any) => Number(item.user_id) === Number(userId)) // 这里做一次过滤，确保 user_id 一致
 
@@ -120,36 +108,28 @@ exports.total = async (req: any, res: any) => {
 
     const grandTotal = Object.values(expenses).reduce((acc: number, value) => acc + value, 0) // 累加所有值
 
-    res.json({
-      code: 200,
-      data: {
-        userId,
-        expenses,
-        total: _util.formatNumber(grandTotal),
-        startDate,
-        endDate
-      },
-      message: '获取花销合计成功'
+    ReSuccess(res, 200, '获取花销合计成功', {
+      userId,
+      expenses,
+      total: _util.formatNumber(grandTotal),
+      startDate,
+      endDate
     })
   } catch (error) {
-    console.error('获取花销列表失败:', error)
-    res.status(500).json({
-      code: 500,
-      message: '获取花销列表失败'
-    })
+    ReFail(res, '获取花销列表失败', error)
   }
 }
 
 exports.checkFieldTotal = async (req: any, res: any) => {
-  let { name, startDate, endDate } = req.body
+  let { expensesName, startDate, endDate } = req.body
 
   const userId = req.body.userId ?? req.auth.user_id // TODO: 需要修改成可不传 userId 参数
 
-  const params = [userId, startDate, endDate] as never[]
+  const queryPromises = expensesService.getFieldValues(expensesName)
 
-  const queryPromises = expensesService.getFieldValues(name)
-
-  const data: any = await Promise.all(queryPromises.map((query: any) => mysql.query(query, params)))
+  const data: any = await Promise.all(
+    queryPromises.map((query: any) => mysql.query(query, [userId, startDate, endDate] as never[]))
+  )
 
   const result = {} as any
 
@@ -193,16 +173,12 @@ exports.checkFieldTotal = async (req: any, res: any) => {
       return acc + Number(value)
     }, 0)
 
-  res.json({
-    code: 200,
-    data: {
-      expenses: { ...result },
-      sum: { ...sum },
-      total: _util.formatNumber(grandTotal),
-      startDate,
-      endDate
-    },
-    message: '查询成功'
+  ReSuccess(res, 200, '总合计查询成功', {
+    expenses: { ...result },
+    sum: { ...sum },
+    total: _util.formatNumber(grandTotal),
+    startDate,
+    endDate
   })
 }
 
@@ -223,19 +199,11 @@ exports.delete = async (req: any, res: any) => {
       return total + (result.affectedRows || 0)
     }, 0)
 
-    res.json({
-      code: 200,
-      data: {
-        affectedRows: affectedRows,
-        queries: data.sql.length
-      },
-      message: '批量删除成功'
+    ReSuccess(res, 200, '批量删除成功', {
+      affectedRows: affectedRows,
+      queries: data.sql.length
     })
   } catch (error) {
-    console.error('批量删除失败:', error)
-    res.status(500).json({
-      code: 500,
-      message: '批量删除失败'
-    })
+    ReFail(res, '批量删除失败', error)
   }
 }
