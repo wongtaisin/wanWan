@@ -8,7 +8,10 @@
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
-require('dotenv').config() // 加载环境变量
+const dotenv = require('dotenv')
+const envPath = `.env.${process.env.NODE_ENV || 'development'}`
+dotenv.config({ path: envPath }) // 加载环境变量
+console.log(`Loaded environment variables from ${envPath}`)
 const express = require('express')
 const path = require('path')
 const bodyParser = require('body-parser') // 引入body-parser模块
@@ -30,11 +33,9 @@ app.use(bodyParser.text()) //解析 text/plain 数据格式
 
 app.use(cors()) // 注入cors模块解决跨域
 
-// 在所有路由之前注入限流中间件
-app.use(rateLimitMiddleware)
+app.use(rateLimitMiddleware) // 在所有路由之前注入限流中间件
 
-// 在所有路由之前注入自动日志记录中间件
-app.use(autoOperationLogMiddleware())
+app.use(autoOperationLogMiddleware()) // 在所有路由之前注入自动日志记录中间件
 
 app.use('/', routes) // 挂载路由模块
 
