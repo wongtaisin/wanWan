@@ -20,7 +20,11 @@
 
     "resolveJsonModule": true, // 支持导入 JSON 文件
 
-    "sourceMap": true, // 方便调试（VSCode 可直接跳转 TS 源码）
+    "removeComments": true, // 移除所有注释（除了版权头部注释）
+    "sourceMap": false, // 生产环境关闭sourceMap，减少文件大小
+    "noEmitHelpers": true, // 不生成辅助函数
+    "importHelpers": true, // 使用tslib中的辅助函数，减少重复代码
+    "stripInternal": true, // 移除带有@internal注释的代码
     "baseUrl": ".", // 根路径
     "paths": {
       // 你可以用别名（可选）

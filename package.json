@@ -5,10 +5,11 @@
   "scripts": {
     "dev": "ts-node app.ts",
     "build": "tsc",
+    "build:prod": "npm run build",
     "start": "node dist/app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev:pm2": "pm2 start ecosystem.config.js --only wanWan-dev",
-    "prod:pm2": "pm2 start ecosystem.config.js --only wanWan-prod"
+    "prod:pm2": "npm run build:prod && pm2 start ecosystem.config.js --only wanWan-prod"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +21,7 @@
     "dotenv": "^17.2.3",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
+    "tslib": "^2.8.1",
     "typescript": "^5.9.2"
   },
   "dependencies": {
