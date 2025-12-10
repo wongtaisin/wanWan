@@ -9,8 +9,8 @@
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
 import mysql from '../db/mysql'
+import loginService from '../service/loginService'
 import _util from '../util/util'
-const loginService = require('../service/loginService')
 
 /**
  * @desc 登录参数校验账号密码
@@ -20,7 +20,7 @@ const loginService = require('../service/loginService')
  * @throws {Error} 账号和密码不能为空
  * @throws {Error} 账号或密码不正确
  */
-const login_params = async (req: any, res: any, next: any) => {
+export const loginParams = async (req: any, res: any, next: any) => {
   // 从请求体中获取用户名和密码
   let { user_name, password } = req.body
 
@@ -76,7 +76,7 @@ const login_params = async (req: any, res: any, next: any) => {
  * @throws {Error} 手机号码格式如:138xxxx8754
  * @throws {Error} 用户名或手机号已存在
  */
-const register_params = async (req: any, res: any, next: any) => {
+export const registerParams = async (req: any, res: any, next: any) => {
   try {
     const { user_name, password, phone, age, sex } = req.body
     if (!user_name || !password || !phone) {
@@ -131,5 +131,3 @@ const register_params = async (req: any, res: any, next: any) => {
     })
   }
 }
-
-export default { login_params, register_params }

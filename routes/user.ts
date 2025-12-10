@@ -9,7 +9,7 @@
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
 import express from 'express' // 引入express模块
-const userController = require('../controllers/userController')
+import userController from '../controllers/userController'
 const upload = require('../util/upload')
 const router = express.Router()
 

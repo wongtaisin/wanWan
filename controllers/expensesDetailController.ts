@@ -9,389 +9,396 @@
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
 import mysql from '../db/mysql'
+import commonService from '../service/commonService'
+import expensesDetailService from '../service/expensesDetailService'
+import expensesService from '../service/expensesService'
+import shopService from '../service/shopService'
 import { valuesResult } from '../util/expensesDetail'
 import _util from '../util/util'
-const expensesDetailService = require('../service/expensesDetailService')
-const expensesService = require('../service/expensesService')
-const commonService = require('../service/commonService')
-const shopService = require('../service/shopService')
 
-/**
- * @desc 查询花销详情列表
- * @param {number} userId // 用户ID
- * @param {string} userName // 用户名，模糊查询
- * @param {string[]} expensesName // 花销名称
- * @param {string} startDate // 开始时间
- * @param {string} endDate // 结束时间
- * @param {number} page // 页码 必填
- * @param {number} pageSize // 每页数量 必填
- * @param {string} orderBy // 排序字段，默认 create_date
- * @param {string} sort // 排序方式，默认 DESC
- *
- */
-exports.list = async (req: any, res: any, next: any) => {
-  const { userName, expensesName, startDate, endDate, page, pageSize, orderBy, sort } = req.body
-  const userId = req.body.userId ?? req.auth.user_id
+class ExpensesDetailController {
+  /**
+   * @desc 查询花销详情列表
+   * @param {number} userId // 用户ID
+   * @param {string} userName // 用户名，模糊查询
+   * @param {string[]} expensesName // 花销名称
+   * @param {string} startDate // 开始时间
+   * @param {string} endDate // 结束时间
+   * @param {number} page // 页码 必填
+   * @param {number} pageSize // 每页数量 必填
+   * @param {string} orderBy // 排序字段，默认 create_date
+   * @param {string} sort // 排序方式，默认 DESC
+   *
+   */
+  list = async (req: any, res: any, next: any) => {
+    const { userName, expensesName, startDate, endDate, page, pageSize, orderBy, sort } = req.body
+    const userId = req.body.userId ?? req.auth.user_id
 
-  const currentPage = Math.max(1, Number(page) || 1)
-  const size = Math.max(1, Math.min(200, Number(pageSize) || 10))
-  const offset = (currentPage - 1) * size
+    const currentPage = Math.max(1, Number(page) || 1)
+    const size = Math.max(1, Math.min(200, Number(pageSize) || 10))
+    const offset = (currentPage - 1) * size
 
-  const result = await commonService.queryExpensesDetailList({
-    userId,
-    userName,
-    expensesName,
-    startDate,
-    endDate,
-    limit: size,
-    offset,
-    orderBy,
-    sort
-  })
+    const result = await commonService.queryExpensesDetailList({
+      userId,
+      userName,
+      expensesName,
+      startDate,
+      endDate,
+      limit: size,
+      offset,
+      orderBy,
+      sort
+    })
 
-  res.json({
-    code: 200,
-    data: {
-      list: result.list,
-      total: result.total,
-      page: currentPage,
-      pageSize: size
-    },
-    message: '查询成功'
-  })
-}
-
-/**
- * @desc 添加花销
- * @param {number} userId // 必填
- * @param {string} expenses_name // 名称 必填
- * @param {string} payment_id // 支付方式id
- * @param {string} payment_name // 支付方式
- * @param {string} money // 金额
- * @param {string} remark // 备注
- * @param {string} image // 图片
- * @param {string} shop_id // 店铺id，有值是用户存储的店铺
- * @param {string} shop_name // TODO: 店铺（1,调用高德地图获取; 2,可使用用户存储的店铺）
- * @param {string} province // 省份
- * @param {string} city // 城市
- * @param {string} area // 区县
- * @param {string} address // 地址
- * @param {string} create_date // 创建时间
- *
- */
-exports.add = async (req: any, res: any, next: any) => {
-  const {
-    expensesName,
-    paymentId,
-    paymentName,
-    money,
-    shopId,
-    // shopName,
-    remark,
-    image,
-    // province,
-    // city,
-    // area,
-    // address,
-    createDate
-  } = req.body
-
-  const { user_id, user_name } = req.auth
-
-  let shopParams: {
-    shop_name: string
-    province: string
-    city: string
-    area: string
-    address: string
-  } = {
-    shop_name: req.body.shopName, // 店铺名称
-    province: req.body.province, // 省份
-    city: req.body.city, // 城市
-    area: req.body.area, // 区县
-    address: req.body.address // 地址
-  } // 店铺地址参数
-
-  // 检查店铺是否存在，存在则更新地址信息
-  if (!!shopId) {
-    const shopResult: any = await mysql.query(shopService.checkShopUserId, [
-      user_id,
-      shopId
-    ] as never[])
-    const { shop_name, province, city, area, address } = shopResult[0]
-    shopParams = { shop_name, province, city, area, address }
-  }
-
-  const createTime = !createDate ? _util.formatDate(Date.now(), 'yyyy-MM-dd hh:mm:ss') : createDate
-
-  // 检查该字段时间段是否已存在
-  const checkResult: any = await mysql.query(
-    expensesDetailService.checkTimeByFieldNameExpensesDetail(),
-    [user_id, createTime, expensesName] as never[]
-  )
-
-  if (checkResult.length > 0) {
-    return res.json({
-      code: 400,
-      data: checkResult[0],
-      message: `该字段时间段已存在`
+    res.json({
+      code: 200,
+      data: {
+        list: result.list,
+        total: result.total,
+        page: currentPage,
+        pageSize: size
+      },
+      message: '查询成功'
     })
   }
 
-  // 查询当前日期的字段值
-  const checkDate: any = await mysql.query(expensesService.checkDateByUserId, [
-    _util.formatDate(createTime, 'yyyy-MM-dd'),
-    user_id
-  ] as never[])
-
-  const existingRecord = checkDate[0]
-
-  const values = !existingRecord
-    ? money
-    : existingRecord[expensesName] // 数据库里已有值
-    ? `${existingRecord[expensesName]},${money}`
-    : money // 添加数据
-
-  if (!existingRecord) {
-    // 新增 expenses 表的字段值
-    await mysql.query(expensesService.addExpensesFieldName(expensesName), [
-      user_id,
-      user_name,
-      values,
-      createTime
-    ] as never[])
-  } else {
-    // 更新 expenses 表的字段值
-    await mysql.query(expensesService.updateExpensesFieldName(expensesName), [
-      values,
-      existingRecord?.id
-    ] as never[])
-  }
-
-  const params = [
-    user_id,
-    user_name,
-    expensesName,
-    money,
-    paymentId,
-    paymentName,
-    shopId,
-    shopParams.shop_name,
-    remark,
-    image,
-    shopParams.province,
-    shopParams.city,
-    shopParams.area,
-    shopParams.address,
-    createDate
-  ] as never[]
-  const result: any = await mysql.query(expensesDetailService.add, params)
-
-  res.json({
-    code: 200,
-    data: {
-      id: result.insertId,
-      userId: req.auth.user_id,
-      [expensesName]: money,
+  /**
+   * @desc 添加花销
+   * @param {number} userId // 必填
+   * @param {string} expenses_name // 名称 必填
+   * @param {string} payment_id // 支付方式id
+   * @param {string} payment_name // 支付方式
+   * @param {string} money // 金额
+   * @param {string} remark // 备注
+   * @param {string} image // 图片
+   * @param {string} shop_id // 店铺id，有值是用户存储的店铺
+   * @param {string} shop_name // TODO: 店铺（1,调用高德地图获取; 2,可使用用户存储的店铺）
+   * @param {string} province // 省份
+   * @param {string} city // 城市
+   * @param {string} area // 区县
+   * @param {string} address // 地址
+   * @param {string} create_date // 创建时间
+   *
+   */
+  add = async (req: any, res: any, next: any) => {
+    const {
+      expensesName,
+      paymentId,
       paymentName,
-      shopName: shopParams.shop_name,
+      money,
+      shopId,
+      // shopName,
       remark,
       image,
-      province: shopParams.province,
-      city: shopParams.city,
-      area: shopParams.area,
-      address: shopParams.address,
-      createDate: createTime
-    },
-    message: '添加成功'
-  })
-}
+      // province,
+      // city,
+      // area,
+      // address,
+      createDate
+    } = req.body
 
-/**
- * @desc 更新花销
- * @param {number} id // 必填
- * @param {string} expenses_name // 名称 必填
- * @param {string} payment_id // 支付方式id
- * @param {string} payment_name // 支付方式
- * @param {string} money // 金额
- * @param {string} remark // 备注
- * @param {string} image // 图片
- * @param {string} shop_id // 店铺id，有值是用户存储的店铺
- * @param {string} shop_name // TODO: 1-店铺（调用高德地图，获取），2-可用户自己新增
- * @param {string} province // 省份
- * @param {string} city // 城市
- * @param {string} area // 区县
- * @param {string} address // 地址
- */
-exports.upDate = async (req: any, res: any, next: any) => {
-  let {
-    id,
-    expensesName,
-    paymentId,
-    paymentName,
-    money,
-    shopId,
-    // shopName,
-    remark,
-    image
-    // province,
-    // city,
-    // area,
-    // address
-  } = req.body
+    const { user_id, user_name } = req.auth
 
-  let shopParams: {
-    shopName: string
-    province: string | null
-    city: string | null
-    area: string | null
-    address: string | null
-  } = {
-    shopName: req.body.shopName, // 店铺名称
-    province: req.body.province, // 省份
-    city: req.body.city, // 城市
-    area: req.body.area, // 区县
-    address: req.body.address // 地址
-  } // 店铺地址参数
+    let shopParams: {
+      shop_name: string
+      province: string
+      city: string
+      area: string
+      address: string
+    } = {
+      shop_name: req.body.shopName, // 店铺名称
+      province: req.body.province, // 省份
+      city: req.body.city, // 城市
+      area: req.body.area, // 区县
+      address: req.body.address // 地址
+    } // 店铺地址参数
 
-  // 先获取id的 info，获取 userId, create_date, expenses_name 字段值，用于更新 expenses 表
-  const getInfo: any = await mysql.query(expensesDetailService.getIdExpensesDetail, [id] as never[])
-
-  const { user_id: userId, create_date: createDate, expenses_name: createName } = getInfo[0]
-
-  if (!shopId) {
-    // 不存在则删除数据库之前存的地址信息
-    shopParams = {
-      shopName: req.body.shopName,
-      province: null,
-      city: null,
-      area: null,
-      address: null
+    // 检查店铺是否存在，存在则更新地址信息
+    if (!!shopId) {
+      const shopResult: any = await mysql.query(shopService.checkShopUserId, [
+        user_id,
+        shopId
+      ] as never[])
+      const { shop_name, province, city, area, address } = shopResult[0]
+      shopParams = { shop_name, province, city, area, address }
     }
-  } else {
-    // 存在则更新地址信息
-    const shopResult: any = await mysql.query(shopService.checkShopUserId, [
-      userId,
-      shopId
+
+    const createTime = !createDate
+      ? _util.formatDate(Date.now(), 'yyyy-MM-dd hh:mm:ss')
+      : createDate
+
+    // 检查该字段时间段是否已存在
+    const checkResult: any = await mysql.query(
+      expensesDetailService.checkTimeByFieldNameExpensesDetail(),
+      [user_id, createTime, expensesName] as never[]
+    )
+
+    if (checkResult.length > 0) {
+      return res.json({
+        code: 400,
+        data: checkResult[0],
+        message: `该字段时间段已存在`
+      })
+    }
+
+    // 查询当前日期的字段值
+    const checkDate: any = await mysql.query(expensesService.checkDateByUserId, [
+      _util.formatDate(createTime, 'yyyy-MM-dd'),
+      user_id
     ] as never[])
-    const { shop_name: shopName, province, city, area, address } = shopResult[0]
-    shopParams = { shopName, province, city, area, address }
+
+    const existingRecord = checkDate[0]
+
+    const values = !existingRecord
+      ? money
+      : existingRecord[expensesName] // 数据库里已有值
+      ? `${existingRecord[expensesName]},${money}`
+      : money // 添加数据
+
+    if (!existingRecord) {
+      // 新增 expenses 表的字段值
+      await mysql.query(expensesService.addExpensesFieldName(expensesName), [
+        user_id,
+        user_name,
+        values,
+        createTime
+      ] as never[])
+    } else {
+      // 更新 expenses 表的字段值
+      await mysql.query(expensesService.updateExpensesFieldName(expensesName), [
+        values,
+        existingRecord?.id
+      ] as never[])
+    }
+
+    const params = [
+      user_id,
+      user_name,
+      expensesName,
+      money,
+      paymentId,
+      paymentName,
+      shopId,
+      shopParams.shop_name,
+      remark,
+      image,
+      shopParams.province,
+      shopParams.city,
+      shopParams.area,
+      shopParams.address,
+      createDate
+    ] as never[]
+    const result: any = await mysql.query(expensesDetailService.add, params)
+
+    res.json({
+      code: 200,
+      data: {
+        id: result.insertId,
+        userId: req.auth.user_id,
+        [expensesName]: money,
+        paymentName,
+        shopName: shopParams.shop_name,
+        remark,
+        image,
+        province: shopParams.province,
+        city: shopParams.city,
+        area: shopParams.area,
+        address: shopParams.address,
+        createDate: createTime
+      },
+      message: '添加成功'
+    })
   }
 
-  // 更新 expensesDetail 表的字段值，需要先更新 expensesDetail 表的字段值，再更新 expenses 表的字段值
-  const params = [
-    expensesName,
-    money,
-    paymentId,
-    paymentName,
-    shopId,
-    shopParams.shopName,
-    remark,
-    image,
-    shopParams.province,
-    shopParams.city,
-    shopParams.area,
-    shopParams.address,
-    id
-  ] as never[]
-  await mysql.query(expensesDetailService.updateExpensesDetail, params)
+  /**
+   * @desc 更新花销
+   * @param {number} id // 必填
+   * @param {string} expenses_name // 名称 必填
+   * @param {string} payment_id // 支付方式id
+   * @param {string} payment_name // 支付方式
+   * @param {string} money // 金额
+   * @param {string} remark // 备注
+   * @param {string} image // 图片
+   * @param {string} shop_id // 店铺id，有值是用户存储的店铺
+   * @param {string} shop_name // TODO: 1-店铺（调用高德地图，获取），2-可用户自己新增
+   * @param {string} province // 省份
+   * @param {string} city // 城市
+   * @param {string} area // 区县
+   * @param {string} address // 地址
+   */
+  upDate = async (req: any, res: any, next: any) => {
+    let {
+      id,
+      expensesName,
+      paymentId,
+      paymentName,
+      money,
+      shopId,
+      // shopName,
+      remark,
+      image
+      // province,
+      // city,
+      // area,
+      // address
+    } = req.body
 
-  // 更改 expenses_name 的值，需要把 expenses[createName] 的值一并改变
-  if (createName !== expensesName && !!expensesName) {
-    // 先删除旧的字段值
-    const oldValues = await valuesResult(userId, createDate, createName)
-    await mysql.query(expensesService.updateExpensesDate(createName), [
-      oldValues,
+    let shopParams: {
+      shopName: string
+      province: string | null
+      city: string | null
+      area: string | null
+      address: string | null
+    } = {
+      shopName: req.body.shopName, // 店铺名称
+      province: req.body.province, // 省份
+      city: req.body.city, // 城市
+      area: req.body.area, // 区县
+      address: req.body.address // 地址
+    } // 店铺地址参数
+
+    // 先获取id的 info，获取 userId, create_date, expenses_name 字段值，用于更新 expenses 表
+    const getInfo: any = await mysql.query(expensesDetailService.getIdExpensesDetail, [
+      id
+    ] as never[])
+
+    const { user_id: userId, create_date: createDate, expenses_name: createName } = getInfo[0]
+
+    if (!shopId) {
+      // 不存在则删除数据库之前存的地址信息
+      shopParams = {
+        shopName: req.body.shopName,
+        province: null,
+        city: null,
+        area: null,
+        address: null
+      }
+    } else {
+      // 存在则更新地址信息
+      const shopResult: any = await mysql.query(shopService.checkShopUserId, [
+        userId,
+        shopId
+      ] as never[])
+      const { shop_name: shopName, province, city, area, address } = shopResult[0]
+      shopParams = { shopName, province, city, area, address }
+    }
+
+    // 更新 expensesDetail 表的字段值，需要先更新 expensesDetail 表的字段值，再更新 expenses 表的字段值
+    const params = [
+      expensesName,
+      money,
+      paymentId,
+      paymentName,
+      shopId,
+      shopParams.shopName,
+      remark,
+      image,
+      shopParams.province,
+      shopParams.city,
+      shopParams.area,
+      shopParams.address,
+      id
+    ] as never[]
+    await mysql.query(expensesDetailService.updateExpensesDetail, params)
+
+    // 更改 expenses_name 的值，需要把 expenses[createName] 的值一并改变
+    if (createName !== expensesName && !!expensesName) {
+      // 先删除旧的字段值
+      const oldValues = await valuesResult(userId, createDate, createName)
+      await mysql.query(expensesService.updateExpensesDate(createName), [
+        oldValues,
+        userId,
+        createDate
+      ] as never[])
+    }
+
+    // 获取 expenses_name 新的字段值
+    const newValues = await valuesResult(userId, createDate, expensesName, money)
+
+    // 更新 expenses 表的字段值
+    await mysql.query(expensesService.updateExpensesDate(expensesName), [
+      newValues,
       userId,
       createDate
     ] as never[])
-  }
 
-  // 获取 expenses_name 新的字段值
-  const newValues = await valuesResult(userId, createDate, expensesName, money)
-
-  // 更新 expenses 表的字段值
-  await mysql.query(expensesService.updateExpensesDate(expensesName), [
-    newValues,
-    userId,
-    createDate
-  ] as never[])
-
-  res.json({
-    code: 200,
-    data: {
-      id,
-      userId,
-      [expensesName]: money,
-      paymentName,
-      ...shopParams,
-      remark,
-      image,
-      updateDate: _util.formatDate(Date.now(), 'yyyy-MM-dd hh:mm:ss')
-    },
-    message: '更新成功'
-  })
-}
-
-/**
- * @desc 删除花销
- * @param {number} id // 必填
- */
-exports.delete = async (req: any, res: any, next: any) => {
-  const { id }: { id: number } = req.params
-
-  const getInfo: any = await mysql.query(expensesDetailService.getIdExpensesDetail, [id] as never[])
-
-  if (getInfo.length < 1) {
-    return res.json({
-      code: 400,
-      message: '没有数据'
+    res.json({
+      code: 200,
+      data: {
+        id,
+        userId,
+        [expensesName]: money,
+        paymentName,
+        ...shopParams,
+        remark,
+        image,
+        updateDate: _util.formatDate(Date.now(), 'yyyy-MM-dd hh:mm:ss')
+      },
+      message: '更新成功'
     })
   }
 
-  const { user_id, create_date, expenses_name } = getInfo[0]
+  /**
+   * @desc 删除花销
+   * @param {number} id // 必填
+   */
+  delete = async (req: any, res: any, next: any) => {
+    const { id }: { id: number } = req.params
 
-  // 先删除 deleteExpenses 的 id 数据
-  await mysql.query(expensesDetailService.deleteExpensesDetail, [id] as never[])
+    const getInfo: any = await mysql.query(expensesDetailService.getIdExpensesDetail, [
+      id
+    ] as never[])
 
-  const result = await valuesResult(user_id, create_date, expenses_name)
+    if (getInfo.length < 1) {
+      return res.json({
+        code: 400,
+        message: '没有数据'
+      })
+    }
 
-  await mysql.query(expensesService.updateExpensesDate(expenses_name), [
-    result,
-    user_id,
-    create_date
-  ] as never[])
+    const { user_id, create_date, expenses_name } = getInfo[0]
 
-  // 查询 expenses 当前日期的值
-  const checkResult: any = await mysql.query(expensesService.checkDate, [
-    _util.formatDate(create_date, 'yyyy-MM-dd')
-  ] as never[])
+    // 先删除 deleteExpenses 的 id 数据
+    await mysql.query(expensesDetailService.deleteExpensesDetail, [id] as never[])
 
-  const excludeKeys = ['id', 'user_id', 'user_name', 'create_date'] // 不查询的字段
-  const othersFalsyCheck = checkResult.map((item: any) => {
-    const keys = Object.keys(item).filter((k: string) => !excludeKeys.includes(k))
-    const allOthersFalsy = keys.every(
-      (k: string) => item[k] === null || item[k] === undefined || item[k] === ''
-    )
-    return allOthersFalsy
-  })
-  const isBoolean = othersFalsyCheck.some((value: boolean) => value === true)
+    const result = await valuesResult(user_id, create_date, expenses_name)
 
-  // 查询 expenses 是否有其他值，有则不删除，isBoolean = true 没其他值，进入删除
-  if (isBoolean) {
-    await mysql.query(expensesService.deleteExpensesByUserIdAndDate, [
+    await mysql.query(expensesService.updateExpensesDate(expenses_name), [
+      result,
       user_id,
+      create_date
+    ] as never[])
+
+    // 查询 expenses 当前日期的值
+    const checkResult: any = await mysql.query(expensesService.checkDate, [
       _util.formatDate(create_date, 'yyyy-MM-dd')
     ] as never[])
+
+    const excludeKeys = ['id', 'user_id', 'user_name', 'create_date'] // 不查询的字段
+    const othersFalsyCheck = checkResult.map((item: any) => {
+      const keys = Object.keys(item).filter((k: string) => !excludeKeys.includes(k))
+      const allOthersFalsy = keys.every(
+        (k: string) => item[k] === null || item[k] === undefined || item[k] === ''
+      )
+      return allOthersFalsy
+    })
+    const isBoolean = othersFalsyCheck.some((value: boolean) => value === true)
+
+    // 查询 expenses 是否有其他值，有则不删除，isBoolean = true 没其他值，进入删除
+    if (isBoolean) {
+      await mysql.query(expensesService.deleteExpensesByUserIdAndDate, [
+        user_id,
+        _util.formatDate(create_date, 'yyyy-MM-dd')
+      ] as never[])
+    }
+
+    res.json({
+      code: 200,
+      message: '删除成功'
+    })
   }
 
-  res.json({
-    code: 200,
-    message: '删除成功'
-  })
-}
-
-/**
+  /**
  * @desc 修复数据，将 expensesDetail 表中与 expenses 表不一致的数据修复
  *
  * 1. 先查询 expensesDetail 表中与 expenses 表不一致的数据
@@ -417,154 +424,156 @@ exports.delete = async (req: any, res: any, next: any) => {
  * }]
  * 3. 合并数据后，根据 user_id 和 create_date 更新 expenses 表
  */
-exports.repairExpensesData = async (req: any, res: any, next: any) => {
-  const contrastList: any = await mysql.query(expensesDetailService.contrastDate)
+  repairExpensesData = async (req: any, res: any, next: any) => {
+    const contrastList: any = await mysql.query(expensesDetailService.contrastDate)
 
-  if (contrastList.length < 1) {
-    return res.json({
-      code: 200,
-      message: 'expenses 数据库完整'
-    })
-  }
-
-  const fields = [
-    'user_id',
-    'user_name',
-    'eat',
-    'drink',
-    'play',
-    'glad',
-    'tolls',
-    'oil',
-    'parking',
-    'traffic',
-    'supermarket',
-    'online_shopping',
-    'phone_bill',
-    'red_packet',
-    'vip',
-    'other',
-    'create_date'
-  ]
-
-  // 按 user_id 和 DATE(create_date) 分组并合并数据
-  const mergedDataMap = contrastList.reduce((acc: Map<string, any>, item: any) => {
-    // 使用 user_id 和 DATE(create_date) 组合作为唯一键，区分相同 user_id 但不同日期的记录
-    const uniqueKey = `${item.user_id}_${_util.formatDate(item.create_date, 'yyyy-MM-dd')}`
-
-    // 如果这个唯一键还没有记录，创建一个新记录
-    if (!acc.has(uniqueKey)) {
-      acc.set(uniqueKey, {
-        user_id: item.user_id,
-        user_name: item.user_name,
-        create_date: item.create_date
+    if (contrastList.length < 1) {
+      return res.json({
+        code: 200,
+        message: 'expenses 数据库完整'
       })
     }
 
-    // 获取当前用户在当前日期的记录
-    const userRecord = acc.get(uniqueKey)
+    const fields = [
+      'user_id',
+      'user_name',
+      'eat',
+      'drink',
+      'play',
+      'glad',
+      'tolls',
+      'oil',
+      'parking',
+      'traffic',
+      'supermarket',
+      'online_shopping',
+      'phone_bill',
+      'red_packet',
+      'vip',
+      'other',
+      'create_date'
+    ]
 
-    // 将 expenses_name 作为参数，money 作为对应的值
-    if (item.expenses_name && fields.includes(item.expenses_name)) {
-      // 如果该字段已经有值，则追加新值，否则创建新值
-      userRecord[item.expenses_name] = userRecord[item.expenses_name]
-        ? `${userRecord[item.expenses_name]},${item.money}`
-        : item.money
-    }
+    // 按 user_id 和 DATE(create_date) 分组并合并数据
+    const mergedDataMap = contrastList.reduce((acc: Map<string, any>, item: any) => {
+      // 使用 user_id 和 DATE(create_date) 组合作为唯一键，区分相同 user_id 但不同日期的记录
+      const uniqueKey = `${item.user_id}_${_util.formatDate(item.create_date, 'yyyy-MM-dd')}`
 
-    return acc
-  }, new Map())
-
-  // 将Map转换为数组
-  const mergedData = Array.from(mergedDataMap.values())
-
-  // 确保所有字段都存在，没有的设为null
-  const params = mergedData.map((item: any) => {
-    fields.forEach(field => {
-      if (!item[field]) {
-        item[field] = null
+      // 如果这个唯一键还没有记录，创建一个新记录
+      if (!acc.has(uniqueKey)) {
+        acc.set(uniqueKey, {
+          user_id: item.user_id,
+          user_name: item.user_name,
+          create_date: item.create_date
+        })
       }
+
+      // 获取当前用户在当前日期的记录
+      const userRecord = acc.get(uniqueKey)
+
+      // 将 expenses_name 作为参数，money 作为对应的值
+      if (item.expenses_name && fields.includes(item.expenses_name)) {
+        // 如果该字段已经有值，则追加新值，否则创建新值
+        userRecord[item.expenses_name] = userRecord[item.expenses_name]
+          ? `${userRecord[item.expenses_name]},${item.money}`
+          : item.money
+      }
+
+      return acc
+    }, new Map())
+
+    // 将Map转换为数组
+    const mergedData = Array.from(mergedDataMap.values())
+
+    // 确保所有字段都存在，没有的设为null
+    const params = mergedData.map((item: any) => {
+      fields.forEach(field => {
+        if (!item[field]) {
+          item[field] = null
+        }
+      })
+      // 只返回fields中定义的字段的值，形成一个值数组
+      return fields.map(field => item[field])
     })
-    // 只返回fields中定义的字段的值，形成一个值数组
-    return fields.map(field => item[field])
-  })
 
-  // 批量插入数据
-  await Promise.all(
-    params.map(async (item: any) => {
-      return mysql.query(expensesService.addExpenses, item as never[])
+    // 批量插入数据
+    await Promise.all(
+      params.map(async (item: any) => {
+        return mysql.query(expensesService.addExpenses, item as never[])
+      })
+    )
+
+    res.json({
+      code: 200,
+      data: mergedData,
+      message: '对比成功'
     })
-  )
-
-  res.json({
-    code: 200,
-    data: mergedData,
-    message: '对比成功'
-  })
-}
-
-exports.checkDatePrice = async (req: any, res: any, next: any) => {
-  const { userId, startDate, endDate } = req.query
-
-  const checkDateRangeResult: any = await mysql.query(expensesDetailService.checkDateRange, [
-    userId,
-    startDate,
-    endDate
-  ] as never[])
-
-  const expensesName = [
-    'eat',
-    'drink',
-    'play',
-    'glad',
-    'tolls',
-    'oil',
-    'parking',
-    'traffic',
-    'supermarket',
-    'online_shopping',
-    'phone_bill',
-    'red_packet',
-    'vip',
-    'other'
-  ]
-
-  // 按 expenses_name 分组并计算合计
-  const sum: Record<string, number> = {}
-  const monthMap: Record<string, Record<string, number>> = {}
-  checkDateRangeResult.forEach((item: any) => {
-    if (expensesName.includes(item.expenses_name)) {
-      const key = item.expenses_name
-      const money = Number(item.money) || 0
-      sum[key] = _util.formatNumber((sum[key] || 0) + money)
-
-      // 计算月份合计
-      const monthKey = _util.formatDate(item.create_date, 'yyyy-MM')
-      if (!monthMap[monthKey]) monthMap[monthKey] = {} // 初始化月份合计对象
-      monthMap[monthKey][key] = _util.formatNumber((monthMap[monthKey][key] || 0) + money) // 累加当前月份当前支出类型的金额
-    }
-  })
-
-  // 计算每个月份的总支出
-  for (const monthKey in monthMap) {
-    const monthData = monthMap[monthKey]
-    monthData.total = Object.values(monthData).reduce((acc: number, value: string | number) => {
-      return acc + Number(value)
-    }, 0)
-    monthData.total = _util.formatNumber(monthData.total)
   }
 
-  const total = Object.keys(sum).reduce((acc: number, key: string) => {
-    return acc + Number(sum[key])
-  }, 0)
+  checkDatePrice = async (req: any, res: any, next: any) => {
+    const { userId, startDate, endDate } = req.query
 
-  res.json({
-    code: 200,
-    data: {
-      monthMap,
-      sum,
-      total: _util.formatNumber(total)
-    },
-    message: '查询成功'
-  })
+    const checkDateRangeResult: any = await mysql.query(expensesDetailService.checkDateRange, [
+      userId,
+      startDate,
+      endDate
+    ] as never[])
+
+    const expensesName = [
+      'eat',
+      'drink',
+      'play',
+      'glad',
+      'tolls',
+      'oil',
+      'parking',
+      'traffic',
+      'supermarket',
+      'online_shopping',
+      'phone_bill',
+      'red_packet',
+      'vip',
+      'other'
+    ]
+
+    // 按 expenses_name 分组并计算合计
+    const sum: Record<string, number> = {}
+    const monthMap: Record<string, Record<string, number>> = {}
+    checkDateRangeResult.forEach((item: any) => {
+      if (expensesName.includes(item.expenses_name)) {
+        const key = item.expenses_name
+        const money = Number(item.money) || 0
+        sum[key] = _util.formatNumber((sum[key] || 0) + money)
+
+        // 计算月份合计
+        const monthKey = _util.formatDate(item.create_date, 'yyyy-MM')
+        if (!monthMap[monthKey]) monthMap[monthKey] = {} // 初始化月份合计对象
+        monthMap[monthKey][key] = _util.formatNumber((monthMap[monthKey][key] || 0) + money) // 累加当前月份当前支出类型的金额
+      }
+    })
+
+    // 计算每个月份的总支出
+    for (const monthKey in monthMap) {
+      const monthData = monthMap[monthKey]
+      monthData.total = Object.values(monthData).reduce((acc: number, value: string | number) => {
+        return acc + Number(value)
+      }, 0)
+      monthData.total = _util.formatNumber(monthData.total)
+    }
+
+    const total = Object.keys(sum).reduce((acc: number, key: string) => {
+      return acc + Number(sum[key])
+    }, 0)
+
+    res.json({
+      code: 200,
+      data: {
+        monthMap,
+        sum,
+        total: _util.formatNumber(total)
+      },
+      message: '查询成功'
+    })
+  }
 }
+export default new ExpensesDetailController()

@@ -9,10 +9,9 @@
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
 import mysql from '../db/mysql'
+import shopService from '../service/shopService'
 
-const shopService = require('../service/shopService')
-
-const verifyShop = async (req: any, res: any, next: any) => {
+export const verifyShop = async (req: any, res: any, next: any) => {
   const { shopName, province, city, area, address } = req.body
   try {
     const requiredFields = [
@@ -63,5 +62,3 @@ const verifyShop = async (req: any, res: any, next: any) => {
     next(error)
   }
 }
-
-export default { verifyShop }

@@ -9,12 +9,12 @@
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
 import express from 'express' // 引入express模块
-import _middleware from '../middleware/expenses'
-const expensesController = require('../controllers/expensesController')
+import expensesController from '../controllers/expensesController'
+import { updateThenAddIfOk } from '../middleware/expenses'
 const router = express.Router() //模块化路由
 
 // 添加花销
-router.post('/expenses/add', [_middleware.updateThenAddIfOk], expensesController.add)
+router.post('/expenses/add', [updateThenAddIfOk], expensesController.add)
 
 // 查看花销
 router.post('/expenses/list', expensesController.list)

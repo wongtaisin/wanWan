@@ -40,52 +40,53 @@ export interface ExpensesDetailResult {
   total: number
 }
 
-export async function queryExpensesDetailList(
-  filters: ExpensesDetailFilters = {}
-): Promise<ExpensesDetailResult> {
-  const {
-    userId = null,
-    userName = null,
-    expensesName = null,
-    startDate = null,
-    endDate = null,
-    limit = 10,
-    offset = 0,
-    orderBy = 'create_date',
-    sort = 'DESC'
-  } = filters
+class CommonService {
+  async queryExpensesDetailList(
+    filters: ExpensesDetailFilters = {}
+  ): Promise<ExpensesDetailResult> {
+    const {
+      userId = null,
+      userName = null,
+      expensesName = null,
+      startDate = null,
+      endDate = null,
+      limit = 10,
+      offset = 0,
+      orderBy = 'create_date',
+      sort = 'DESC'
+    } = filters
 
-  // -----------------------
-  // ✅ 公共SQL片段（WHERE）
-  // -----------------------
-  let sql = 'WHERE 1=1'
-  const params = [] as any // 用于分页查询的参数
+    // -----------------------
+    // ✅ 公共SQL片段（WHERE）
+    // -----------------------
+    let sql = 'WHERE 1=1'
+    const params = [] as any // 用于分页查询的参数
 
-  if (userId) {
-    sql += ' AND user_id = ?'
-    params.push(userId)
-  }
+    if (userId) {
+      sql += ' AND user_id = ?'
+      params.push(userId)
+    }
 
-  // ✅ userName 模糊查询
-  if (userName) {
-    sql += ' AND user_name LIKE CONCAT("%", ?, "%")'
-    params.push(userName.trim())
-  }
+    // ✅ userName 模糊查询
+    if (userName) {
+      sql += ' AND user_name LIKE CONCAT("%", ?, "%")'
+      params.push(userName.trim())
+    }
 
-  // ✅ 数组 ['eat', 'play']
-  if (expensesName && expensesName.length > 0) {
-    // expensesName.split(',').map(s => s.trim()) // 处理逗号分隔的字符串，例如: 'eat, play' => ['eat', 'play']
-    const placeholders = expensesName.map(() => '?').join(', ')
-    sql += ` AND expenses_name IN (${placeholders})`
-    params.push(...expensesName)
-  }
+    // ✅ 数组 ['eat', 'play']
+    if (expensesName && expensesName.length > 0) {
+      // expensesName.split(',').map(s => s.trim()) // 处理逗号分隔的字符串，例如: 'eat, play' => ['eat', 'play']
+      const placeholders = expensesName.map(() => '?').join(', ')
+      sql += ` AND expenses_name IN (${placeholders})`
+      params.push(...expensesName)
+    }
 
-  if (startDate && endDate) {
-    sql += ` AND DATE(create_date) BETWEEN ? AND ?`
-    params.push(startDate, endDate)
-  }
+    if (startDate && endDate) {
+      sql += ` AND DATE(create_date) BETWEEN ? AND ?`
+      params.push(startDate, endDate)
+    }
 
-  /**
+    /**
    * @desc ✅ 获取消费明细列表总数
    * @param {string} sql 公共SQL片段（WHERE）
    * @param {any[]} params 查询参数
@@ -106,16 +107,16 @@ export async function queryExpensesDetailList(
               AND DATE(create_date) BETWEEN ? AND ?
    */
 
-  const totalSql = `
+    const totalSql = `
     SELECT COUNT(*) AS total
     FROM expenses_detail
     ${sql}
   `
-  // console.log(totalSql, params, `列表总数`)
-  const totalRows: any = await mysql.query(totalSql, params)
-  const total = totalRows?.[0]?.total ?? 0
+    // console.log(totalSql, params, `列表总数`)
+    const totalRows: any = await mysql.query(totalSql, params)
+    const total = totalRows?.[0]?.total ?? 0
 
-  /**
+    /**
    * @desc ✅ 获取分页数据
    * @param {string} sql 公共SQL片段（WHERE）
    * @param {any[]} params 查询参数
@@ -148,16 +149,18 @@ export async function queryExpensesDetailList(
     @explain ORDER BY create_date DESC // 排序
     @explain LIMIT ? OFFSET ? // 分页
    */
-  const dataSql = `
+    const dataSql = `
     SELECT *, DATE_FORMAT(create_date, '%Y-%m-%d %H:%i:%s') AS create_date
     FROM expenses_detail
     ${sql}
     ORDER BY ${orderBy} ${sort}
     LIMIT ? OFFSET ?
   `
-  const dataParams: any = [...params, Number(limit), Number(offset)]
-  // console.log(dataSql, dataParams, `获取分页数据`)
-  const list: any = await mysql.query(dataSql, dataParams)
+    const dataParams: any = [...params, Number(limit), Number(offset)]
+    // console.log(dataSql, dataParams, `获取分页数据`)
+    const list: any = await mysql.query(dataSql, dataParams)
 
-  return { list, total }
+    return { list, total }
+  }
 }
+export default new CommonService()

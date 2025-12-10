@@ -8,8 +8,13 @@
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
-exports.getUserById = `SELECT * FROM user WHERE user_id = ?`
+class userService {
+  userAll = `SELECT * FROM user`
 
-exports.deleteUser = `DELETE FROM user WHERE user_id = ?`
+  getUserById = `SELECT * FROM user WHERE user_id = ?`
 
-exports.updateUser = `UPDATE user SET nick_name = ?, age = ?, sex = ?, status = ?, update_id = ?, update_time = now(), remark = ? WHERE user_id = ?`
+  deleteUser = `DELETE FROM user WHERE user_id = ?`
+
+  updateUser = `UPDATE user SET nick_name = ?, age = ?, sex = ?, status = ?, update_id = ?, update_time = now(), remark = ? WHERE user_id = ?`
+}
+export default new userService()

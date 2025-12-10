@@ -8,8 +8,8 @@
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
-const expensesService = require('../service/expensesService')
 import mysql from '../db/mysql'
+import expensesService from '../service/expensesService'
 
 /**
  * @desc 新增花销
@@ -162,7 +162,7 @@ const update = async (req: any, res: any, next: any) => {
 }
 
 // 创建一个组合中间件来控制update和add的执行流程
-const updateThenAddIfOk = async (req: any, res: any, next: any) => {
+export const updateThenAddIfOk = async (req: any, res: any, next: any) => {
   try {
     // 先执行update中间件
     await new Promise<void>((resolve, reject) => {
@@ -182,5 +182,3 @@ const updateThenAddIfOk = async (req: any, res: any, next: any) => {
     next(error)
   }
 }
-
-export default { add, update, updateThenAddIfOk }

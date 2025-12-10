@@ -8,11 +8,15 @@
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
-export const checkUser = `SELECT * FROM user WHERE user_name = ? OR phone = ?`
+class loginService {
+  checkUser = `SELECT * FROM user WHERE user_name = ? OR phone = ?`
 
-export const verifyUser = `SELECT * FROM user WHERE user_name = ? AND password = ?`
+  verifyUser = `SELECT * FROM user WHERE user_name = ? AND password = ?`
 
-export const addUser = `INSERT INTO user (user_name, password, phone, age, sex, create_time) VALUES (?, ?, ?, ?, ?, now())`
+  addUser = `INSERT INTO user (user_name, password, phone, age, sex, create_time) VALUES (?, ?, ?, ?, ?, now())`
 
-// 根据用户ID更新登录时间，并且获取 login_ip
-export const updateLoginTimeAndGetIp = `UPDATE user SET login_date = now(), login_ip = ? WHERE user_id = ?`
+  // 根据用户ID更新登录时间，并且获取 login_ip
+  updateLoginTimeAndGetIp = `UPDATE user SET login_date = now(), login_ip = ? WHERE user_id = ?`
+}
+
+export default new loginService()

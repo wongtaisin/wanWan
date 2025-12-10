@@ -9,7 +9,7 @@
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
 import mysql from '../db/mysql'
-const expensesService = require('../service/expensesService')
+import expensesService from '../service/expensesService'
 
 /**
  * @desc 获取花销列表，可根据 userId，时间 查询，不传则查询所有的花销

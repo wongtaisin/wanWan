@@ -8,8 +8,8 @@
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
-import express from 'express' // 引入express模块
-const commonController = require('../controllers/commonController')
+import express from 'express' //
+import commonController from '../controllers/commonController'
 const upload = require('../util/upload')
 const router = express.Router() //模块化路由
 

@@ -1,5 +1,5 @@
 import mysql from '../db/mysql'
-const expensesDetailService = require('../service/expensesDetailService')
+import expensesDetailService from '../service/expensesDetailService'
 
 /**
  * @desc 获取 expenses_name 新的字段值，需 expenses_detail 数据库里已有值

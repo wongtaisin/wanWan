@@ -9,12 +9,12 @@
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
 import express from 'express' // 引入express模块
-import _middleware from '../middleware/shop'
-const shopController = require('../controllers/shopController')
+import shopController from '../controllers/shopController'
+import { verifyShop } from '../middleware/shop'
 const router = express.Router() //模块化路由
 
 // 添加商店
-router.post('/shop/add', [_middleware.verifyShop], shopController.add)
+router.post('/shop/add', [verifyShop], shopController.add)
 
 router.post('/shop/edit', shopController.edit)
 

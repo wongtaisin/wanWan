@@ -9,7 +9,7 @@
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
 import express from 'express' // 引入express模块
-const controller = require('../controllers/expensesDetailController')
+import controller from '../controllers/expensesDetailController'
 const router = express.Router() //模块化路由
 
 // 查询所有
