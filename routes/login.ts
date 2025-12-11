@@ -17,4 +17,4 @@ router.post('/register', [registerParams], loginController.register) //注册
 
 router.post('/login', [loginParams], loginController.login)
 
-module.exports = router
+export default router

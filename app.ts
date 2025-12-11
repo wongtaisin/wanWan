@@ -8,19 +8,23 @@
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
-const dotenv = require('dotenv')
+import dotenv from 'dotenv' // 引入dotenv模块,用于加载环境变量
 const envPath = `.env.${process.env.NODE_ENV || 'development'}`
-dotenv.config({ path: envPath }) // 加载环境变量
-console.log(`Loaded environment variables from ${envPath}`)
-const express = require('express')
-const path = require('path')
-const bodyParser = require('body-parser') // 引入body-parser模块
-const cors = require('cors')
-const routes = require('./routes')
-const { autoOperationLogMiddleware } = require('./middleware/operationLog') // 引入操作日志中间件
-const { rateLimitMiddleware } = require('./middleware/rateLimit') // 引入限流中间件
+dotenv.config({ path: envPath }) // 加载环境变量后,可以通过process.env访问到环境变量
+/* end 加载环境变量，必须在头部 */
+
+import bodyParser from 'body-parser' // 引入body-parser模块，用于解析请求体数据
+import cors from 'cors' // 引入cors模块，用于解决跨域问题
+import express from 'express' // 引入express模块，用于创建应用
+import path from 'path' // 引入path模块，用于处理文件路径
+import { autoOperationLogMiddleware } from './middleware/operationLog' // 引入操作日志中间件
+import { rateLimitMiddleware } from './middleware/rateLimit' // 引入限流中间件
+import routes from './routes'
+
 const app = express()
-const PORT = Number(process.env.PORT) || 3001
+const PORT = Number(process.env.PORT) || 3001 // 从环境变量中获取端口号，默认3001
+
+console.log(`Loaded environment variables from ${envPath}`)
 
 // 信任反向代理，获取真实IP
 app.set('trust proxy', true) // ⭐⭐⭐ 必须放在最前面（创建 app 后、任何中间件之前）

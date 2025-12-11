@@ -8,12 +8,13 @@
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
-import path from 'path'
-const fs = require('fs')
-const multer = require('multer')
-const uuid = require('uuid')
+import multer from 'multer' // 这是一个在 Node.js 中非常流行的处理 multipart/form-data（通常用于文件上传）的中间件库.
+import path from 'path' // 这是 Node.js 中用于处理文件路径的模块
+import uuid from 'uuid' // 这是一个用于生成唯一标识符的库
 
-const memoryDest = path.join(__dirname, '../public/images')
+import fs from 'fs' // 这是 Node.js 中用于文件系统操作的模块
+
+const memoryDest = path.join(__dirname, '../public/uploads') // 这是文件上传的目标目录
 
 const storage = multer.diskStorage({
   // 文件存储位置
@@ -51,4 +52,4 @@ const upload = multer({
   }
 }).single('file') //上传的fieldname必须为file
 
-module.exports = upload
+export default upload

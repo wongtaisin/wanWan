@@ -10,13 +10,13 @@
  */
 import express from 'express' //
 import commonController from '../controllers/commonController'
-const upload = require('../util/upload')
+import _upload from '../util/upload'
 const router = express.Router() //模块化路由
 
 // 上传文件
-router.post('/common/upload', upload, commonController.uploadFile)
+router.post('/common/upload', _upload, commonController.uploadFile)
 
 // 地区数据接口 - 添加跳过日志记录
 router.get('/common/areaData', commonController.getAreaData)
 
-module.exports = router
+export default router

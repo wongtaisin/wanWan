@@ -26,4 +26,4 @@ router.get('/expensesDetail/repairData', controller.repairExpensesData)
 
 router.get('/expensesDetail/checkDatePrice', controller.checkDatePrice)
 
-module.exports = router
+export default router

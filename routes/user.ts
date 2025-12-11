@@ -10,12 +10,12 @@
  */
 import express from 'express' // 引入express模块
 import userController from '../controllers/userController'
-const upload = require('../util/upload')
+import _upload from '../util/upload'
 const router = express.Router()
 
 router.delete('/user/delete/:id', userController.deleteUser)
 
-router.post('/upload', upload, (req: any, res: any, next: any) => {
+router.post('/upload', _upload, (req: any, res: any, next: any) => {
   // 存储后的文件信息在 req.file 中，此时文件已经存储到本地了。
   console.log(req.file)
   res.send('success')
@@ -25,4 +25,4 @@ router.get('/user/list', userController.getUser)
 
 router.get('/user/userInfo', userController.getUserInfo)
 
-module.exports = router
+export default router

@@ -24,4 +24,4 @@ router.post('/shop/list', shopController.list)
 
 router.delete('/shop/delete/:id', shopController.delete)
 
-module.exports = router
+export default router

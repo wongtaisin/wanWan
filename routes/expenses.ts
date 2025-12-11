@@ -26,4 +26,4 @@ router.post('/expenses/del', expensesController.delete)
 
 router.get('/expenses/total', expensesController.total)
 
-module.exports = router
+export default router

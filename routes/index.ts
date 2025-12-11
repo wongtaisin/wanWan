@@ -9,25 +9,30 @@
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
 import express from 'express'
-const userRouter = require('./user')
-const loginRouter = require('./login')
-const expensesRouter = require('./expenses')
-const expensesDetailRouter = require('./expensesDetail')
-const shopRouter = require('./shop')
-const operationLogRouter = require('./operationLog')
-const commonRouter = require('./common')
-const jwtAuth = require('../util/user-jwt')
+import jwtAuth from '../util/user-jwt'
+import expensesRouter from './expenses' // 花销路由模块
+import expensesDetailRouter from './expensesDetail' // 消费明细详情路由模块
+import loginRouter from './login' // 登录路由模块
+import operationLogRouter from './operationLog' // 操作日志路由模块
+import shopRouter from './shop' // 店铺路由模块
+import userRouter from './user' // 用户路由模块
+
 const router = express.Router()
 
 router.use(jwtAuth) // 注入jwt认证中间件
 
-router.use('/api', userRouter) // 注入用户路由模块
-router.use('/api', loginRouter) // 注入登录路由模块
-router.use('/api', expensesRouter) // 注入花销路由模块
-router.use('/api', expensesDetailRouter) // 注入消费明细详情路由模块
-router.use('/api', shopRouter) // 注入店铺路由模块
-router.use('/api', operationLogRouter) // 注入操作日志路由模块
-router.use('/api', commonRouter) // 注入公共路由模块
+const routerList = [
+  userRouter,
+  loginRouter,
+  expensesRouter,
+  expensesDetailRouter,
+  shopRouter,
+  operationLogRouter
+]
+
+routerList.forEach(item => {
+  router.use('/api', item)
+})
 
 // 自定义统一异常处理中间件，需要放在代码最后
 router.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -51,4 +56,4 @@ router.use((err: any, req: express.Request, res: express.Response, next: express
   }
 })
 
-module.exports = router
+export default router

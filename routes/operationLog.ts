@@ -33,4 +33,4 @@ router.post('/operation-logs/clean', operationLogController.cleanOldLogs)
 // 获取操作统计信息
 router.get('/operationLogs/stats', operationLogController.getOperationStats)
 
-module.exports = router
+export default router

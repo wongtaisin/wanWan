@@ -117,7 +117,7 @@ class expensesController {
         endDate
       })
     } catch (error) {
-      ReFail(res, '获取花销列表失败', error)
+      ReFail(res, '获取花销合计失败', error)
     }
   }
 
