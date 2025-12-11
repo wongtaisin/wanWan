@@ -10,6 +10,7 @@
  */
 import express from 'express'
 import jwtAuth from '../util/user-jwt'
+import commonRouter from './common' // 通用路由模块
 import expensesRouter from './expenses' // 花销路由模块
 import expensesDetailRouter from './expensesDetail' // 消费明细详情路由模块
 import loginRouter from './login' // 登录路由模块
@@ -22,6 +23,7 @@ const router = express.Router()
 router.use(jwtAuth) // 注入jwt认证中间件
 
 const routerList = [
+  commonRouter,
   userRouter,
   loginRouter,
   expensesRouter,
