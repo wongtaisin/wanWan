@@ -19,7 +19,7 @@ import express from 'express' // 引入express模块，用于创建应用
 import path from 'path' // 引入path模块，用于处理文件路径
 import { autoOperationLogMiddleware } from './middleware/operationLog' // 引入操作日志中间件
 import { rateLimitMiddleware } from './middleware/rateLimit' // 引入限流中间件
-import routes from './routes'
+import routes from './routes/index'
 
 const app = express()
 const PORT = Number(process.env.PORT) || 3001 // 从环境变量中获取端口号，默认3001
