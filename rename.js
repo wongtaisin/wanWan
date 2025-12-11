@@ -72,10 +72,11 @@ const JS_KEYWORDS = new Set([
   'yield'
 ])
 
-// 针对分页和列表参数不做重命名
-const PAGINATION_PARAMS = ['page', 'pageSize', 'limit', 'offset']
+// 列表/分页参数及方法名保护（不做重命名）
+const RESERVED_LIST_PAGINATION = ['page', 'pageSize', 'limit', 'offset', 'list', 'total']
+const RESERVED_PARAM_SET = new Set(RESERVED_LIST_PAGINATION)
 
-// 生成不在关键字列表中的字母序标识符 a, b, ..., z, aa, ab, ...
+// 生成不在关键字及保留名列表中的标识符 a, b, ..., z, aa, ab, ...
 function generateSimpleName(index) {
   let name = ''
   let num = index
@@ -86,37 +87,20 @@ function generateSimpleName(index) {
       name = String.fromCharCode(97 + (temp % 26)) + name
       temp = Math.floor(temp / 26) - 1
     }
-    // 生成参数名时只排除 JS 关键字和分页参数（不再区分白名单方法名）
-    if (!JS_KEYWORDS.has(name) && !PAGINATION_PARAMS.includes(name)) return name
+    if (!JS_KEYWORDS.has(name) && !RESERVED_PARAM_SET.has(name)) return name
     num++
   }
 }
 
-// 判断函数（含方法）是否为列表/分页业务相关（返回 true 表示 paginate/list type）
-function isListLikeFunction(funcNode) {
-  // 方法名、函数名包含 list、page、pagesize、total、fetch、query、load 等关键词，视为列表相关
-  if (
-    funcNode.id &&
-    funcNode.id.type === 'Identifier' &&
-    /list|page|total|fetch|query|load/i.test(funcNode.id.name)
-  ) {
-    return true
-  }
-  // 对于 ObjectMethod 或 ClassMethod
-  if (
-    funcNode.key &&
-    funcNode.key.type === 'Identifier' &&
-    /list|page|total|fetch|query|load/i.test(funcNode.key.name)
-  ) {
-    return true
-  }
-  return false
+// 判断是否为业务相关列表/分页/数据集命名
+function isListLikeName(name) {
+  return /list|page|pageSize|total|count|records|data|items|result|fetch|query|load/i.test(name)
 }
 
-// 主函数：对单个文件的标识符重命名（分页参数保留）
+// 主函数：对单个文件的标识符重命名（分页/列表相关参数及函数/方法/属性名一律保留）
 function renameIdentifiers(filePath) {
   const code = fs.readFileSync(filePath, 'utf8')
-  console.log(`重命名中: ${filePath}`)
+  // console.log(`重命名中: ${filePath}`)
 
   const ast = parser.parse(code, {
     sourceType: 'module',
@@ -129,47 +113,61 @@ function renameIdentifiers(filePath) {
     return generateSimpleName(nameIndex++)
   }
 
-  // 第一遍：收集所有可重命名的绑定名（变量/参数/函数名/catch参数等），分页/列表参数 & 列表相关函数单独处理
+  // 第一遍：收集所有可重命名的绑定名（变量/参数/函数名/catch参数等），列表/分页保留名一律不碰
   traverse(ast, {
     VariableDeclarator(path) {
       if (path.node.id.type === 'Identifier') {
         const original = path.node.id.name
-        if (!nameMap.has(original) && !PAGINATION_PARAMS.includes(original))
+        if (
+          !nameMap.has(original) &&
+          !RESERVED_PARAM_SET.has(original) &&
+          !isListLikeName(original)
+        )
           nameMap.set(original, nextName())
       }
     },
     FunctionDeclaration(path) {
-      // 若为列表/分页相关函数名，依然允许重命名（仅分页参数保留）；否则正常规则
-      let skipFuncName = false
       if (path.node.id && path.node.id.type === 'Identifier') {
         const original = path.node.id.name
-        skipFuncName = PAGINATION_PARAMS.includes(original)
-        if (!nameMap.has(original) && !skipFuncName) nameMap.set(original, nextName())
+        // 列表/分页类函数名都跳过不重命名
+        if (
+          !nameMap.has(original) &&
+          !RESERVED_PARAM_SET.has(original) &&
+          !isListLikeName(original)
+        )
+          nameMap.set(original, nextName())
       }
       path.node.params.forEach(param => {
         if (param.type === 'Identifier') {
           const original = param.name
-          // 保留分页相关参数原名
-          if (!nameMap.has(original) && !PAGINATION_PARAMS.includes(original)) {
+          if (
+            !nameMap.has(original) &&
+            !RESERVED_PARAM_SET.has(original) &&
+            !isListLikeName(original)
+          )
             nameMap.set(original, nextName())
-          }
         }
       })
     },
     FunctionExpression(path) {
-      // 变量名是否为分页参数
-      let skipFuncName = false
       if (path.node.id && path.node.id.type === 'Identifier') {
         const original = path.node.id.name
-        skipFuncName = PAGINATION_PARAMS.includes(original)
-        if (!nameMap.has(original) && !skipFuncName) nameMap.set(original, nextName())
+        if (
+          !nameMap.has(original) &&
+          !RESERVED_PARAM_SET.has(original) &&
+          !isListLikeName(original)
+        )
+          nameMap.set(original, nextName())
       }
       path.node.params.forEach(param => {
         if (param.type === 'Identifier') {
           const original = param.name
-          if (!nameMap.has(original) && !PAGINATION_PARAMS.includes(original)) {
+          if (
+            !nameMap.has(original) &&
+            !RESERVED_PARAM_SET.has(original) &&
+            !isListLikeName(original)
+          )
             nameMap.set(original, nextName())
-          }
         }
       })
     },
@@ -177,64 +175,80 @@ function renameIdentifiers(filePath) {
       path.node.params.forEach(param => {
         if (param.type === 'Identifier') {
           const original = param.name
-          if (!nameMap.has(original) && !PAGINATION_PARAMS.includes(original)) {
+          if (
+            !nameMap.has(original) &&
+            !RESERVED_PARAM_SET.has(original) &&
+            !isListLikeName(original)
+          )
             nameMap.set(original, nextName())
-          }
         }
       })
     },
     ObjectMethod(path) {
-      // 方法名为分页参数不重命名
-      let skipMethodName =
+      // 跳过所有关键列表/分页相关的方法名
+      if (
         path.node.key &&
         path.node.key.type === 'Identifier' &&
-        PAGINATION_PARAMS.includes(path.node.key.name)
-      if (!skipMethodName && path.node.key && path.node.key.type === 'Identifier') {
+        (RESERVED_PARAM_SET.has(path.node.key.name) || isListLikeName(path.node.key.name))
+      ) {
+        // 不做方法名收集
+      } else if (path.node.key && path.node.key.type === 'Identifier') {
         const original = path.node.key.name
         if (!nameMap.has(original)) nameMap.set(original, nextName())
       }
       path.node.params.forEach(param => {
         if (param.type === 'Identifier') {
           const original = param.name
-          if (!nameMap.has(original) && !PAGINATION_PARAMS.includes(original)) {
+          if (
+            !nameMap.has(original) &&
+            !RESERVED_PARAM_SET.has(original) &&
+            !isListLikeName(original)
+          )
             nameMap.set(original, nextName())
-          }
         }
       })
     },
     ClassMethod(path) {
-      let skipMethodName =
+      if (
         path.node.key &&
         path.node.key.type === 'Identifier' &&
-        PAGINATION_PARAMS.includes(path.node.key.name)
-      if (!skipMethodName && path.node.key && path.node.key.type === 'Identifier') {
+        (RESERVED_PARAM_SET.has(path.node.key.name) || isListLikeName(path.node.key.name))
+      ) {
+        // 不做方法名收集
+      } else if (path.node.key && path.node.key.type === 'Identifier') {
         const original = path.node.key.name
         if (!nameMap.has(original)) nameMap.set(original, nextName())
       }
       path.node.params.forEach(param => {
         if (param.type === 'Identifier') {
           const original = param.name
-          if (!nameMap.has(original) && !PAGINATION_PARAMS.includes(original)) {
+          if (
+            !nameMap.has(original) &&
+            !RESERVED_PARAM_SET.has(original) &&
+            !isListLikeName(original)
+          )
             nameMap.set(original, nextName())
-          }
         }
       })
     },
     CatchClause(path) {
       if (path.node.param && path.node.param.type === 'Identifier') {
         const original = path.node.param.name
-        if (!nameMap.has(original) && !PAGINATION_PARAMS.includes(original)) {
+        if (
+          !nameMap.has(original) &&
+          !RESERVED_PARAM_SET.has(original) &&
+          !isListLikeName(original)
+        )
           nameMap.set(original, nextName())
-        }
       }
     }
   })
 
-  // 第二遍：替换所有对应绑定引用（但不影响对象属性名/分页参数等）
+  // 第二遍：替换所有对应绑定引用（但不影响对象属性名/关键保留名等）
   traverse(ast, {
     Identifier(path) {
       const original = path.node.name
-      // 判断是否跳过重命名
+      // 跳过对象属性名、方法名、成员属性名、解构key、关键列表/分页参数名
       const skipProps =
         // 跳过对象字面量属性名 key
         (path.parent.type === 'ObjectProperty' &&
@@ -252,8 +266,9 @@ function renameIdentifiers(filePath) {
         ((path.parent.type === 'ObjectPattern' || path.parent.type === 'ObjectProperty') &&
           path.parent.key === path.node &&
           !path.parent.computed) ||
-        // 跳过分页参数
-        PAGINATION_PARAMS.includes(original)
+        // 跳过所有列表/分页相关命名
+        RESERVED_PARAM_SET.has(original) ||
+        isListLikeName(original)
 
       const skip = [
         'true',
@@ -278,7 +293,7 @@ function renameIdentifiers(filePath) {
   // 生成和保存代码
   const output = generate(ast, {}, code)
   fs.writeFileSync(filePath, output.code)
-  console.log(`重命名完成: ${filePath}，共 ${nameMap.size} 个标识符`)
+  // console.log(`重命名完成: ${filePath}，共 ${nameMap.size} 个标识符`)
 }
 
 // 递归重命名目录下所有 js 文件
