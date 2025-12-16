@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-10-11 08:22:31
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-12-02 16:03:08
+ * @LastEditTime: 2025-12-16 11:09:04
  * @FilePath: \wanWan\app.ts
  * @Description:
  *
@@ -19,6 +19,8 @@ import express from 'express' // 引入express模块，用于创建应用
 import path from 'path' // 引入path模块，用于处理文件路径
 import { autoOperationLogMiddleware } from './middleware/operationLog' // 引入操作日志中间件
 import { rateLimitMiddleware } from './middleware/rateLimit' // 引入限流中间件
+import jwtAuth from './util/user-jwt'
+
 import routes from './routes/index'
 
 const app = express()
@@ -29,19 +31,26 @@ console.log(`Loaded environment variables from ${envPath}`)
 // 信任反向代理，获取真实IP
 app.set('trust proxy', true) // ⭐⭐⭐ 必须放在最前面（创建 app 后、任何中间件之前）
 
-app.use(express.static(path.join(__dirname, 'public'))) // 静态资源目录
+// 先处理静态资源请求，直接返回，不经过后续中间件
+// 使用绝对路径配置静态资源中间件，确保静态资源请求被正确处理
+app.use(express.static(path.join(process.cwd(), 'dist_web')))
+app.use(express.static(path.join(process.cwd(), 'public')))
 
+// 然后处理API请求的中间件
 app.use(bodyParser.urlencoded({ extended: true })) // 解析form表单提交的数据application/x-www-form-urlencoded
 app.use(bodyParser.json()) // 解析json数据格式
 app.use(bodyParser.text()) //解析 text/plain 数据格式
 
 app.use(cors()) // 注入cors模块解决跨域
 
-app.use(rateLimitMiddleware) // 在所有路由之前注入限流中间件
+// API 路由专属中间件链：限流 -> 操作日志 -> JWT 认证 -> 路由
+app.use('/api', rateLimitMiddleware, autoOperationLogMiddleware(), jwtAuth, routes)
 
-app.use(autoOperationLogMiddleware()) // 在所有路由之前注入自动日志记录中间件
-
-app.use('/', routes) // 挂载路由模块
+// 这个路由必须放在最后，只处理API路由未匹配的请求，用户访问其他路径，返回前端的入口 HTML 文件 - SPA应用的前端路由处理
+app.get(/^(.*)$/, (_req, res) => {
+  // 前面已挂载 /api，未命中的 API 不会落到这里，因此无需再判定 /api
+  res.sendFile(path.join(__dirname, './dist_web', 'index.html'))
+})
 
 app.listen(PORT, () => {
   console.log(`server is running port ${PORT}`) // 启动服务监听端口 3001

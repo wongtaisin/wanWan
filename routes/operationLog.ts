@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-30 16:00:00
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-11-25 16:52:48
+ * @LastEditTime: 2025-12-16 11:09:55
  * @FilePath: \wanWan\routes\operationLog.ts
  * @Description: 操作日志路由
  *
@@ -16,21 +16,21 @@ import { skipOperationLog } from '../middleware/operationLog' // 跳过接口的
 const router = express.Router()
 
 // 获取操作日志列表
-router.get('/operation-logs', skipOperationLog(), operationLogController.getLogList)
+router.get('/list', skipOperationLog(), operationLogController.getLogList)
 
 // 获取操作日志详情
-router.get('/operation-logs/:id', skipOperationLog(), operationLogController.getLogDetail)
+router.get('/getInfo/:id', skipOperationLog(), operationLogController.getLogDetail)
 
 // 删除操作日志
-router.delete('/operation-logs/:id', operationLogController.deleteLog)
+router.delete('/delete/:id', operationLogController.deleteLog)
 
 // 批量删除操作日志
-router.delete('/operation-logs', operationLogController.batchDeleteLog)
+router.delete('/deleteAll', operationLogController.batchDeleteLog)
 
 // 清理旧日志
-router.post('/operation-logs/clean', operationLogController.cleanOldLogs)
+router.post('/clean', operationLogController.cleanOldLogs)
 
 // 获取操作统计信息
-router.get('/operationLogs/stats', operationLogController.getOperationStats)
+router.get('/stats', operationLogController.getOperationStats)
 
 export default router

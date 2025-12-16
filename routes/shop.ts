@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 16:52:43
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-11-13 10:40:11
+ * @LastEditTime: 2025-12-16 11:10:02
  * @FilePath: \wanWan\routes\shop.ts
  * @Description:
  *
@@ -14,14 +14,14 @@ import { verifyShop } from '../middleware/shop'
 const router = express.Router() //模块化路由
 
 // 添加商店
-router.post('/shop/add', [verifyShop], shopController.add)
+router.post('/add', [verifyShop], shopController.add)
 
-router.post('/shop/edit', shopController.edit)
+router.post('/edit', shopController.edit)
 
-router.get('/shop/all', shopController.all)
+router.get('/all', shopController.all)
 
-router.post('/shop/list', shopController.list)
+router.post('/list', shopController.list)
 
-router.delete('/shop/delete/:id', shopController.delete)
+router.delete('/delete/:id', shopController.delete)
 
 export default router

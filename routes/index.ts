@@ -2,14 +2,13 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 11:41:42
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-10-13 15:52:35
+ * @LastEditTime: 2025-12-16 11:09:39
  * @FilePath: \wanWan\routes\index.ts
  * @Description:
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
 import express from 'express'
-import jwtAuth from '../util/user-jwt'
 import commonRouter from './common' // 通用路由模块
 import expensesRouter from './expenses' // 花销路由模块
 import expensesDetailRouter from './expensesDetail' // 消费明细详情路由模块
@@ -20,20 +19,19 @@ import userRouter from './user' // 用户路由模块
 
 const router = express.Router()
 
-router.use(jwtAuth) // 注入jwt认证中间件
+const routerList = {
+  common: commonRouter,
+  user: userRouter,
+  login: loginRouter,
+  expenses: expensesRouter,
+  expensesDetail: expensesDetailRouter,
+  shop: shopRouter,
+  operationLog: operationLogRouter
+}
 
-const routerList = [
-  commonRouter,
-  userRouter,
-  loginRouter,
-  expensesRouter,
-  expensesDetailRouter,
-  shopRouter,
-  operationLogRouter
-]
-
-routerList.forEach(item => {
-  router.use('/api', item)
+// 遍历路由对象，应用到路由中
+Object.entries(routerList).forEach(([key, item]) => {
+  router.use(`/${key}`, item)
 })
 
 // 自定义统一异常处理中间件，需要放在代码最后
