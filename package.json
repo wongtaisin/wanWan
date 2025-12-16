@@ -7,11 +7,11 @@
     "build": "tsc",
     "rename": "node rename.js",
     "renameFiles": "node rename-files.js",
-    "build:rename": "npm run build && npm run rename && npm run renameFiles",
+    "build:prod": "npm run build && npm run rename && npm run renameFiles",
     "start": "node dist/app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev:pm2": "pm2 start ecosystem.config.js --only wanWan-dev",
-    "prod:pm2": "npm run build:prod && pm2 start ecosystem.config.js --only wanWan-prod"
+    "pm2:dev": "pm2 start ecosystem.config.js --only wanWan-dev",
+    "pm2:prod": "npm run build:prod && pm2 start ecosystem.config.js --only wanWan-prod"
   },
   "keywords": [],
   "author": "",
