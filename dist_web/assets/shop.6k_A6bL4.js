@@ -1,0 +1,1 @@
+import{r as a}from"./request.CKWwDDYi.js";const s=async()=>await a("/shop/all","GET"),t=async s=>await a("/shop/add","POST",s),o=async s=>await a("/shop/list","POST",s),c=async s=>await a("/shop/edit","POST",s),i=async s=>await a(`/shop/delete/${s}`,"DELETE");export{o as a,i as b,s as c,t as d,c as s};
