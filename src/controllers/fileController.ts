@@ -71,14 +71,14 @@ class SysFileController {
         }
 
         const { module, remark } = req.body
-        const fullUrl = req.protocol + '://' + req.get('host') // 取完整的URL，包括协议、域名和端口
         const filePath = req.file.path // 上传的文件路径
         const fileHash = calculateFileHash(filePath) // 计算文件哈希值
         const ext = path.extname(req.file.originalname) // 文件扩展名
         const newFileName = `${fileHash}${ext}` // 新文件名
         const newFilePath = path.join(UPLOAD_DIR, newFileName) // 新文件路径
         const suffix = req.file.originalname.split('.').pop() // 后缀
-        const serverUrl = fullUrl + '/' + pathImg + '/' + newFileName // 服务器上的文件URL
+        // const fullUrl = req.protocol + '://' + req.get('host') // 取完整的URL，包括协议、域名和端口
+        const serverUrl = '/' + pathImg + '/' + newFileName // 服务器上的文件URL
 
         const image: any = await SysFile.create({
           url: serverUrl,
