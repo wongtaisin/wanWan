@@ -12,6 +12,7 @@ import express from 'express'
 import commonRouter from './common' // 通用路由模块
 import expensesRouter from './expenses' // 花销路由模块
 import expensesDetailRouter from './expensesDetail' // 消费明细详情路由模块
+import fileRouter from './file' // 文件路由模块
 import loginRouter from './login' // 登录路由模块
 import operationLogRouter from './operationLog' // 操作日志路由模块
 import shopRouter from './shop' // 店铺路由模块
@@ -26,7 +27,8 @@ const routerList = {
   expenses: expensesRouter,
   expensesDetail: expensesDetailRouter,
   shop: shopRouter,
-  operationLog: operationLogRouter
+  operationLog: operationLogRouter,
+  file: fileRouter
 }
 
 // 遍历路由对象，应用到路由中
