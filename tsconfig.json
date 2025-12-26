@@ -4,7 +4,7 @@
     "module": "CommonJS", // 指定模块代码生成：'none'、'commonjs'、'amd'、'system'、'umd'、'es2015' 或 'ESNext'
     "lib": ["ES2020"], // 使用与 target 版本匹配的库，减少冗余
 
-    "rootDir": "./", // 你的 TS 都在根目录及子目录
+    "rootDir": "./src", // 你的 TS 都在src根目录及子目录
     "outDir": "./dist", // 输出到 dist，用于 PM2 生产环境
 
     "strict": true, // 启用所有严格类型检查选项
@@ -33,14 +33,14 @@
   },
 
   "include": [
-    "app.ts",
-    "controllers/**/*",
-    "routes/**/*",
-    "middleware/**/*",
-    "models/**/*",
-    "service/**/*",
-    "util/**/*",
-    "db/**/*",
+    "src/app.ts",
+    "src/controllers/**/*",
+    "src/routes/**/*",
+    "src/middleware/**/*",
+    "src/models/**/*",
+    "src/service/**/*",
+    "src/util/**/*",
+    "src/db/**/*",
     "json/**/*",
     "public/**/*"
   ],
