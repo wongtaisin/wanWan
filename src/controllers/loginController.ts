@@ -2,8 +2,8 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 11:41:42
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-12-03 14:25:46
- * @FilePath: \wanWan\controllers\loginController.ts
+ * @LastEditTime: 2025-12-31 11:56:37
+ * @FilePath: \wanWan\src\controllers\loginController.ts
  * @Description:
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
