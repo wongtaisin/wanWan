@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.ts",
   "scripts": {
-    "dev": "ts-node app.ts",
+    "dev": "ts-node src/app.ts",
     "build": "tsc",
     "rename": "node rename.js",
     "renameFiles": "node rename-files.js",
@@ -43,6 +43,7 @@
     "jsonwebtoken": "^9.0.2",
     "multer": "^2.0.2",
     "mysql2": "^3.14.3",
+    "sequelize": "^6.37.7",
     "uuid": "^11.1.0",
     "yarn": "^1.22.22"
   }
