@@ -32,18 +32,7 @@
     }
   },
 
-  "include": [
-    "src/app.ts",
-    "src/controllers/**/*",
-    "src/routes/**/*",
-    "src/middleware/**/*",
-    "src/models/**/*",
-    "src/service/**/*",
-    "src/util/**/*",
-    "src/db/**/*",
-    "json/**/*",
-    "public/**/*"
-  ],
+  "include": ["src/**/*.ts", "src/**/*.json"],
 
-  "exclude": ["node_modules", "dist", "logs"]
+  "exclude": ["node_modules", "dist", "dist_web", "logs"]
 }
