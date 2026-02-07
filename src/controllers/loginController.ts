@@ -36,9 +36,10 @@ class LoginController {
     const { user_id, user_name, phone } = req.user
 
     // 登录成功，签发一个token并返回给前端
+    const loginAt = Date.now() // 登录时间
     const token = jwt.sign(
       // payload：签发的 token 里面要包含的一些数据
-      { user_id, user_name, phone },
+      { user_id, user_name, phone, loginAt },
       process.env.JWT_SECRET || 'wongtaisin1024@gmail.com', // 私钥
       { expiresIn: 60 * 60 * 24 } //1 day
     )
