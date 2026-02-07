@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 11:41:42
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-12-31 11:56:37
+ * @LastEditTime: 2026-02-07 11:33:01
  * @FilePath: \wanWan\src\controllers\loginController.ts
  * @Description:
  *
@@ -33,15 +33,13 @@ class LoginController {
 
   // 登录
   login = async (req: any, res: any) => {
-    let { user_id, user_name, phone } = req.user
+    const { user_id, user_name, phone } = req.user
 
     // 登录成功，签发一个token并返回给前端
     const token = jwt.sign(
       // payload：签发的 token 里面要包含的一些数据
       { user_id, user_name, phone },
-      // 私钥
-      'wongtaisin',
-      // 设置过期时间
+      process.env.JWT_SECRET || 'wongtaisin1024@gmail.com', // 私钥
       { expiresIn: 60 * 60 * 24 } //1 day
     )
 
