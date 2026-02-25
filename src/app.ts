@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-10-11 08:22:31
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-12-31 08:20:23
+ * @LastEditTime: 2026-02-07 11:39:02
  * @FilePath: \wanWan\src\app.ts
  * @Description:
  *
@@ -19,7 +19,7 @@ import express from 'express' // 引入express模块，用于创建应用
 import path from 'path' // 引入path模块，用于处理文件路径
 import { autoOperationLogMiddleware } from './middleware/operationLog' // 引入操作日志中间件
 import { rateLimitMiddleware } from './middleware/rateLimit' // 引入限流中间件
-import jwtAuth from './util/userJwt'
+import jwtAuth from './util/jwtAuth'
 
 import routes from './routes/index'
 
@@ -41,7 +41,7 @@ app.use(bodyParser.urlencoded({ extended: true })) // 解析form表单提交的�
 app.use(bodyParser.json()) // 解析json数据格式
 app.use(bodyParser.text()) //解析 text/plain 数据格式
 
-app.use(cors()) // 注入cors模块解决跨域
+app.use(cors({ exposedHeaders: ['Authorization'] })) // 注入cors模块解决跨域，暴露Authorization头
 
 // API 路由专属中间件链：限流 -> 操作日志 -> JWT 认证 -> 路由
 app.use('/api', rateLimitMiddleware, autoOperationLogMiddleware(), jwtAuth, routes)
