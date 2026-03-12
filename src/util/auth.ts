@@ -43,14 +43,27 @@ const auth = (req: any, res: any, next: any) => {
    * 1. 从token中提取payload（不包含exp和iat）
    * 2. 设置新的登录时间为当前时间
    * 3. 签发新的token
-   * 4. 设置新的token到Authorization头
+   * 4. 同时写入响应头（H5）和响应体 _newToken 字段（App/小程序）
    */
+  let newToken: string | null = null
+
   if (typeof auth.exp === 'number' && auth.exp - nowSec < REFRESH_THRESHOLD) {
     const { exp, iat, ...payload } = auth
     payload.loginAt = loginAt
-
-    const newToken = jwt.sign(payload, JWT_SECRET, { expiresIn: TOKEN_EXPIRY })
+    newToken = jwt.sign(payload, JWT_SECRET, { expiresIn: TOKEN_EXPIRY })
     res.setHeader('Authorization', 'Bearer ' + newToken)
+  }
+
+  // 拦截 res.json，将新 token 注入响应 body（兼容 App/小程序平台无法读取响应头的问题）
+  if (newToken) {
+    const _newToken = newToken
+    const originalJson = res.json.bind(res)
+    res.json = (body: any) => {
+      if (body && typeof body === 'object' && !Buffer.isBuffer(body)) {
+        body._newToken = _newToken
+      }
+      return originalJson(body)
+    }
   }
 
   req.auth = { ...auth, loginAt } // 更新token中的登录时间
