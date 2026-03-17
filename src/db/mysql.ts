@@ -2,8 +2,8 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-10-11 08:22:31
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-12-09 16:54:46
- * @FilePath: \wanWan\db\mysql.ts
+ * @LastEditTime: 2026-03-17 16:18:15
+ * @FilePath: \wanWan\src\db\mysql.ts
  * @Description:
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
@@ -19,7 +19,7 @@ const pool = mysql.createPool({
   port: Number(process.env.MYSQL_PORT) || 3306, // 数据库端口
   user: process.env.MYSQL_USER || 'root', // 数据库用户名
   password: mysqlPassword, // 数据库密码
-  database: process.env.MYSQL_DATABASE || 'test_express', // 数据库名
+  database: process.env.MYSQL_DATABASE || 'express', // 数据库名
   // 配置认证插件
   authPlugins: {
     mysql_clear_password: () => () => Buffer.from(mysqlPassword)

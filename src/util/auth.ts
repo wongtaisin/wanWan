@@ -4,7 +4,7 @@ const whiteList = ['/api/login/signIn', '/api/login/signUp']
 const JWT_SECRET = process.env.JWT_SECRET || 'wongtaisin1024@gmail.com'
 const MAX_LOGIN_AGE = 7 * 24 * 60 * 60 * 1000 // 7 days (ms)
 const TOKEN_EXPIRY = 24 * 60 * 60 // 24 hours (s)
-const REFRESH_THRESHOLD = 6 * 60 * 60 // 6 hours (s)
+const REFRESH_THRESHOLD = 23 * 60 * 60 // 23 hours (s)
 
 /**
  * 认证中间件
