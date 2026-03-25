@@ -2,8 +2,8 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-10-11 08:22:31
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2026-03-17 16:18:15
- * @FilePath: \wanWan\src\db\mysql.ts
+ * @LastEditTime: 2026-03-25 09:33:19
+ * @FilePath: \wanWan\src\config\mysql.ts
  * @Description:
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
@@ -48,7 +48,7 @@ const pool = mysql.createPool({
 // 测试连接
 pool.getConnection((err, connection) => {
   if (err) {
-    console.error(`[MySQL] 连接失败: ${err.message}`, {
+    console.error(`[MySQL] 连接失败: ${err.message} 🔴`, {
       error: err.message,
       code: (err as any).code,
       errno: (err as any).errno,
@@ -61,9 +61,7 @@ pool.getConnection((err, connection) => {
     return
   }
 
-  console.log(
-    `[MySQL] 连接成功: ${connection.threadId}, 主机: ${process.env.MYSQL_HOST || 'localhost'}`
-  )
+  console.log(`[MySQL] 连接成功: ${connection.threadId}, 主机: ${process.env.MYSQL_HOST} 🟢`)
   connection.release()
 })
 
@@ -73,7 +71,7 @@ class Mysql {
     return new Promise((resolve, reject) => {
       pool.getConnection(function (err, connection) {
         if (err) {
-          console.error(`[MySQL] 获取连接失败: ${err.message}`, {
+          console.error(`[MySQL] 获取连接失败: ${err.message} 🔴`, {
             error: err.message,
             code: (err as any).code,
             errno: (err as any).errno,
@@ -85,7 +83,7 @@ class Mysql {
         }
         connection.query(sql, params, function (error, results, fields) {
           if (error) {
-            console.error(`[MySQL] 查询执行失败: ${error.message}`, {
+            console.error(`[MySQL] 查询执行失败: ${error.message} 🔴`, {
               sql: sql,
               params: params,
               error: error.message,

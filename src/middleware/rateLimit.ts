@@ -8,7 +8,7 @@
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
-import redis from '../db/redis'
+import redis from '../config/redis'
 
 // 限流配置
 const RATE_LIMIT_CONFIG = {

@@ -2,11 +2,11 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-10-11 08:22:31
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2026-02-07 11:39:02
+ * @LastEditTime: 2026-03-25 08:52:57
  * @FilePath: \wanWan\src\app.ts
  * @Description:
  *
- * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
+ * Copyright (c) 2026 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
 import dotenv from 'dotenv' // 引入dotenv模块,用于加载环境变量
 const envPath = `.env.${process.env.NODE_ENV || 'development'}`
@@ -17,11 +17,11 @@ import bodyParser from 'body-parser' // 引入body-parser模块，用于解析�
 import cors from 'cors' // 引入cors模块，用于解决跨域问题
 import express from 'express' // 引入express模块，用于创建应用
 import path from 'path' // 引入path模块，用于处理文件路径
+import jwtAuth from './middleware/jwtAuth' // 引入JWT认证中间件
 import { autoOperationLogMiddleware } from './middleware/operationLog' // 引入操作日志中间件
 import { rateLimitMiddleware } from './middleware/rateLimit' // 引入限流中间件
-import jwtAuth from './util/jwtAuth'
 
-import routes from './routes/index'
+import routes from './routes/index' // 引入路由配置
 
 const app = express()
 const PORT = Number(process.env.PORT) || 3001 // 从环境变量中获取端口号，默认3001

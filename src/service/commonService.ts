@@ -8,7 +8,7 @@
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
-import mysql from '../db/mysql'
+import mysql from '../config/mysql'
 
 /**
  * @desc 获取消费明细列表 + 总数统计

@@ -8,7 +8,7 @@
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
-import mysql from '../db/mysql'
+import mysql from '../config/mysql'
 import loginService from '../service/loginService'
 import { hashPassword, verifyPassword } from '../util/cryptoJS'
 import _util from '../util/util'

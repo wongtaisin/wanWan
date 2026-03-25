@@ -2,8 +2,8 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-12-02 15:10:10
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-12-02 15:42:38
- * @FilePath: \wanWan\db\redis.ts
+ * @LastEditTime: 2026-03-25 09:22:13
+ * @FilePath: \wanWan\src\config\redis.ts
  * @Description:
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
@@ -19,11 +19,11 @@ const redis = new Redis({
 })
 
 redis.on('connect', () => {
-  console.log('[redis] connect success 🟢')
+  console.log(`[redis] connect success, IP: ${process.env.REDIS_HOST} 🟢`)
 })
 
 redis.on('error', err => {
-  console.error('[redis] connect error 🔴', err)
+  console.error(`[redis] connect error: ${err} 🔴`)
 })
 
 export default redis

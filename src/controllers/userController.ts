@@ -8,7 +8,7 @@
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
-import mysql from '../db/mysql' // 引入mysql模块
+import mysql from '../config/mysql' // 引入mysql模块
 import userService from '../service/userService' // 引入userService模块
 import { recordDeleteLog, recordQueryLog } from '../util/operationLogUtil' // 引入操作日志工具
 

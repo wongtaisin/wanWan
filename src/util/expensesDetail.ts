@@ -1,4 +1,4 @@
-import mysql from '../db/mysql'
+import mysql from '../config/mysql'
 import expensesDetailService from '../service/expensesDetailService'
 
 /**

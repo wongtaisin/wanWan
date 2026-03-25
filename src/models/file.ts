@@ -1,5 +1,5 @@
 import { DataTypes, Model } from 'sequelize'
-import sequelize from '../db/database'
+import sequelize from '../config/database'
 // const Shop = require('./shop') // 引入店铺模型
 
 class File extends Model {}
