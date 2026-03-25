@@ -9,7 +9,7 @@
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
 
-import mysql from '../db/mysql'
+import mysql from '../config/mysql'
 import { OperationLog, OperationLogQuery, OperationLogResponse } from '../models/operationLog'
 
 class OperationLogService {

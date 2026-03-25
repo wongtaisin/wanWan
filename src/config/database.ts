@@ -21,9 +21,9 @@ const sequelize = new Sequelize(
 async function testConnection() {
   try {
     await sequelize.authenticate()
-    console.log('sequelize数据库连接成功.')
+    console.log(`[sequelize] connect success, IP: ${process.env.MYSQL_HOST} 🟢`)
   } catch (error) {
-    console.error('sequelize数据库连接失败:', error)
+    console.error(`[sequelize] connect error: ${error} 🔴`)
   }
 }
 

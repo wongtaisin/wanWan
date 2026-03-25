@@ -1,5 +1,5 @@
-import auth from './auth'
-import jwtVerify from './jwt'
+import auth from './jwt/auth'
+import jwtVerify from './jwt/jwt'
 
 const jwtAuth = [jwtVerify, auth] // 组合jwt认证中间件和auth中间件
 

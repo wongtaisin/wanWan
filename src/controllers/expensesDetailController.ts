@@ -8,7 +8,7 @@
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
-import mysql from '../db/mysql'
+import mysql from '../config/mysql'
 import commonService from '../service/commonService'
 import expensesDetailService from '../service/expensesDetailService'
 import expensesService from '../service/expensesService'
@@ -152,8 +152,8 @@ class ExpensesDetailController {
     const values = !existingRecord
       ? money
       : existingRecord[expensesName] // 数据库里已有值
-      ? `${existingRecord[expensesName]},${money}`
-      : money // 添加数据
+        ? `${existingRecord[expensesName]},${money}`
+        : money // 添加数据
 
     if (!existingRecord) {
       // 新增 expenses 表的字段值

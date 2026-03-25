@@ -8,7 +8,7 @@
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
-import mysql from '../db/mysql'
+import mysql from '../config/mysql'
 import expensesService from '../service/expensesService'
 import _expenses from '../util/expenses'
 import { ReFail, ReSuccess } from '../util/response'

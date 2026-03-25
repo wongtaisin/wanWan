@@ -8,7 +8,7 @@
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
-import redis from '../db/redis'
+import redis from '../config/redis'
 const CACHE_TTL_SECONDS = 60 * 60 * 4 // 14,400 秒
 
 export const redisCache = {

@@ -8,7 +8,7 @@
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
-import mysql from '../db/mysql'
+import mysql from '../config/mysql'
 import shopService from '../service/shopService'
 
 export const verifyShop = async (req: any, res: any, next: any) => {
