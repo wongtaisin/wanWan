@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-10-11 08:22:31
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2026-03-25 08:52:57
+ * @LastEditTime: 2026-05-05 17:51:23
  * @FilePath: \wanWan\src\app.ts
  * @Description:
  *
@@ -26,8 +26,6 @@ import routes from './routes/index' // 引入路由配置
 const app = express()
 const PORT = Number(process.env.PORT) || 3001 // 从环境变量中获取端口号，默认3001
 
-console.log(`Loaded environment variables from ${envPath}`)
-
 // 信任反向代理，获取真实IP
 app.set('trust proxy', true) // ⭐⭐⭐ 必须放在最前面（创建 app 后、任何中间件之前）
 
@@ -49,6 +47,7 @@ app.use('/api', rateLimitMiddleware, autoOperationLogMiddleware(), jwtAuth, rout
 // 这个路由必须放在最后，只处理API路由未匹配的请求，用户访问其他路径，返回前端的入口 HTML 文件 - SPA应用的前端路由处理
 app.get(/^(.*)$/, (_req, res) => {
   // 前面已挂载 /api，未命中的 API 不会落到这里，因此无需再判定 /api
+  // TODO: CommonJS 环境中 __dirname 是内置的
   res.sendFile(path.join(__dirname, './dist_web', 'index.html'))
 })
 

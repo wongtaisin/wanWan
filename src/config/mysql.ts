@@ -8,10 +8,11 @@
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
+import './loadEnv' // 首先加载环境变量
 // 使用mysql2模块代替mysql以支持新的认证协议
 import mysql from 'mysql2'
 
-const mysqlPassword = process.env.MYSQL_PASSWORD || '75440055'
+const mysqlPassword = process.env.MYSQL_PASSWORD || '12345678'
 
 const pool = mysql.createPool({
   connectionLimit: Number(process.env.MYSQL_POOL_LIMIT) || 10, // 最大连接数
@@ -19,7 +20,7 @@ const pool = mysql.createPool({
   port: Number(process.env.MYSQL_PORT) || 3306, // 数据库端口
   user: process.env.MYSQL_USER || 'root', // 数据库用户名
   password: mysqlPassword, // 数据库密码
-  database: process.env.MYSQL_DATABASE || 'express', // 数据库名
+  database: process.env.MYSQL_DATABASE || 'expenses_db', // 数据库名
   // 配置认证插件
   authPlugins: {
     mysql_clear_password: () => () => Buffer.from(mysqlPassword)

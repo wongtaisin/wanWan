@@ -3,11 +3,11 @@
  * 本脚本需先生成所有 .js 新旧路径的映射，再修改所有 require/import 路径，最后再实际进行重命名。
  */
 
+const generate = require('@babel/generator').default
+const traverse = require('@babel/traverse').default
+const parser = require('@babel/parser')
 const fs = require('fs')
 const path = require('path')
-const parser = require('@babel/parser')
-const traverse = require('@babel/traverse').default
-const generate = require('@babel/generator').default
 
 /** ---------- 工具方法 ---------- **/
 

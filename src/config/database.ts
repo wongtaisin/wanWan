@@ -1,10 +1,10 @@
 import { Sequelize } from 'sequelize'
-require('dotenv').config() // 确保在使用环境变量之前加载dotenv
+import './loadEnv' // 首先加载环境变量
 
 const sequelize = new Sequelize(
-  process.env.MYSQL_DATABASE || 'expenses',
+  process.env.MYSQL_DATABASE || 'expenses_db',
   process.env.MYSQL_USER || 'root',
-  process.env.MYSQL_PASSWORD || '75440055',
+  process.env.MYSQL_PASSWORD || '12345678',
   {
     host: process.env.MYSQL_HOST || 'localhost',
     dialect: 'mysql',

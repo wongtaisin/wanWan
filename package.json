@@ -1,17 +1,17 @@
 {
   "name": "express",
-  "version": "1.0.1",
+  "version": "0.0.5",
   "main": "index.ts",
   "scripts": {
-    "dev": "ts-node src/app.ts",
+    "dev": "tsx src/app.ts",
     "build": "tsc",
-    "rename": "node rename.js",
-    "renameFiles": "node rename-files.js",
+    "rename": "node rename.cjs",
+    "renameFiles": "node rename-files.cjs",
     "build:prod": "npm run build && npm run rename && npm run renameFiles",
     "start": "node dist/app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "pm2:dev": "pm2 start ecosystem.config.js --only wanWan-dev",
-    "pm2:prod": "npm run build:prod && pm2 start ecosystem.config.js --only wanWan-prod"
+    "pm2:dev": "pm2 start ecosystem.config.cjs --only wanWan-dev",
+    "pm2:prod": "npm run build:prod && pm2 start ecosystem.config.cjs --only wanWan-prod"
   },
   "keywords": [],
   "author": "",
@@ -32,6 +32,7 @@
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "tslib": "^2.8.1",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   },
   "dependencies": {

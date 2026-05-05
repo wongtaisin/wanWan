@@ -1,8 +1,8 @@
-const fs = require('fs')
-const path = require('path')
+const generate = require('@babel/generator').default
 const parser = require('@babel/parser')
 const traverse = require('@babel/traverse').default
-const generate = require('@babel/generator').default
+const fs = require('fs')
+const path = require('path')
 
 // JavaScript 关键字集合（防止用作标识符）
 const JS_KEYWORDS = new Set([
@@ -113,8 +113,37 @@ function renameIdentifiers(filePath) {
     return generateSimpleName(nameIndex++)
   }
 
-  // 第一遍：收集所有可重命名的绑定名（变量/参数/函数名/catch参数等），列表/分页保留名一律不碰
+  // 第一遍：收集所有可重命名的绑定名（变量/参数/函数名/catch参数/import本地名等），列表/分页保留名一律不碰
   traverse(ast, {
+    ImportDeclaration(path) {
+      path.node.specifiers.forEach(specifier => {
+        if (specifier.type === 'ImportDefaultSpecifier') {
+          const original = specifier.local.name
+          if (
+            !nameMap.has(original) &&
+            !RESERVED_PARAM_SET.has(original) &&
+            !isListLikeName(original)
+          )
+            nameMap.set(original, nextName())
+        } else if (specifier.type === 'ImportSpecifier') {
+          const original = specifier.local.name
+          if (
+            !nameMap.has(original) &&
+            !RESERVED_PARAM_SET.has(original) &&
+            !isListLikeName(original)
+          )
+            nameMap.set(original, nextName())
+        } else if (specifier.type === 'ImportNamespaceSpecifier') {
+          const original = specifier.local.name
+          if (
+            !nameMap.has(original) &&
+            !RESERVED_PARAM_SET.has(original) &&
+            !isListLikeName(original)
+          )
+            nameMap.set(original, nextName())
+        }
+      })
+    },
     VariableDeclarator(path) {
       if (path.node.id.type === 'Identifier') {
         const original = path.node.id.name

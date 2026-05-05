@@ -1,11 +1,9 @@
 import crypto from 'crypto'
-import dotenv from 'dotenv'
 import fs from 'fs'
 import multer from 'multer'
 import path from 'path'
 import SysFile from '../models/file'
 import { ReFail, ReSuccess, imgSuccess } from '../util/response'
-dotenv.config()
 
 const pathImg = 'uploads' // 上传文件夹
 

@@ -8,11 +8,10 @@
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
+import fs from 'fs' // 这是 Node.js 中用于文件系统操作的模块
 import multer from 'multer' // 这是一个在 Node.js 中非常流行的处理 multipart/form-data（通常用于文件上传）的中间件库.
 import path from 'path' // 这是 Node.js 中用于处理文件路径的模块
-import uuid from 'uuid' // 这是一个用于生成唯一标识符的库
-
-import fs from 'fs' // 这是 Node.js 中用于文件系统操作的模块
+import { v7 as uuidV7 } from 'uuid' // 这是一个用于生成唯一标识符的库
 
 const memoryDest = path.join(__dirname, '../public/uploads') // 这是文件上传的目标目录
 
@@ -28,7 +27,7 @@ const storage = multer.diskStorage({
   },
   filename: (req: any, file: any, cb: any) => {
     // 生成唯一文件名
-    const uid = uuid.v1()
+    const uid = uuidV7()
     // 获取文件扩展名
     let ext = path.extname(file.originalname)
     cb(null, `${uid}_${ext}`)
