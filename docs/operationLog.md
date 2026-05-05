@@ -6,63 +6,77 @@
 
 ## 功能特性
 
-- 自动记录用户操作日志
+- 自动记录用户操作日志（通过中间件）
 - 支持多种操作类型（CREATE、UPDATE、DELETE、QUERY、LOGIN、LOGOUT 等）
 - 记录详细的请求和响应信息
 - 支持按条件查询和分页
 - 提供操作统计功能
 - 支持日志清理和管理
-
-## 数据库表结构
-
-### operation_log 表
-
-| 字段名         | 类型         | 说明           |
-| -------------- | ------------ | -------------- |
-| id             | int          | 主键 ID        |
-| user_id        | int          | 操作用户 ID    |
-| user_name      | varchar(255) | 操作用户名称   |
-| operation_type | varchar(50)  | 操作类型       |
-| module         | varchar(100) | 操作模块       |
-| description    | text         | 操作描述       |
-| request_url    | varchar(500) | 请求 URL       |
-| request_method | varchar(20)  | 请求方法       |
-| request_params | text         | 请求参数       |
-| response_data  | text         | 响应数据       |
-| ip_address     | varchar(50)  | IP 地址        |
-| user_agent     | text         | 用户代理       |
-| status_code    | int          | 响应状态码     |
-| execution_time | int          | 执行时间(毫秒) |
-| create_time    | datetime     | 创建时间       |
+- 支持跳过指定接口的日志记录
 
 ## API 接口
+
+### 基础路径
+
+所有操作日志接口的基础路径为：`/api/operationLog`
+
+### 接口列表
+
+| API 路径       | HTTP 方法 | 功能描述                 |
+| -------------- | --------- | ------------------------ |
+| `/list`        | GET       | 获取操作日志列表（分页） |
+| `/getInfo/:id` | GET       | 获取操作日志详情         |
+| `/delete/:id`  | DELETE    | 删除单条操作日志         |
+| `/deleteAll`   | DELETE    | 批量删除操作日志         |
+| `/clean`       | POST      | 清理指定日期之前的旧日志 |
+| `/stats`       | GET       | 获取操作统计信息         |
 
 ### 1. 获取操作日志列表
 
 ```
-GET /api/operation-logs
+GET /api/operationLog/list
 ```
 
 **查询参数：**
 
-- `page`: 页码（默认 1）
-- `pageSize`: 每页大小（默认 10）
-- `user_id`: 用户 ID
-- `operation_type`: 操作类型
-- `module`: 模块名
-- `start_time`: 开始时间
-- `end_time`: 结束时间
-- `keyword`: 关键词搜索
+| 参数名        | 类型   | 必填 | 说明                                      |
+| ------------- | ------ | ---- | ----------------------------------------- |
+| page          | number | 否   | 页码（默认 1）                            |
+| pageSize      | number | 否   | 每页大小（默认 10）                       |
+| userId        | number | 否   | 操作用户 ID                               |
+| operationType | string | 否   | 操作类型（CREATE/UPDATE/DELETE/QUERY 等） |
+| module        | string | 否   | 操作模块名称                              |
+| startTime     | string | 否   | 开始时间（格式：YYYY-MM-DD HH:MM:SS）     |
+| endTime       | string | 否   | 结束时间（格式：YYYY-MM-DD HH:MM:SS）     |
+| keyword       | string | 否   | 关键词搜索（匹配描述）                    |
 
 **响应示例：**
 
 ```json
 {
   "code": 200,
-  "message": "获取操作日志列表成功",
+  "message": "success",
   "data": {
     "total": 100,
-    "list": [...],
+    "list": [
+      {
+        "id": 1,
+        "userId": 1,
+        "userName": "admin",
+        "operationType": "CREATE",
+        "module": "expenses",
+        "description": "添加花销记录",
+        "requestUrl": "/api/expenses/add",
+        "requestMethod": "POST",
+        "requestParams": "{\"amount\":100,\"description\":\"午餐\"}",
+        "responseData": "{\"code\":200,\"message\":\"添加成功\"}",
+        "ipAddress": "127.0.0.1",
+        "userAgent": "Mozilla/5.0...",
+        "statusCode": 200,
+        "executionTime": 50,
+        "createTime": "2025-12-16 10:30:00"
+      }
+    ],
     "page": 1,
     "pageSize": 10
   }
@@ -72,19 +86,67 @@ GET /api/operation-logs
 ### 2. 获取操作日志详情
 
 ```
-GET /api/operation-logs/:id
+GET /api/operationLog/getInfo/:id
 ```
 
-### 3. 删除操作日志
+**路径参数：**
+
+| 参数名 | 类型   | 说明        |
+| ------ | ------ | ----------- |
+| id     | number | 日志记录 ID |
+
+**响应示例：**
+
+```json
+{
+  "code": 200,
+  "message": "success",
+  "data": {
+    "id": 1,
+    "userId": 1,
+    "userName": "admin",
+    "operationType": "CREATE",
+    "module": "expenses",
+    "description": "添加花销记录",
+    "requestUrl": "/api/expenses/add",
+    "requestMethod": "POST",
+    "requestParams": "{\"amount\":100,\"description\":\"午餐\"}",
+    "responseData": "{\"code\":200,\"message\":\"添加成功\"}",
+    "ipAddress": "127.0.0.1",
+    "userAgent": "Mozilla/5.0...",
+    "statusCode": 200,
+    "executionTime": 50,
+    "createTime": "2025-12-16 10:30:00"
+  }
+}
+```
+
+### 3. 删除单条操作日志
 
 ```
-DELETE /api/operation-logs/:id
+DELETE /api/operationLog/delete/:id
+```
+
+**路径参数：**
+
+| 参数名 | 类型   | 说明        |
+| ------ | ------ | ----------- |
+| id     | number | 日志记录 ID |
+
+**响应示例：**
+
+```json
+{
+  "code": 200,
+  "message": "删除成功",
+  "data": null
+}
 ```
 
 ### 4. 批量删除操作日志
 
 ```
-DELETE /api/operation-logs
+DELETE /api/operationLog/deleteAll
 ```
 
 **请求体：**
@@ -95,10 +157,26 @@ DELETE /api/operation-logs
 }
 ```
 
+| 参数名 | 类型     | 必填 | 说明                 |
+| ------ | -------- | ---- | -------------------- |
+| ids    | number[] | 是   | 要删除的日志 ID 数组 |
+
+**响应示例：**
+
+```json
+{
+  "code": 200,
+  "message": "批量删除成功",
+  "data": {
+    "deletedCount": 3
+  }
+}
+```
+
 ### 5. 清理旧日志
 
 ```
-POST /api/operation-logs/clean
+POST /api/operationLog/clean
 ```
 
 **请求体：**
@@ -109,124 +187,159 @@ POST /api/operation-logs/clean
 }
 ```
 
+| 参数名     | 类型   | 必填 | 说明                                     |
+| ---------- | ------ | ---- | ---------------------------------------- |
+| beforeDate | string | 是   | 清理此日期之前的日志（格式：YYYY-MM-DD） |
+
+**响应示例：**
+
+```json
+{
+  "code": 200,
+  "message": "清理完成",
+  "data": {
+    "cleanedCount": 50
+  }
+}
+```
+
 ### 6. 获取操作统计信息
 
 ```
-GET /api/operation-logs/stats?days=7
+GET /api/operationLog/stats
 ```
 
-## 使用方法
+**查询参数：**
 
-### 1. 自动记录日志（推荐）
+| 参数名 | 类型   | 必填 | 说明                   |
+| ------ | ------ | ---- | ---------------------- |
+| days   | number | 否   | 统计最近天数（默认 7） |
 
-在主路由中注入自动日志中间件：
+**响应示例：**
 
-```typescript
-import { autoOperationLogMiddleware } from '../middleware/operationLog'
-
-// 在所有路由之前注入
-app.use(autoOperationLogMiddleware())
+```json
+{
+  "code": 200,
+  "message": "success",
+  "data": {
+    "totalOperations": 150,
+    "todayOperations": 25,
+    "dailyStats": [
+      { "date": "2025-12-10", "count": 20 },
+      { "date": "2025-12-11", "count": 25 },
+      { "date": "2025-12-12", "count": 30 }
+    ],
+    "operationTypeStats": {
+      "CREATE": 50,
+      "UPDATE": 30,
+      "DELETE": 10,
+      "QUERY": 60
+    },
+    "moduleStats": {
+      "expenses": 80,
+      "user": 30,
+      "shop": 25,
+      "file": 15
+    }
+  }
+}
 ```
 
-### 2. 手动记录日志
+## 中间件使用
 
-在需要记录日志的地方调用工具函数：
+### 1. 自动记录日志（全局中间件）
 
-```typescript
-import { recordCreateLog, recordUpdateLog, recordDeleteLog } from '../util/operationLogUtil'
-
-// 记录创建操作
-await recordCreateLog(userId, userName, 'user', '创建新用户', userData)
-
-// 记录更新操作
-await recordUpdateLog(userId, userName, 'user', '更新用户信息', updateData)
-
-// 记录删除操作
-await recordDeleteLog(userId, userName, 'user', '删除用户', { userId: 123 })
-```
-
-### 3. 在现有控制器中使用
-
-在现有的用户、花销等控制器中添加日志记录：
-
-```typescript
-// 在用户创建成功后
-await recordCreateLog(req.user.user_id, req.user.user_name, 'user', '创建新用户', req.body)
-
-// 在花销记录创建成功后
-await recordCreateLog(req.user.user_id, req.user.user_name, 'expenses', '记录新的花销', req.body)
-```
-
-## 中间件说明
-
-### operationLogMiddleware
-
-用于特定接口的日志记录，可以指定操作类型和描述：
+在应用入口或路由中注入自动日志中间件：
 
 ```typescript
 import { operationLogMiddleware } from '../middleware/operationLog'
 
-router.post(
-  '/users',
-  operationLogMiddleware('user', 'CREATE', '创建新用户'),
-  userController.createUser
-)
+// 在路由配置中使用
+app.use('/api', operationLogMiddleware)
 ```
 
-### autoOperationLogMiddleware
+### 2. 跳过指定接口的日志记录
 
-自动根据请求方法和路径判断操作类型：
-
-```typescript
-import { autoOperationLogMiddleware } from '../middleware/operationLog'
-
-// 自动记录所有操作
-app.use(autoOperationLogMiddleware())
-```
-
-### skipOperationLog
-
-跳过某些接口的日志记录：
+使用 `skipOperationLog` 中间件跳过特定接口的日志记录：
 
 ```typescript
 import { skipOperationLog } from '../middleware/operationLog'
 
-router.get('/health', skipOperationLog(), (req, res) => {
-  res.json({ status: 'ok' })
+router.get('/list', skipOperationLog(), operationLogController.getLogList)
+router.get('/getInfo/:id', skipOperationLog(), operationLogController.getLogDetail)
+```
+
+### 3. 手动记录日志
+
+在需要手动记录日志的地方使用工具函数：
+
+```typescript
+import { recordOperationLog } from '../util/operationLogUtil'
+
+await recordOperationLog({
+  userId: 1,
+  userName: 'admin',
+  operationType: 'CREATE',
+  module: 'expenses',
+  description: '添加花销记录',
+  requestUrl: '/api/expenses/add',
+  requestMethod: 'POST',
+  requestParams: JSON.stringify(req.body),
+  responseData: JSON.stringify(response),
+  ipAddress: req.ip,
+  userAgent: req.headers['user-agent'],
+  statusCode: 200,
+  executionTime: 50
 })
 ```
 
-## 配置说明
+## 数据库表结构
 
-### 日志保留策略
+### operation_log 表
 
-可以通过定时任务清理旧日志：
+| 字段名        | 类型         | 约束                       | 说明             |
+| ------------- | ------------ | -------------------------- | ---------------- |
+| id            | int          | PRIMARY KEY AUTO_INCREMENT | 主键 ID          |
+| userId        | int          | NOT NULL                   | 操作用户 ID      |
+| userName      | varchar(255) | NOT NULL                   | 操作用户名称     |
+| operationType | varchar(50)  | NOT NULL                   | 操作类型         |
+| module        | varchar(100) |                            | 操作模块         |
+| description   | text         |                            | 操作描述         |
+| requestUrl    | varchar(500) |                            | 请求 URL         |
+| requestMethod | varchar(20)  |                            | 请求方法         |
+| requestParams | text         |                            | 请求参数（JSON） |
+| responseData  | text         |                            | 响应数据（JSON） |
+| ipAddress     | varchar(50)  |                            | 客户端 IP 地址   |
+| userAgent     | text         |                            | 用户代理         |
+| statusCode    | int          |                            | 响应状态码       |
+| executionTime | int          |                            | 执行时间（毫秒） |
+| createTime    | datetime     | DEFAULT CURRENT_TIMESTAMP  | 创建时间         |
 
-```typescript
-// 清理30天前的日志
-await operationLogService.cleanOldLogs('2025-07-01')
-```
+## 操作类型说明
 
-### 性能优化
+| 操作类型 | 说明     |
+| -------- | -------- |
+| LOGIN    | 用户登录 |
+| LOGOUT   | 用户登出 |
+| CREATE   | 创建记录 |
+| UPDATE   | 更新记录 |
+| DELETE   | 删除记录 |
+| QUERY    | 查询记录 |
+| UPLOAD   | 上传文件 |
+| OTHER    | 其他操作 |
 
-- 日志记录采用异步方式，不阻塞主流程
-- 支持批量操作和分页查询
-- 建议定期清理旧日志以保持数据库性能
+## 使用注意事项
 
-## 注意事项
+1. **异步记录**：日志记录采用异步方式，不会阻塞主流程
+2. **敏感信息过滤**：密码等敏感信息会在记录前被自动过滤
+3. **性能优化**：建议定期清理旧日志以保持数据库性能
+4. **日志查询权限**：应限制操作日志的查询权限，只允许管理员访问
+5. **日志保留策略**：根据业务需求设置合理的日志保留期限（如 90 天）
 
-1. 确保数据库表已创建
-2. 日志记录是异步的，不会影响接口响应速度
-3. 敏感信息（如密码）会在记录前被过滤
-4. 建议定期清理旧日志以节省存储空间
-5. 在生产环境中，可以根据需要调整日志记录的详细程度
+## 扩展建议
 
-## 扩展功能
-
-可以根据需要扩展以下功能：
-
-- 日志导出功能
-- 更详细的统计分析
-- 日志告警机制
-- 日志可视化界面
+- 日志导出功能（支持 Excel、CSV 格式）
+- 日志告警机制（异常操作自动告警）
+- 日志可视化仪表盘
 - 多租户日志隔离
+- 日志检索优化（全文搜索）
