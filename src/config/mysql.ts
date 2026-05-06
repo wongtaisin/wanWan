@@ -2,15 +2,14 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-10-11 08:22:31
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2026-03-25 09:33:19
+ * @LastEditTime: 2026-05-06 08:11:19
  * @FilePath: \wanWan\src\config\mysql.ts
  * @Description:
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
+import mysql from 'mysql2' // 使用mysql2模块代替mysql以支持新的认证协议
 import './loadEnv' // 首先加载环境变量
-// 使用mysql2模块代替mysql以支持新的认证协议
-import mysql from 'mysql2'
 
 const mysqlPassword = process.env.MYSQL_PASSWORD || '12345678'
 
