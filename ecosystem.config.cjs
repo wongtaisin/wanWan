@@ -6,7 +6,7 @@ module.exports = {
     {
       name: 'wanWan-dev',
       script: 'node',
-      args: '-r ts-node/register app.ts', // 使用 ts-node 运行 TS
+      args: '-r ts-node/register src/app.ts', // 使用 ts-node 运行 TS
       watch: [
         'controllers',
         'db',
