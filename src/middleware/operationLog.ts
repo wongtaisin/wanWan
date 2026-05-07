@@ -42,7 +42,6 @@ export const operationLogMiddleware = (
         try {
           const logData = {
             user_id: req.auth?.user_id,
-            user_name: req.auth?.user_name,
             operation_type: operationType,
             module: module,
             description: description,
@@ -119,18 +118,19 @@ export const autoOperationLogMiddleware = () => {
               operationType = 'OTHER'
           }
 
+          const baseUrl = req.baseUrl || ''
           // 根据请求路径判断模块
-          if (req.path.includes('/user')) {
+          if (baseUrl.includes('/user')) {
             module = 'user'
-          } else if (req.path.includes('/expenses')) {
+          } else if (baseUrl.includes('/expenses')) {
             module = 'expenses'
-          } else if (req.path.includes('/login')) {
+          } else if (baseUrl.includes('/login')) {
             module = 'login'
-          } else if (req.path.includes('/operation-logs')) {
+          } else if (baseUrl.includes('/operationLog')) {
             module = 'operation_log'
-          } else if (req.path.includes('/shop')) {
+          } else if (baseUrl.includes('/shop')) {
             module = 'shop'
-          } else if (req.path.includes('/common')) {
+          } else if (baseUrl.includes('/common')) {
             module = 'common'
           }
 
@@ -139,7 +139,6 @@ export const autoOperationLogMiddleware = () => {
 
           const logData = {
             user_id: req.auth?.user_id,
-            user_name: req.auth?.user_name,
             operation_type: operationType,
             module: module,
             description: description,

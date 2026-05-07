@@ -12,7 +12,6 @@
 export interface OperationLog {
   id?: number
   user_id?: number
-  user_name?: string
   operation_type: string
   module: string
   description: string

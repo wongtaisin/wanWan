@@ -39,7 +39,6 @@ export const recordLoginLog = async (
 ) => {
   await recordOperationLog({
     user_id: userId,
-    user_name: userName,
     operation_type: 'LOGIN',
     module: 'login',
     description: `用户 ${userName} 登录系统`,
@@ -57,7 +56,6 @@ export const recordLoginLog = async (
 export const recordLogoutLog = async (userId: number, userName: string, ipAddress?: string) => {
   await recordOperationLog({
     user_id: userId,
-    user_name: userName,
     operation_type: 'LOGOUT',
     module: 'login',
     description: `用户 ${userName} 登出系统`,
@@ -82,7 +80,6 @@ export const recordCreateLog = async (
 ) => {
   await recordOperationLog({
     user_id: userId,
-    user_name: userName,
     operation_type: 'CREATE',
     module: module,
     description: description,
@@ -107,7 +104,6 @@ export const recordUpdateLog = async (
 ) => {
   await recordOperationLog({
     user_id: userId,
-    user_name: userName,
     operation_type: 'UPDATE',
     module: module,
     description: description,
@@ -132,7 +128,6 @@ export const recordDeleteLog = async (
 ) => {
   await recordOperationLog({
     user_id: userId,
-    user_name: userName,
     operation_type: 'DELETE',
     module: module,
     description: description,
@@ -157,7 +152,6 @@ export const recordQueryLog = async (
 ) => {
   await recordOperationLog({
     user_id: userId,
-    user_name: userName,
     operation_type: 'QUERY',
     module: module,
     description: description,
@@ -184,7 +178,6 @@ export const recordErrorLog = async (
 ) => {
   await recordOperationLog({
     user_id: userId,
-    user_name: userName,
     operation_type: 'ERROR',
     module: module,
     description: `${description} - ${errorMessage}`,

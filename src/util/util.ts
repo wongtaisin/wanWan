@@ -244,21 +244,24 @@ class util {
    * @returns {string} 客户端IP地址
    */
   getClientIp = (req: any) => {
+    // 去除 IPv6 映射的 IPv4 地址前缀 ::ffff: 的辅助函数
+    const removeIpv6Prefix = (ip: string) => ip.replace(/^::ffff:/, '')
+
     // 1. 尝试从 X-Forwarded-For 拿真实 IP
     const forwarded = req.headers['x-forwarded-for']
     if (forwarded) {
       // X-Forwarded-For 可能是 "真实IP, 代理IP, 代理IP"
-      return forwarded.split(',')[0].trim()
+      return removeIpv6Prefix(forwarded.split(',')[0].trim())
     }
 
     // 2. Express 自带的 req.ip 在 trust proxy 开启后会自动识别
     if (req.ip) {
-      return req.ip
+      return removeIpv6Prefix(req.ip)
     }
 
     // 3. Node 原生字段（通常不是真实IP）
     const remote = req.connection?.remoteAddress || req.socket?.remoteAddress
-    return remote || null
+    return remote ? removeIpv6Prefix(remote) : undefined
   }
 }
 

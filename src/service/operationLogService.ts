@@ -20,13 +20,12 @@ class OperationLogService {
    *
    * @example 假设 log = {
    *   user_id: 1,
-   *   user_name: '大帅',
    *   operation_type: 'login',
    *   module: 'user',
    *   description: '用户登录',
    *   request_url: '/user/login',
    *   request_method: 'POST',
-   *   request_params: '{"username": "dashuai", "password": "123456"}',
+   *   request_params: '{"username": "wingddd", "password": "123456"}',
    *   response_data: '{"token": "123456"}',
    *   ip_address: '127.0.0.1'
    *   user_agent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36'
@@ -38,14 +37,13 @@ class OperationLogService {
     try {
       const sql = `
         INSERT INTO operation_log (
-          user_id, user_name, operation_type, module, description,
+          user_id, operation_type, module, description,
           request_url, request_method, request_params, response_data,
           ip_address, user_agent, status_code, execution_time
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `
       const params = [
         log.user_id,
-        log.user_name,
         log.operation_type,
         log.module,
         log.description,
@@ -106,9 +104,9 @@ class OperationLogService {
       }
 
       if (query.keyword) {
-        whereClause += ' AND (description LIKE ? OR user_name LIKE ?)'
+        whereClause += ' AND description LIKE ?'
         const keyword = `%${query.keyword}%`
-        params.push(keyword, keyword)
+        params.push(keyword)
       }
 
       // 查询总数
