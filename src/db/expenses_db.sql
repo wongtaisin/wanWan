@@ -1,17 +1,17 @@
 /*
  Navicat Premium Dump SQL
 
- Source Server         : 127.0.0.1
+ Source Server         : 192.168.93.128
  Source Server Type    : MySQL
- Source Server Version : 80408 (8.4.8)
- Source Host           : 127.0.0.1:3306
- Source Schema         : expenses
+ Source Server Version : 80045 (8.0.45-0ubuntu0.24.04.1)
+ Source Host           : 192.168.93.128:3306
+ Source Schema         : expenses_db
 
  Target Server Type    : MySQL
- Target Server Version : 80408 (8.4.8)
+ Target Server Version : 80045 (8.0.45-0ubuntu0.24.04.1)
  File Encoding         : 65001
 
- Date: 25/03/2026 08:59:38
+ Date: 12/05/2026 08:27:50
 */
 
 SET NAMES utf8mb4;
@@ -42,7 +42,7 @@ CREATE TABLE `expenses`  (
   `create_date` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_date` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 244 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '花销明细' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 296 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '花销明细' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for expenses_detail
@@ -67,7 +67,7 @@ CREATE TABLE `expenses_detail`  (
   `create_date` datetime NULL DEFAULT NULL COMMENT '创建日期',
   `update_date` datetime NULL DEFAULT NULL COMMENT '更新日期',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 617 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '花销详情，精确到时分秒' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 725 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '花销详情，精确到时分秒' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for file
@@ -82,7 +82,7 @@ CREATE TABLE `file`  (
   `created_date` datetime NULL DEFAULT NULL,
   `update_date` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for operation_log
@@ -91,7 +91,6 @@ DROP TABLE IF EXISTS `operation_log`;
 CREATE TABLE `operation_log`  (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NULL DEFAULT NULL COMMENT '操作用户ID',
-  `user_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '操作用户名称',
   `operation_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '操作类型：CREATE, UPDATE, DELETE, QUERY, LOGIN, LOGOUT',
   `module` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '操作模块：user, expenses, login等',
   `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '操作描述',
@@ -109,7 +108,7 @@ CREATE TABLE `operation_log`  (
   INDEX `idx_operation_type`(`operation_type` ASC) USING BTREE,
   INDEX `idx_module`(`module` ASC) USING BTREE,
   INDEX `idx_create_time`(`create_time` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 18191 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '操作日志表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 20031 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '操作日志表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for payment
@@ -145,7 +144,7 @@ CREATE TABLE `shop`  (
   `create_date` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_date` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 44 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '店铺' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 46 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '店铺' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for sys_role
