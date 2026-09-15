@@ -2,8 +2,8 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 11:41:42
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-12-16 11:09:39
- * @FilePath: \wanWan\routes\index.ts
+ * @LastEditTime: 2026-09-15 19:03:18
+ * @FilePath: \wanWan\src\routes\index.ts
  * @Description:
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
@@ -17,6 +17,7 @@ import loginRouter from './login' // 登录路由模块
 import operationLogRouter from './operationLog' // 操作日志路由模块
 import shopRouter from './shop' // 店铺路由模块
 import userRouter from './user' // 用户路由模块
+import paymentRouter from './paymentRoutes' // 支付路由模块
 
 const router = express.Router()
 
@@ -28,7 +29,8 @@ const routerList = {
   expensesDetail: expensesDetailRouter,
   shop: shopRouter,
   operationLog: operationLogRouter,
-  file: fileRouter
+  file: fileRouter,
+  payment: paymentRouter
 }
 
 // 遍历路由对象，应用到路由中
