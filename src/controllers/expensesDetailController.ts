@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-09-23 09:55:43
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2026-09-15 18:03:29
+ * @LastEditTime: 2026-09-18 18:22:17
  * @FilePath: \wanWan\src\controllers\expensesDetailController.ts
  * @Description:
  *
@@ -565,9 +565,34 @@ class ExpensesDetailController {
       return acc + Number(sum[key])
     }, 0)
 
+    const dayMap: Record<string, Record<string, number>> = {}
+
+    checkDateRangeResult.forEach((item: any) => {
+      if (expensesName.includes(item.expenses_name)) {
+        const key = item.expenses_name
+        const money = Number(item.money) || 0
+        sum[key] = _util.formatNumber((sum[key] || 0) + money)
+
+        // 计算日期合计
+        const dayKey = _util.formatDate(item.create_date, 'yyyy-MM-dd')
+        if (!dayMap[dayKey]) dayMap[dayKey] = {} // 初始化日期合计对象
+        dayMap[dayKey][key] = _util.formatNumber((dayMap[dayKey][key] || 0) + money) // 累加当前日期当前支出类型的金额
+      }
+    })
+
+    // 计算每个日期的总支出
+    for (const dayKey in dayMap) {
+      const dayData = dayMap[dayKey]
+      dayData.total = Object.values(dayData).reduce((acc: number, value: string | number) => {
+        return acc + Number(value)
+      }, 0)
+      dayData.total = _util.formatNumber(dayData.total)
+    }
+
     res.json({
       code: 200,
       data: {
+        dayMap,
         monthMap,
         sum,
         total: _util.formatNumber(total)
