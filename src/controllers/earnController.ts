@@ -2,8 +2,8 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2026-09-21 02:05:18
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2026-09-21 02:42:24
- * @FilePath: \wanWan\src\controllers\earnnController.ts
+ * @LastEditTime: 2026-09-21 05:01:51
+ * @FilePath: \wanWan\src\controllers\earnController.ts
  * @Description: 收入控制器
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
@@ -27,10 +27,10 @@ class earnController {
       city,
       area,
       address,
-      create_date
+      createDate
     } = req.body
 
-    const createDate = create_date || new Date().toISOString().split('T')[0]
+    const dayDate = createDate || new Date().toISOString().split('T')[0]
 
     const result: any = await mysql.query(earnService.add, [
       req.auth.user_id,
@@ -46,13 +46,13 @@ class earnController {
       city,
       area,
       address,
-      createDate
+      dayDate
     ] as never[])
 
     ReSuccess(res, 200, '添加成功', {
       id: result.insertId,
       userId: req.auth.user_id,
-      date: createDate
+      date: dayDate
     })
   }
 }
