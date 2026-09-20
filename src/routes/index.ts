@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 11:41:42
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2026-09-15 19:03:18
+ * @LastEditTime: 2026-09-21 04:08:42
  * @FilePath: \wanWan\src\routes\index.ts
  * @Description:
  *
@@ -10,14 +10,15 @@
  */
 import express from 'express'
 import commonRouter from './common' // 通用路由模块
+import earnRouter from './earnRoutes' // 收入路由模块
 import expensesRouter from './expenses' // 花销路由模块
 import expensesDetailRouter from './expensesDetail' // 消费明细详情路由模块
 import fileRouter from './file' // 文件路由模块
 import loginRouter from './login' // 登录路由模块
 import operationLogRouter from './operationLog' // 操作日志路由模块
+import paymentRouter from './paymentRoutes' // 支付路由模块
 import shopRouter from './shop' // 店铺路由模块
 import userRouter from './user' // 用户路由模块
-import paymentRouter from './paymentRoutes' // 支付路由模块
 
 const router = express.Router()
 
@@ -30,7 +31,8 @@ const routerList = {
   shop: shopRouter,
   operationLog: operationLogRouter,
   file: fileRouter,
-  payment: paymentRouter
+  payment: paymentRouter,
+  earn: earnRouter
 }
 
 // 遍历路由对象，应用到路由中
