@@ -2,8 +2,8 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-10-17 14:43:25
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-11-01 17:23:16
- * @FilePath: \wanWan\service\commonService.ts
+ * @LastEditTime: 2026-09-23 01:31:24
+ * @FilePath: \wanWan\src\service\commonService.ts
  * @Description:
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
@@ -161,6 +161,87 @@ class CommonService {
     const list: any = await mysql.query(dataSql, dataParams)
 
     return { list, total }
+  }
+
+  commitList(userId: number, startDate: string, endDate: string, limit: number, offset: number) {
+    const list = `
+    SELECT
+      id,
+      user_id,
+			earn_name AS name,
+			money,
+			payment_id,
+			shop_id,
+			shop_name,
+			remark,
+			image,
+			province,
+			city,
+			area,
+			address,
+      DATE_FORMAT(create_date, '%Y-%m-%d %H:%i:%s') AS create_date,
+      '2' AS type
+    FROM earn
+    WHERE user_id = ?
+      AND create_date >= ?
+      AND create_date < DATE_ADD(?, INTERVAL 1 DAY)
+
+    UNION ALL
+
+    SELECT
+      id,
+      user_id,
+			expenses_name AS name,
+			money,
+			payment_id,
+      payment_name,
+			shop_id,
+      shop_name,
+      remark,
+      province,
+      city,
+      area,
+      address,
+      DATE_FORMAT(create_date, '%Y-%m-%d %H:%i:%s') AS create_date,
+      '1' AS type
+    FROM expenses_detail
+    WHERE user_id = ?
+      AND create_date >= ?
+      AND create_date < DATE_ADD(?, INTERVAL 1 DAY)
+
+    ORDER BY create_date DESC, type ASC, id DESC
+    LIMIT ? OFFSET ?
+  `
+
+    const total = `
+    SELECT COUNT(*) AS total
+    FROM (
+      SELECT id
+      FROM earn
+      WHERE user_id = ?
+        AND create_date >= ?
+        AND create_date < DATE_ADD(?, INTERVAL 1 DAY)
+
+      UNION ALL
+
+      SELECT id
+      FROM expenses_detail
+      WHERE user_id = ?
+        AND create_date >= ?
+        AND create_date < DATE_ADD(?, INTERVAL 1 DAY)
+    ) AS all_data
+  `
+
+    const listParams = [userId, startDate, endDate, userId, startDate, endDate, limit, offset]
+
+    const totalParams = [userId, startDate, endDate, userId, startDate, endDate]
+
+    return {
+      list,
+      listParams,
+      total,
+      totalParams
+    }
   }
 }
 export default new CommonService()

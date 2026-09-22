@@ -2,8 +2,8 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 16:38:22
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-12-03 14:19:48
- * @FilePath: \wanWan\controllers\expensesController.ts
+ * @LastEditTime: 2026-09-23 00:18:17
+ * @FilePath: \wanWan\src\controllers\expensesController.ts
  * @Description:
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.

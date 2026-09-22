@@ -2,13 +2,15 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-11-08 16:09:06
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2025-12-03 10:23:03
- * @FilePath: \wanWan\controllers\commonController.ts
+ * @LastEditTime: 2026-09-23 00:22:39
+ * @FilePath: \wanWan\src\controllers\commonController.ts
  * @Description:
  *
  * Copyright (c) 2025 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
 import fs from 'fs'
+import mysql from '../config/mysql'
+import commonService from '../service/commonService'
 import { redisCache } from '../util/cache'
 import { ReFail, ReSuccess } from '../util/response'
 
@@ -62,6 +64,33 @@ class commonController {
     } catch (error) {
       ReFail(res, '读取地区数据失败', error)
     }
+  }
+
+  commitList = async (req: any, res: any) => {
+    let { startDate, endDate, page, pageSize } = req.body
+
+    const userId = req.auth.user_id
+
+    const currentPage = Math.max(1, Number(page) || 1) // 当前页码，默认第一页
+    const limit = Math.max(1, Math.min(200, Number(pageSize))) // 每页数量，默认10条，最大200条
+    const offset = (currentPage - 1) * limit // 偏移量，用于分页查询
+
+    const sql = commonService.commitList(userId, startDate, endDate, limit, offset) as any
+
+    // 查询列表
+    const listResult = (await mysql.query(sql.list, sql.listParams)) as any[]
+
+    // 查询总数
+    const totalResult = (await mysql.query(sql.total, sql.totalParams)) as any[]
+
+    const total = totalResult[0]?.total || 0
+
+    ReSuccess(res, 200, '获取成功', {
+      list: listResult,
+      total,
+      page: currentPage,
+      pageSize: limit
+    })
   }
 }
 
