@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-09-23 09:47:03
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2026-09-21 04:37:00
+ * @LastEditTime: 2026-09-23 23:20:09
  * @FilePath: \wanWan\src\service\eranService.ts
  * @Description:
  *
@@ -32,6 +32,16 @@ class EarnService {
    * @explain COALESCE(NULLIF(?, ''), now()) 当 create_date 为空时，使用当前时间
    */
   add = `INSERT INTO earn (user_id, user_name, earn_name, money, payment_id, shop_id, shop_name, remark, image, province, city, area, address, create_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, COALESCE(NULLIF(?, ''), now()))`
+
+  checkDateRange = `
+  SELECT *,
+    DATE_FORMAT(create_date, '%Y-%m-%d %H:%i:%s') AS create_date,
+    DATE_FORMAT(update_date, '%Y-%m-%d %H:%i:%s') AS update_date
+  FROM earn
+  WHERE user_id = ?
+    AND DATE(create_date) BETWEEN IFNULL(?, DATE(create_date)) AND IFNULL(?, DATE(create_date))
+  ORDER BY create_date DESC
+`
 }
 
 export default new EarnService()

@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-10-17 14:43:25
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2026-09-23 01:31:24
+ * @LastEditTime: 2026-09-23 02:15:37
  * @FilePath: \wanWan\src\service\commonService.ts
  * @Description:
  *
@@ -171,8 +171,9 @@ class CommonService {
 			earn_name AS name,
 			money,
 			payment_id,
+      payment_name,
 			shop_id,
-			shop_name,
+      shop_name,
 			remark,
 			image,
 			province,
@@ -197,11 +198,12 @@ class CommonService {
       payment_name,
 			shop_id,
       shop_name,
-      remark,
-      province,
-      city,
-      area,
-      address,
+			remark,
+			image,
+			province,
+			city,
+			area,
+			address,
       DATE_FORMAT(create_date, '%Y-%m-%d %H:%i:%s') AS create_date,
       '1' AS type
     FROM expenses_detail
