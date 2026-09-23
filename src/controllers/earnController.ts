@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2026-09-21 02:05:18
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2026-09-23 23:35:43
+ * @LastEditTime: 2026-09-24 01:04:15
  * @FilePath: \wanWan\src\controllers\earnController.ts
  * @Description: 收入控制器
  *
@@ -65,8 +65,6 @@ class earnController {
       startDate,
       endDate
     ] as never[])
-
-    console.log('11111', result)
 
     // TODO：收入名称，可sql查询全部取出
     const earnName = ['新澳', '红包', '兼职']
