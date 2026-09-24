@@ -2,13 +2,14 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2026-09-24 00:42:23
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2026-09-25 01:40:24
+ * @LastEditTime: 2026-09-25 03:22:17
  * @FilePath: \wanWan\src\controllers\ledgerController.ts
  * @Description:
  *
  * Copyright (c) 2026 by wongtaisin1024@gmail.com, All Rights Reserved.
  */
 import mysql from '../config/mysql'
+import ledgerNameService from '../service/ledgerNameService'
 import ledgerService from '../service/ledgerService'
 import shopService from '../service/shopService'
 import _util from '../util/util'
@@ -318,52 +319,55 @@ class LedgerController {
   checkDatePrice = async (req: any, res: any, next: any) => {
     const { startDate, endDate, type } = req.query
 
+    const userId = req.auth.user_id
+
     const checkDateRangeResult: any = await mysql.query(ledgerService.checkDateRange, [
-      req.auth.user_id,
+      userId,
       startDate,
       endDate
     ] as never[])
 
     let ledgerName = [] as string[]
 
-    if (type === '1') {
-      ledgerName = [
-        '吃',
-        '喝',
-        '玩',
-        '乐',
-        '过路费',
-        '油费',
-        '停车费',
-        '交通费',
-        '超市',
-        '网购',
-        '话费',
-        '红包',
-        'vip',
-        '其它'
-      ]
-    } else {
-      ledgerName = ['新澳', '红包', '兼职']
-    }
+    const result = (await mysql.query(ledgerNameService.checkType(type), [
+      userId,
+      type
+    ] as never[])) as any[]
+    ledgerName = result.map((item: any) => item.name)
 
     // 按 ledger_name 分组并计算合计
     const sum: Record<string, number> = {}
     const monthMap: Record<string, Record<string, number>> = {}
+    const dayMap: Record<string, Record<string, number>> = {}
+    const typeTotal: Record<'1' | '2', number> = { '1': 0, '2': 0 }
+
     checkDateRangeResult.forEach((item: any) => {
-      if (ledgerName.includes(item.ledger_name)) {
+      const itemType = String(item.type) as '1' | '2'
+      if (
+        ledgerName.includes(item.ledger_name) &&
+        (!type || itemType === String(type)) &&
+        (itemType === '1' || itemType === '2')
+      ) {
         const key = item.ledger_name
         const money = Number(item.money) || 0
-        sum[key] = _util.formatNumber((sum[key] || 0) + money)
+        const amount = itemType === '2' ? money : -money
+        sum[key] = _util.formatNumber((sum[key] || 0) + amount)
+
+        typeTotal[itemType] = _util.formatNumber(typeTotal[itemType] + money)
 
         // 计算月份合计
         const monthKey = _util.formatDate(item.create_date, 'yyyy-MM')
         if (!monthMap[monthKey]) monthMap[monthKey] = {} // 初始化月份合计对象
-        monthMap[monthKey][key] = _util.formatNumber((monthMap[monthKey][key] || 0) + money) // 累加当前月份当前支出类型的金额
+        monthMap[monthKey][key] = _util.formatNumber((monthMap[monthKey][key] || 0) + amount) // 累加当前月份当前账目类型的净额
+
+        // 计算日期合计
+        const dayKey = _util.formatDate(item.create_date, 'yyyy-MM-dd')
+        if (!dayMap[dayKey]) dayMap[dayKey] = {} // 初始化日期合计对象
+        dayMap[dayKey][key] = _util.formatNumber((dayMap[dayKey][key] || 0) + amount) // 累加当前日期当前账目类型的净额
       }
     })
 
-    // 计算每个月份的总支出
+    // 计算每个月份的净额
     for (const monthKey in monthMap) {
       const monthData = monthMap[monthKey]
       monthData.total = Object.values(monthData).reduce((acc: number, value: string | number) => {
@@ -372,26 +376,7 @@ class LedgerController {
       monthData.total = _util.formatNumber(monthData.total)
     }
 
-    const total = Object.keys(sum).reduce((acc: number, key: string) => {
-      return acc + Number(sum[key])
-    }, 0)
-
-    const dayMap: Record<string, Record<string, number>> = {}
-
-    checkDateRangeResult.forEach((item: any) => {
-      if (ledgerName.includes(item.ledger_name)) {
-        const key = item.ledger_name
-        const money = Number(item.money) || 0
-        sum[key] = _util.formatNumber((sum[key] || 0) + money)
-
-        // 计算日期合计
-        const dayKey = _util.formatDate(item.create_date, 'yyyy-MM-dd')
-        if (!dayMap[dayKey]) dayMap[dayKey] = {} // 初始化日期合计对象
-        dayMap[dayKey][key] = _util.formatNumber((dayMap[dayKey][key] || 0) + money) // 累加当前日期当前支出类型的金额
-      }
-    })
-
-    // 计算每个日期的总支出
+    // 计算每个日期的净额
     for (const dayKey in dayMap) {
       const dayData = dayMap[dayKey]
       dayData.total = Object.values(dayData).reduce((acc: number, value: string | number) => {
@@ -400,13 +385,17 @@ class LedgerController {
       dayData.total = _util.formatNumber(dayData.total)
     }
 
+    const total = typeTotal['2'] - typeTotal['1']
+
     res.json({
       code: 200,
       data: {
         dayMap,
         monthMap,
         sum,
-        total: _util.formatNumber(total)
+        total: _util.formatNumber(total),
+        expenseTotal: typeTotal['1'],
+        incomeTotal: typeTotal['2']
       },
       message: '查询成功'
     })
