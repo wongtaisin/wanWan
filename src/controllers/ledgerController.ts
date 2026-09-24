@@ -1,3 +1,13 @@
+/*
+ * @Author: wingddd wongtaisin1024@gmail.com
+ * @Date: 2026-09-24 00:42:23
+ * @LastEditors: wingddd wongtaisin1024@gmail.com
+ * @LastEditTime: 2026-09-25 01:40:24
+ * @FilePath: \wanWan\src\controllers\ledgerController.ts
+ * @Description:
+ *
+ * Copyright (c) 2026 by wongtaisin1024@gmail.com, All Rights Reserved.
+ */
 import mysql from '../config/mysql'
 import ledgerService from '../service/ledgerService'
 import shopService from '../service/shopService'

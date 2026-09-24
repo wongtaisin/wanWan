@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2025-08-21 11:41:42
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2026-09-21 04:08:42
+ * @LastEditTime: 2026-09-25 01:44:51
  * @FilePath: \wanWan\src\routes\index.ts
  * @Description:
  *
@@ -14,6 +14,7 @@ import earnRouter from './earnRoutes' // 收入路由模块
 import expensesRouter from './expenses' // 花销路由模块
 import expensesDetailRouter from './expensesDetail' // 消费明细详情路由模块
 import fileRouter from './file' // 文件路由模块
+import ledgerNameRouter from './ledgerNameRoutes' // 账单名称路由模块
 import ledgerRouter from './ledgerRoutes' // 账本路由模块
 import loginRouter from './login' // 登录路由模块
 import operationLogRouter from './operationLog' // 操作日志路由模块
@@ -34,7 +35,8 @@ const routerList = {
   file: fileRouter,
   payment: paymentRouter,
   earn: earnRouter,
-  ledger: ledgerRouter
+  ledger: ledgerRouter,
+  ledgerName: ledgerNameRouter
 }
 
 // 遍历路由对象，应用到路由中
