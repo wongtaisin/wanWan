@@ -10,7 +10,7 @@ class LedgerNameController {
    */
   checkType = async (req: any, res: any) => {
     const { type } = req.query
-    const result = (await mysql.query(ledgerNameService.checkType, [
+    const result = (await mysql.query(ledgerNameService.checkType(type), [
       req.auth.user_id,
       type
     ] as never[])) as any[]
