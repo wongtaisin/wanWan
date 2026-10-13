@@ -2,7 +2,7 @@
  * @Author: wingddd wongtaisin1024@gmail.com
  * @Date: 2026-09-24 00:42:23
  * @LastEditors: wingddd wongtaisin1024@gmail.com
- * @LastEditTime: 2026-09-25 03:22:17
+ * @LastEditTime: 2026-10-13 22:52:17
  * @FilePath: \wanWan\src\controllers\ledgerController.ts
  * @Description:
  *
@@ -336,7 +336,7 @@ class LedgerController {
     ledgerName = result.map((item: any) => item.name)
 
     // 按 ledger_name 分组并计算合计
-    const sum: Record<string, number> = {}
+    const sum: Record<string, { income: number; expense: number; total: number }> = {}
     const monthMap: Record<string, Record<string, number>> = {}
     const dayMap: Record<string, Record<string, number>> = {}
     const typeTotal: Record<'1' | '2', number> = { '1': 0, '2': 0 }
@@ -351,9 +351,14 @@ class LedgerController {
         const key = item.ledger_name
         const money = Number(item.money) || 0
         const amount = itemType === '2' ? money : -money
-        sum[key] = _util.formatNumber((sum[key] || 0) + amount)
 
-        typeTotal[itemType] = _util.formatNumber(typeTotal[itemType] + money)
+        // 计算sum的收入，支出，金额
+        if (!sum[key]) sum[key] = { income: 0, expense: 0, total: 0 }
+        const totalKey = itemType === '2' ? 'income' : 'expense'
+        sum[key][totalKey] = _util.formatNumber(sum[key][totalKey] + money)
+        sum[key].total = _util.formatNumber(sum[key].income - sum[key].expense)
+
+        typeTotal[itemType] = _util.formatNumber(typeTotal[itemType] + money) //
 
         // 计算月份合计
         const monthKey = _util.formatDate(item.create_date, 'yyyy-MM')
